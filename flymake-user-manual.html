@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>flymake User Manual</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>flymake User Manual</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#the-basics">The Basics</a><br>
+      <a href="#flymake-usage">flymake Usage</a><br>
+      <a href="#new-project-folder-structure">New Project Folder Structure</a><br>
+      <a href="#build-rules">Build Rules</a><br>
+      <a href="#flymake.toml">flymake.toml</a><br>
+      <a href="#flymake.toml-package">flymake.toml package</a><br>
+      <a href="#flymake.toml-dependencies">flymake.toml dependencies</a><br>
+      <a href="#command-reference">Command Reference</a><br>
+      <a href="#build">build</a><br>
+      <a href="#cinfo">cinfo</a><br>
+      <a href="#clean">clean</a><br>
+      <a href="#new">new</a><br>
+      <a href="#run">run</a><br>
+      <a href="#test">test</a><br>
+      <a href="#dependencies">Dependencies</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>flymake User Manual</h3>
+<p>01-02-2023, version 1.0</p>
+<p>Inspired by Rust's Cargo, flymake is a C/C++ project build, test and package manager, all in one.</p>
+<p>flymake does not try to replace tools like make or cmake, which build programs and tools in
+sophisticated ways, nor does it replace full featured package management like Brew. However,
+flymake will suffice for many C projects: for example, flymake can build itself.</p>
+<h2 id="the-basics">The Basics</h2>
+<p>Features:</p>
+<ul>
+<li>Quickly create a new empty C project with industry standard folders</li>
+<li>Build library, main program, tools, and examples</li>
+<li>Build and run debug or release version of the project, tools and library</li>
+<li>Build the C project with dependancies from git repositories or file folders</li>
+<li>Build and run test suite</li>
+<li>Build projects with older compilers (C89, C99) if needed</li>
+<li>Add defined symbols and other project specific compiler options</li>
+<li>Create your own packages (libraries) for use by other projects</li>
+</ul>
+<p>A simple example:</p>
+<div class="w3-code w3-light-grey notranslate">
+  $ flymake new foo<br>
+  cd foo<br>
+  $ flymake run<br>
+  Hello foo!<br>
+</div>
+<h2 id="flymake-usage">flymake Usage</h2>
+<p>Below is the <code class="w3-codespan">--help</code> screen for flymake.</p>
+<div class="w3-code w3-light-grey notranslate">
+  flymake v1.0<br>
+  Usage = flymake [options] command [args]<br>
+  <br>
+  Options:<br>
+  -n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;show commands but don't build<br>
+  -rl&nbsp; &nbsp; &nbsp; &nbsp; build target using lib, src or tools rules (-rl or -rs -rt)<br>
+  -v-&nbsp; &nbsp; &nbsp; &nbsp; turn off verbose output (silent)<br>
+  --all&nbsp; &nbsp; &nbsp; clean or build everything<br>
+  --debug&nbsp; &nbsp; build debug version of project<br>
+  --help&nbsp; &nbsp; &nbsp;this screen<br>
+  --lib&nbsp; &nbsp; &nbsp; create library folder only, no source folder<br>
+  --version&nbsp; flymake verison<br>
+  <br>
+  Commands:<br>
+  <br>
+  build&nbsp; [--all] [--debug] [-r] [target]&nbsp; &nbsp;build target<br>
+  clean&nbsp; [--all]&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;clean .o and other temporary files. All cleans executables<br>
+  new&nbsp; &nbsp; name [--lib] [--cpp]&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; create a new C or C++ project or library with proper folders<br>
+  run&nbsp; &nbsp; [--all] [--debug] [target]&nbsp; &nbsp; &nbsp; &nbsp; build and run target<br>
+  test&nbsp; &nbsp;[--all] [--debug]&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;build and run the test suite<br>
+</div>
+<p>Some examples of various commands</p>
+<div class="w3-code w3-light-grey notranslate">
+  $ cd myproj<br>
+  $ flymake build --all&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;# will rebuild everthing<br>
+  $ flymake build --all --debug&nbsp; &nbsp;# will rebuild everthing with -DDEBUG=1 flag<br>
+  $ flymake build tools&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;# will build library (if any) and then tools folder<br>
+  $ cd tools<br>
+  $ flymake build mytool<br>
+  $ flymake clean --all<br>
+</div>
+<h2 id="new-project-folder-structure">New Project Folder Structure</h2>
+<p>When making a new project, for example <code class="w3-codespan">$flymake new projname</code>, flymake creates the following
+folders and files:</p>
+<div class="w3-code w3-light-grey notranslate">
+  |-- LICENSE.txt <br>
+  |-- README.md<br>
+  |-- docs\<br>
+  |-- flymake.toml<br>
+  |-- inc\<br>
+  |&nbsp; &nbsp;|-- projname.inc<br>
+  |-- src/<br>
+  |&nbsp; &nbsp;|-- projname.c<br>
+  |-- test/<br>
+  |-- tools/<br>
+</div>
+<p>Change the LICENSE.txt and README.md as you see fit.</p>
+<p>The test folder is not populated as some put there tests in a separate project and there are so
+many test frameworks. If using the FlyLib test framework, do the following, where <code class="w3-codespan">projname</code> is
+the name of your project.</p>
+<div class="w3-code w3-light-grey notranslate">
+  $ git clone git@github.com:drewagislason/flylib.git<br>
+  $ flymake new projname<br>
+  $ mkdir projname/test/<br>
+  $ cp flylib/test/test_template.c projname/test/<br>
+  $ cd projname<br>
+  $ flymake test<br>
+</div>
+<h2 id="build-rules">Build Rules</h2>
+<p>flymake builds programs and libraries from C files using the following rules:</p>
+<ol>
+<li>Compiles with <code class="w3-codespan">gcc -I. -I../inc -Wall -Werror</code> and optionally <code class="w3-codespan">-DDEBUG=1</code>
+  <ul>
+  <li>Other defines, options or compilers can be used in the <code class="w3-codespan">[compiler]</code> section of <code class="w3-codespan">flymake.toml</code></li>
+  <li>Automatically looks for <code class="w3-codespan">.c.cpp.c++.cc</code> files. Other file extensions and rules can be added</li>
+  <li>If your build is really complicated, just use make or cmake or an IDE</li>
+  <li>See flymake.toml section for more info</li>
+  </ul>
+</li>
+<li>Build any <code class="w3-codespan">[dependencies]</code> first as listed in <code class="w3-codespan">flymake.toml</code>, a configuration file
+  <ul>
+  <li>Dependencies may have their own dependencies and so on</li>
+  <li>Dependencies may have their own <code class="w3-codespan">flymake.toml</code> files</li>
+  <li>Dependencies can be checked out from a git repo or found in a folder</li>
+  </ul>
+</li>
+<li>Build folders <code class="w3-codespan">lib/</code>, <code class="w3-codespan">tools/</code> then <code class="w3-codespan">src/</code>
+  <ul>
+  <li>Folder <code class="w3-codespan">test/</code> is built with <code class="w3-codespan">flymake test</code> command</li>
+  <li>Other folders you create, like <code class="w3-codespan">examples/</code> can be built using lib, src or tools rules with -r</li>
+  </ul>
+</li>
+<li>All files in <code class="w3-codespan">lib/</code> folder are compiled into <code class="w3-codespan">{projectname}.a</code>
+  <ul>
+  <li>If <code class="w3-codespan">--debug</code> flag is used, then <code class="w3-codespan">{projectname}dbg.a</code></li>
+  </ul>
+</li>
+<li>All files in <code class="w3-codespan">src/</code> folder are compiled into <code class="w3-codespan">{projname}</code>
+  <ul>
+  <li>On Windows, <code class="w3-codespan">{projname}.exe</code></li>
+  <li>If <code class="w3-codespan">--debug</code> flag is used, then <code class="w3-codespan">{projectname}dbg</code></li>
+  </ul>
+</li>
+<li>All files in <code class="w3-codespan">tools/</code> or any other folder folder are compiled into various programs
+  <ul>
+  <li>Looks for basename pairs (bassename.h and basename.c) to , then any other basename*.c files a</li>
+  <li>Links with library (if any)</li>
+  </ul>
+</li>
+<li>In the tools/, examples/ and test/ folders, flymake will group tools by "basename". See below.</li>
+</ol>
+<p>flymake compiles with <code class="w3-codespan">-I.</code> and <code class="w3-codespan">-I../inc</code>. This allows API (public) headers to be in <code class="w3-codespan">/inc</code> and
+private headers to be in the same folder as the source.</p>
+<p>flymake compiles with <code class="w3-codespan">-Wall -Werror</code> because why wouldn't you want the compiler to catch all
+errors and treat all warnings as errors? Let the compiler be your first debugging tool.</p>
+<p>When building the library, <code class="w3-codespan">lib/*.c</code> are compiled into one library. When building the project
+<code class="w3-codespan">src/*.c</code> files are compiled into one program. When building <code class="w3-codespan">tools/*.c</code>, it's a bit more
+complicated, since the tools folder may have multiple tools.</p>
+<p>Flymake knows that a set of files belong to the same tool if they begin with the same "basename". A
+basename simply means there is a .c and a .h with the same name. For example, flydoc is a tool in
+the flylib project and so it has <code class="w3-codespan">flydoc.c</code> and <code class="w3-codespan">flydoc.h</code> plus other files such as
+<code class="w3-codespan">flydochtml.c</code>. Place as many tools as you need in your project in the <code class="w3-codespan">tools</code> folder. One and
+only one of the source files in each tool must have the <code class="w3-codespan">main()</code> function. Like the project, the
+tools end up in the <code class="w3-codespan">bin</code> folder.</p>
+<h2 id="flymake.toml">flymake.toml</h2>
+<p>The optional flymake.toml file tells flymake how to make this project. If there is no flymake.toml
+file, flymake will still build the project using the default rules and the name of the project
+folder for creating the library or executable. The default rules are below:</p>
+<div class="w3-code w3-light-grey notranslate">
+  [package]<br>
+  name = "flylib"<br>
+  version = "0.2.0"<br>
+  authors = ["My Name &lt;me@mysite.com>"]<br>
+  <br>
+  [dependencies]<br>
+  adder = { path="../adder", nobuild=true }<br>
+  flylib = { git="https://github.com/drewgislason/flylib", branch="main", version="0.9" }<br>
+  <br>
+  [compiler]<br>
+  .c = { compiler="gcc", opts="-c -Iinc -Wall -Werror", o="-o", lopts="-o" }<br>
+  <br>
+  [precompile]<br>
+  inc/myfile.h = { dep="docs/somefile.md", cmd="tools/file2c docs/somefile.md inc/myfile.h gszMyVar" }<br>
+  <br>
+  [postcompile]<br>
+  ~/bin/flymake = { dep="tools/flymake", cmd="sudo cp tools/flymake ~/bin/flymake" }<br>
+</div>
+<p>The flymake.toml file created by <code class="w3-codespan">flymake new project</code>, it only includes the <code class="w3-codespan">[package]</code> section.</p>
+<h3 id="flymake.toml-package">flymake.toml package</h3>
+<p>This </p>
+<h3 id="flymake.toml-dependencies">flymake.toml dependencies</h3>
+<p>Adding a dependency is as easy as adding a line in the flymake.toml file. If you look at the
+flymake.toml file above, see that it has 2 dependendencies, "adder" and "flylib". Each of those
+projects may have dependencies of their own. You must specify either <code class="w3-codespan">git=</code> or <code class="w3-codespan">path=</code> in each
+dependency. The other fields are optional.</p>
+<p>For dependency packages in a git repo, you must have checkout access rights.</p>
+<p>Dependencies are build with the same rules that your prjoect is. That is, if they have a
+flymake.toml it is has dependencies, it will resursively seearch out all sub dependendies, all
+with there proper versions.</p>
+<p>Versions are super important. For example, perhaps a function has changed paramemeters or worse,
+behavior in a different version of source code of a dependency. That could cause serious bugs in
+your program.</p>
+<p>For <code class="w3-codespan">path=</code> dependendies, there is no version. Whatever source in that path is used. This is OK for
+very stable source or when all projects that depend on it are rebuilt and retested often.</p>
+<p>Using git is a bit more flexible with version. For example, <code class="w3-codespan">ProjectA</code> could depend on <code class="w3-codespan">foo</code>
+version 1.2.0, and <code class="w3-codespan">ProjectB</code> on <code class="w3-codespan">foo</code> version 2.5.</p>
+<p>flymake looks at the git log to find the right version, looking for the keywords <code class="w3-codespan">version</code> or
+<code class="w3-codespan">release</code> and something that looks like a version number. If <code class="w3-codespan">version=</code> is not specified, then the
+head of the project is used. If <code class="w3-codespan">branch=</code> is not specified, then the default branch is used.</p>
+<p>To use flymake dependencies you can either use git or file folders. Using file folders doesn't
+require git. Do add a dependency already on your file system, use something like the following.
+flymake will use it's usual build rules to build that dependancy.</p>
+<p>Use <code class="w3-codespan">path=</code> to specify a folder instead of a git repository. This is useful if there are source
+files or tools shared by your prjoects.</p>
+<p>Dependency versions are very important. Unfortunately, so many git projects do not use either tags or version</p>
+<p>If using git, you can specify a version of your dependency. The version string is pretty flexible.
+Versions are generally 3 numbers: major.minor.patch. You can match a range of versions thus:</p>
+<div class="w3-code w3-light-grey notranslate">
+  *&nbsp; &nbsp; &nbsp; &nbsp;match head (latest)<br>
+  1&nbsp; &nbsp; &nbsp; &nbsp;match any version 1.0.0 - less than 2.0.0<br>
+  1.5&nbsp; &nbsp; &nbsp;match any version 1.5.0 - less than 1.6.0<br>
+  string&nbsp; match the first occurence of "string"<br>
+</div>
+<p>Depen</p>
+<p>To find the right version of a dependency, flymake uses <code class="w3-codespan">git log --oneline</code> and searches commit
+string. For example, lets say you had a dependency on flylib version 0.9. You could specify the
+following dependency in the flylib.toml file for your project.</p>
+<p>0c5d063 forgot some files
+5ba0a46 release v0.9.0
+1b1888a Md2Html now does Markdown tables</p>
+<div class="w3-code w3-light-grey notranslate">
+  flylib = { git="https://github.com/drewgislason/flylib", branch="main", version="0.9" }<br>
+</div>
+<p>If you don't specify the branch, it will assume the default branch when cloned.</p>
+<p>Dependencies must be in git somehere, or in another folder accessbile to your file system.</p>
+<p>If you are making a public pakcage that will be posted on GitHub or GitLab or some other git
+service, make sure to observe the following rules.</p>
+<ol>
+<li>All dependencies must be somewhere on git, as others won't have your file folders</li>
+<li>Make sure you've set up SSH for cloning with git GitHub and GitLab repositories</li>
+<li>Make sure your "official" commits include release or version with the version # (e.g. 1.0.2)</li>
+</ol>
+<h2 id="command-reference">Command Reference</h2>
+<h3 id="build">build</h3>
+<p>The build command allows you to build debug and standard versions of both the library and the
+project.</p>
+<div class="w3-code w3-light-grey notranslate">
+  flymake build [--all] [--debug] [file(s)...]<br>
+</div>
+<p>It will only build those source files that are newer than the .o (object) file unless the <code class="w3-codespan">--all</code>
+option is specified. The <code class="w3-codespan">--debug</code> option adds the <code class="w3-codespan">-DDEBUG=1</code> in the compile line and creates dbg
+versions of the library and/or executable.</p>
+<h3 id="cinfo">cinfo</h3>
+<p>This commnand simply displays the version of the compiler, how large things are, PATH_MAX for who
+long file paths can be and so on. Useful if you're not sure.</p>
+<h3 id="clean">clean</h3>
+<p>This command cleans up any .o files it created, and if <code class="w3-codespan">-all</code> is specified, the libraries and
+executables too.</p>
+<h3 id="new">new</h3>
+<p>Creates a new project with a set of files and folder. It contains </p>
+<div class="w3-code w3-light-grey notranslate">
+  docs&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; folder to place project documents like user manual<br>
+  inc&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;folder to place project public includes<br>
+  lib&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;folder for library files (optional, see --lib)<br>
+  src&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;folder to place project sourc files (optional if lib)<br>
+  test&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; folder to place tests<br>
+  tools&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;folder to place tools<br>
+  flymake.toml&nbsp; &nbsp; for configurating flymake<br>
+  LICENSE.txt&nbsp; &nbsp; &nbsp;MIT license. Or pick your own.<br>
+  README.md&nbsp; &nbsp; &nbsp; &nbsp;Default markdown readme<br>
+</div>
+<h3 id="run">run</h3>
+<p>Same as build, but also runs the </p>
+<h3 id="test">test</h3>
+<p>The test command will build and optionally run the test suite using the same rules it uses to build
+tools. That is, flymake looks for "basename" pairs of .c and .h files.</p>
+<div class="w3-code w3-light-grey notranslate">
+  $ flydoc test [--build] [--all] [--debug] [single_test_name(s)]<br>
+</div>
+<p>If the <code class="w3-codespan">--build</code> option is specified, then it will build only, and not run. If <code class="w3-codespan">--all</code> is
+specified, then it will build all files, not just those with newer source files. You can also
+specify single test program names to build and run.</p>
+<h3 id="dependencies">Dependencies</h3>
+<p>Any flymake project may depend on one or more other projects. For example the "ned" neweditor
+project relies on the project <code class="w3-codespan">flylib</code>.</p>
+<p>The flylib C library contains a useful test suite framework for command-line projects, or anything
+that creates files and can be tested by the command-line.</p>
+<p><a href="https://github.com/drewagislason/viklib">https://github.com/drewagislason/viklib</a></p>
+<p>You may have your own in-house or favorite test framework. I'm a big fan of test driven
+development.</p>
+<p><a href="https://en.wikipedia.org/wiki/Test-driven_development">https://en.wikipedia.org/wiki/Test-driven_development</a></p>
+<p>If your test framework is complicated, place it its own project and set up dependencies for your
+test framework and put testable application source APIs in a library.</p>
+  </div>
+</div>
+</body>
+</html>

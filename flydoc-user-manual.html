@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>flydoc User Manual</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>flydoc User Manual</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#features">Features</a><br>
+      <a href="#usage">Usage</a><br>
+      <a href="#basics">Basics</a><br>
+      <a href="#keywords">Keywords</a><br>
+      <a href="#class-name-description">@class name description</a><br>
+      <a href="#color-sidebar-titlebar">@color sidebar {titlebar}</a><br>
+      <a href="#defgroup-name-description">@defgroup name description</a><br>
+      <a href="#example-title">@example title</a><br>
+      <a href="#fn-prototype">@fn prototype</a><br>
+      <a href="#inclass-name">@inclass name</a><br>
+      <a href="#ingroup-name">@ingroup name</a><br>
+      <a href="#logo-link">@logo link</a><br>
+      <a href="#mainpage-title">@mainpage title</a><br>
+      <a href="#param-name-description">@param name description</a><br>
+      <a href="#return-description">@return description</a><br>
+      <a href="#version-version">@version version</a><br>
+      <a href="#a-complete-example">A Complete Example</a><br>
+      <a href="#warnings-and-errors">Warnings and errors</a><br>
+      <a href="#advanced-topics">Advanced topics</a><br>
+      <a href="#links">Links</a><br>
+      <a href="#best-practices">Best Practices</a><br>
+      <a href="#images">Images</a><br>
+      <a href="#documenting-source-code-with-flydoc">Documenting Source Code with flydoc</a><br>
+      <a href="#c-documentation-example">C Documentation Example</a><br>
+      <a href="#c-documentation-example">C++ Documentation Example</a><br>
+      <a href="#javascript-documentation-example">Javascript Documentation Example</a><br>
+      <a href="#python-documentation-example">Python Documentation Example</a><br>
+      <a href="#ruby-documentation-example">Ruby Documentation Example</a><br>
+      <a href="#rust-documentation-example">Rust Documentation Example</a><br>
+      <a href="#swift-documentation-example">Swift Documentation Example</a><br>
+      <a href="#github-and-gitlab">GitHub and GitLab</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>flydoc User Manual</h3>
+<p>Version 1.0, Nov 5, 2022</p>
+<p>flydoc is a cmdline tool which creates developer documentation from commented source code.</p>
+<p>Like markdown, flydoc is minimalist. It creates static web pages that can then be hosted anywhere,
+or markdown files that can be turned into .pdfs.</p>
+<p>flydoc works with a variety of coding languages, including: C, C++, C#, Go, Java, Javascript,
+Python, Ruby, Rust, Swift and Typescript. Basically any language that uses <code class="w3-codespan">#</code> or <code class="w3-codespan">/*</code> or <code class="w3-codespan">//</code> for
+comments and has functions/methods that use parentheses. It can also work with other languages
+with a bit more source documenting.</p>
+<p>flydoc uses @keywords in special comments to control the look and content of the documentation. The
+output is either a single markdown file or a folder of .html files. The markdown files can easily
+be turned into .pdfs using tools like Mou, MacDown or Typora. The HTML uses W3.CSS for styling.</p>
+<p>flydoc is mobile first, that is it looks great in the browser of a smart phone, tablet or desktop.</p>
+<p>For an example of flydoc output, see <a href="https://drewagislason.github.io/index.html">https://drewagislason.github.io/index.html</a>  <br></p>
+<p>For a markdown tutorial, see <a href="https://www.markdownguide.org/basic-syntax/">https://www.markdownguide.org/basic-syntax/</a>  <br>
+For an online markdown converter, see <a href="https://markdowntohtml.com">https://markdowntohtml.com</a>  <br>
+For markdown editors, see: <a href="https://www.makeuseof.com/best-markdown-editors-windows/">https://www.makeuseof.com/best-markdown-editors-windows/</a>  <br>
+For a W3.css tutorial, see <a href="https://www.w3schools.com/w3css/default.asp">https://www.w3schools.com/w3css/default.asp</a>  <br>
+For popular coding languages, see: <a href="https://madnight.github.io/githut/#/pull_requests/2021/3">https://madnight.github.io/githut/#/pull_requests/2021/3</a>  <br></p>
+<p>flydoc is named after <a href="https://en.wikipedia.org/wiki/Firefly_(TV_series)">https://en.wikipedia.org/wiki/Firefly_(TV_series)</a>, an iconic space western.</p>
+<h2 id="features">Features</h2>
+<ul>
+<li>Create developer API documentation from commented source code documentation</li>
+<li>Outputs markdown or static HTML/CSS with links</li>
+<li>Mobile first HTML: looks great on a phone, tablet or desktop</li>
+<li>Works with any coding language</li>
+<li>Converts standard markdown files to HTML</li>
+<li>Control what is documented and what is not (public vs hidden APIs)</li>
+<li>Adjust colors, logo for project/company specific look</li>
+<li>Outputs statistics (# of modules, classes, functions, examples documented)</li>
+<li>Warnings are in standard <code class="w3-codespan">file:line:col: warning: text</code> format for easy parsing</li>
+</ul>
+<h2 id="usage">Usage</h2>
+<p>flydoc runs in the command-line terminal. Someday, perhaps, I'll make a macOs, Linux, and Windows
+GUI app version. How to use a terminal is behond the scope of this document.</p>
+<div class="w3-code w3-light-grey notranslate">
+  Usage = flydoc [-n] [-o out] [-s] [-v] [--ext .c.js] [--html] [--link prefix] in...<br>
+  <br>
+  Options:<br>
+  -n&nbsp; &nbsp; &nbsp; &nbsp;parse inputs only, no output<br>
+  -o&nbsp; &nbsp; &nbsp; &nbsp;output file (file.md) or folder (to contain .html files)<br>
+  -v&nbsp; &nbsp; &nbsp; &nbsp;verbose<br>
+  -s&nbsp; &nbsp; &nbsp; &nbsp;sort methods, modules, classes<br>
+  --ext&nbsp; &nbsp; list of file extensions to search. Default ".c.c++.cpp.cc.cs.go.java.js.md.py.rb.rs.swift.ts"<br>
+  --html&nbsp; &nbsp;create html rather than markdown<br>
+  in...&nbsp; &nbsp; Input files and folders<br>
+</div>
+<p>Examples:</p>
+<div class="w3-code w3-light-grey notranslate">
+  $ flydoc my_api.c<br>
+  $ flydoc --html -o myfolder src/*.c docs/*.md<br>
+  $ flydoc --html -o apidocs pysrc/ rustsrc/ src/<br>
+  $ flydoc -v -n --html -o myfolder src/*.c<br>
+  $ flydoc --html -o . myfile.md<br>
+  $ flydoc -v -o myfile.md src/ lib/<br>
+</div>
+<p>Flydoc searches source files for special comments marked for flydoc.</p>
+<h2 id="basics">Basics</h2>
+<p>flydoc uses an opt-in approach that looks for @keywords inside of special comments. The special
+comments are a slight addition to standard comments you probably already have in your source code.
+These comments are expected to be markdown in format.</p>
+<p>The source code documentation is gathered into modules and classes. Each module gets its own HTML
+file if the <code class="w3-codespan">--html</code> option is used, or it's own chapter if markdown output.</p>
+<p>The results are pages (or chapters) of functions organized by class or module. A modules and
+classes can span multiple source files.</p>
+<p>A very simple example follows:</p>
+<div class="w3-code w3-light-grey notranslate">
+  /*!<br>
+  &nbsp; @defgroup maths&nbsp; &nbsp;A math library to eventually rival MatLab<br>
+  <br>
+  &nbsp; More descriptive text here...<br>
+  */<br>
+  <br>
+  /*!<br>
+  &nbsp; Calculate area of a circle<br>
+  &nbsp; @param&nbsp; r&nbsp; &nbsp;radius<br>
+  &nbsp; @return area of the circle<br>
+  */<br>
+  double maths_circle_area(double r)<br>
+  <br>
+  /*!<br>
+  &nbsp; Calculate volume of a sphere<br>
+  &nbsp; @param&nbsp; r&nbsp; &nbsp;radius<br>
+  &nbsp; @return volume of the sphere<br>
+  */<br>
+  double maths_sphere_volume(double r)<br>
+  <br>
+  /*!<br>
+  &nbsp; Calculate surface area of a sphere<br>
+  &nbsp; @param&nbsp; r&nbsp; &nbsp;radius<br>
+  &nbsp; @return surface area of the sphere<br>
+  */<br>
+  double maths_sphere_surface_area(double r)<br>
+</div>
+<p>See also: <a href="#documenting-source-code-with-flydoc">Documenting Source Code with flydoc</a></p>
+<p>Note: If you are familiar with Doxygen, many of the keywords are the same.</p>
+<h2 id="keywords">Keywords</h2>
+<p>The flydoc @keywords are as follows:</p>
+<table class="w3-table-all" style="width:auto">
+<tr>
+  <th>Keyword</th>
+  <th>Usage</th>
+  <th>Description</th>
+</tr>
+<tr>
+  <td>@class</td>
+  <td>name description</td>
+  <td>define a class</td>
+</tr>
+<tr>
+  <td>@color</td>
+  <td>sidebar {titlebar}</td>
+  <td>define colors side bar and title bar</td>
+</tr>
+<tr>
+  <td>@defgroup</td>
+  <td>name description</td>
+  <td>define a module section</td>
+</tr>
+<tr>
+  <td>@example</td>
+  <td>title</td>
+  <td>a markdown code block must follow</td>
+</tr>
+<tr>
+  <td>@fn</td>
+  <td>prototype</td>
+  <td>document a function</td>
+</tr>
+<tr>
+  <td>@inclass</td>
+  <td>name</td>
+  <td>all that follows is in this class</td>
+</tr>
+<tr>
+  <td>@ingroup</td>
+  <td>name</td>
+  <td>all that follows is in this module</td>
+</tr>
+<tr>
+  <td>@logo</td>
+  <td>link</td>
+  <td>define logo img for whole project (e.g. file.png)</td>
+</tr>
+<tr>
+  <td>@mainpage</td>
+  <td>title</td>
+  <td>mainpage with title</td>
+</tr>
+<tr>
+  <td>@param</td>
+  <td>name description</td>
+  <td>function/method parameter</td>
+</tr>
+<tr>
+  <td>@return</td>
+  <td>description</td>
+  <td>function/method return value</td>
+</tr>
+<tr>
+  <td>@version</td>
+  <td>version</td>
+  <td>version string for the whole project</td>
+</tr>
+</table>
+<h3 id="class-name-description">@class name description</h3>
+ <p>The @class keyword defines a class, which has a collection of methods.</p>
+<div class="w3-code w3-light-grey notranslate">
+  /*!<br>
+  &nbsp; &nbsp; @class FlyWin&nbsp; A full-color, overlapping windowing system for ANSI terminals<br>
+  <br>
+  &nbsp; &nbsp; Text and examples here to describe the class in detail...<br>
+  */<br>
+</div>
+<h3 id="color-sidebar-titlebar">@color sidebar {titlebar}</h3>
+   <p>You can customize the 2 HTML colors that are used to decorate the side bar and title bar. The
+defaults are <code class="w3-codespan">w3-blue</code> and <code class="w3-codespan">w3-black</code>. The main page has only one color and so uses the sidebar
+color for its titlebar.</p>
+<p>The titlebar color is optional and will default to <code class="w3-codespan">w3-black</code>.</p>
+<p>The @color keyword can appear in an @class, @defgroup or @mainpage, allowing the color schemes to
+be different for those pages. The @mainpage colors will be reflected to all pages that don't
+define their own colors.</p>
+<p>Color has no effect on markdown output and is removed.</p>
+<div class="w3-code w3-light-grey notranslate">
+  /*!<br>
+  &nbsp; @mainpage&nbsp; &nbsp;My Project<br>
+  &nbsp; @color&nbsp; &nbsp; &nbsp; w3-purple w3-orange<br>
+  */<br>
+</div>
+<p>For color codes, see: <a href="https://www.w3schools.com/w3css/w3css_colors.asp">https://www.w3schools.com/w3css/w3css_colors.asp</a></p>
+<p>For more customization, see also <a href="#@logo-link">@logo</a></p>
+<h3 id="defgroup-name-description">@defgroup name description</h3>
+ <p>The @defgroup keyword defines a module, with collection of functions.</p>
+<div class="w3-code w3-light-grey notranslate">
+  /*!<br>
+  &nbsp; &nbsp; @defgroup FlyWin&nbsp; A full-color, overlapping windowing system for ANSI terminals<br>
+  <br>
+  &nbsp; &nbsp; Text and examples here to describe the class in detail...<br>
+  */<br>
+</div>
+<h3 id="example-title">@example title</h3>
+ <p>The @example keyword defines an example by title. The title must be unique within the module or class.</p>
+<p>Examples must be in a module, class or function (method) definition. Below shows 3 examples, one in
+a module one in a function and one stand-alone that will appear in that same module in its own
+section.</p>
+<p>The @example line must be followed by a markdown code block, either with triple ticks indented by 4
+spaces or a tab.</p>
+<p>Example will be listed and linked on the main HTML page (index.html).</p>
+<div class="w3-code w3-light-grey notranslate">
+  /*!<br>
+  &nbsp; @ingroup&nbsp; &nbsp; MyModule<br>
+  &nbsp; @example&nbsp; &nbsp; My module example<br>
+  <br>
+  &nbsp; &nbsp; &nbsp; Example code here...<br>
+  */<br>
+  <br>
+  /*!<br>
+  &nbsp; My function description<br>
+  &nbsp; @example&nbsp; &nbsp; My function example<br>
+  <br>
+  &nbsp; &nbsp; &nbsp; Example code here....<br>
+  <br>
+  &nbsp; @param&nbsp; &nbsp; &nbsp; n&nbsp; &nbsp;Number of iterations<br>
+  &nbsp; @returns&nbsp; &nbsp; none<br>
+  */<br>
+  void my_function(unsigned n)<br>
+  {<br>
+  &nbsp; // code here...<br>
+  }<br>
+  <br>
+  /*!<br>
+  &nbsp; @example&nbsp; My stand-alone example still in MyModule<br>
+  <br>
+  &nbsp; &nbsp; &nbsp; Example code here...<br>
+  */<br>
+</div>
+<h3 id="fn-prototype">@fn prototype</h3>
+ <p>flydoc can figure out the function prototype for all C-type languages like C, C++, Python, Rust, Javascript, etc...</p>
+<p>But, if it cannot, you can explicitely give the prototype</p>
+<div class="w3-code w3-light-grey notranslate">
+  ##! @fn&nbsp; &nbsp; &nbsp; &nbsp;backup_database()<br>
+  #&nbsp; &nbsp;@return&nbsp; &nbsp;{Integer} status<br>
+  #<br>
+  def backup_database<br>
+  &nbsp; # code here...<br>
+  end<br>
+</div>
+<h3 id="inclass-name">@inclass name</h3>
+ <p>While @class on a particular name must be only defined once per project, @inclass can be used
+anywhere. All comment lines processed from that point are considered in that class, until
+an @class, @defgroup or @ingroup are used.</p>
+<p>Perhaps class methods are spread across multiple source files. In this case, use one @class to
+define the class, then @inclass in the other source files to indicate they are part of that same
+class.</p>
+<div class="w3-code w3-light-grey notranslate">
+  /*!<br>
+  &nbsp; @inclass&nbsp; MyClass<br>
+  &nbsp; @example&nbsp; My Example for MyClass<br>
+  <br>
+  &nbsp; &nbsp; &nbsp; code here...<br>
+  */<br>
+</div>
+<h3 id="ingroup-name">@ingroup name</h3>
+ <p>While @defgroup on a particular name must be only defined once per project, @ingroup can be used
+anywhere. All comment lines processed from that point are considered in that module (group).</p>
+<p>Perhaps a module's functions are spread across multiple source files. In this case, use
+one @defgroup to define the module, then @ingroup in the other source files to indicate they are
+part of that same module.</p>
+<div class="w3-code w3-light-grey notranslate">
+  /*!<br>
+  &nbsp; @ingroup&nbsp; MyModule<br>
+  &nbsp; @example&nbsp; My Example for MyModule<br>
+  <br>
+  &nbsp; &nbsp; &nbsp; code here...<br>
+  */<br>
+</div>
+<h3 id="logo-link">@logo link</h3>
+ <p>A logo is some image you want to see in upper left of the title bar. This makes the pages look more
+professional. This can be a company logo, a project logo or any image you want.</p>
+<p>The logo link is in standard markdown image link form <code class="w3-codespan">![text](imagefile.jpg)</code>. However, if the
+link <code class="w3-codespan">[text]</code> contains any <code class="w3-codespan">w3-</code> codes, those are applied to the logo. For example, the logo below
+will show as a circle, even though the .png is a square.</p>
+<p>An @logo in the @mainpage applies to all pages. An @logo in an @class or @defgroup applies only to
+that HTML page. This allows you to use different graphics for various modules and classes.</p>
+<p>Logos are ignored for markdown output.</p>
+<div class="w3-code w3-light-grey notranslate">
+  /*!<br>
+  &nbsp; @logo ![w3-circle w3-grayscale-max](flydoclogo.png)<br>
+  */<br>
+</div>
+<p>See: <a href="https://www.w3schools.com/w3css/w3css_images.asp">https://www.w3schools.com/w3css/w3css_images.asp</a></p>
+<h3 id="mainpage-title">@mainpage title</h3>
+ <p>Any given project must have only a single @mainpage, regardless of how many modules, classes,
+functions, methods and examples there are. This is the high-level naviation page and describes the
+project. If there is more than one @manpage in the input files, then only the 1st one encountered
+is used. The others are ignored.</p>
+<p>In markdown output, this becomes the document main title and section. In HTML output, this is the
+index.html.</p>
+<div class="w3-code w3-light-grey notranslate">
+  /*!<br>
+  &nbsp; @mainpage&nbsp; &nbsp;FireFly C Library and Tools<br>
+  &nbsp; @version&nbsp; &nbsp; 0.95.3<br>
+  &nbsp; @logo&nbsp; &nbsp; &nbsp; &nbsp;![w3-circle w3-grayscale-max](flydoclogo.png)<br>
+  <br>
+  &nbsp; A set of C algorithms and tools to make developing C or C++ programs easier<br>
+  */<br>
+</div>
+<h3 id="param-name-description">@param name description</h3>
+ <p>Methods and functions may have parameters. Describe them here. The name is the variable name, the
+description is a short one-line description. This is ignored if not in a function comment.</p>
+<div class="w3-code w3-light-grey notranslate">
+  /*!<br>
+  &nbsp; Returns pi to n digits in fixed point.<br>
+  &nbsp; @param&nbsp; nDigits&nbsp; &nbsp;Number of digits after the "3", e.g. 5 to get 3.14159 (314159)<br>
+  &nbsp; @return The number pi in fixed point (e.g. 314 == 3.14)<br>
+  */<br>
+  unsigned long pi_fixed_point(unsigned nDigits)<br>
+  {<br>
+  &nbsp; // code here...<br>
+  }<br>
+</div>
+<h3 id="return-description">@return description</h3>
+ <p>Methods and functions may return values. Describe what is returned here. @returns is the same
+as @return.</p>
+<div class="w3-code w3-light-grey notranslate">
+  /*!<br>
+  &nbsp; Returns pi to n digits in fixed point.<br>
+  <br>
+  &nbsp; pi is already precalulated, so this is very fast. With a 64-bit longs, max nDigits are 18<br>
+  &nbsp; (any thing higher will be ignored): 3141592653589793238<br>
+  <br>
+  &nbsp; @param&nbsp; nDigits&nbsp; &nbsp;Number of digits after the "3", e.g. 5 to get 3.14159 (314159)<br>
+  &nbsp; @return The number pi in fixed point (e.g. 314 == 3.14)<br>
+  */<br>
+  unsigned long pi_fixed_point(unsigned nDigits)<br>
+  {<br>
+  &nbsp; // code here...<br>
+  }<br>
+</div>
+<h3 id="version-version">@version version</h3>
+ <p>The @version is displayed in the upper left under the logo (if any). If the @version is on
+the @mainpage, then it will displayed on all @class and @defgroup HTML pages. Each @class
+or @defgroup may have their own version string. If no version string is given in the project, then
+none is displayed.</p>
+<p>The version string can be anything. An example might be <code class="w3-codespan">1.0.222</code>, but could be <code class="w3-codespan">foo bar</code>. The
+example below shows <code class="w3-codespan">0.9.gitsha</code>.</p>
+<div class="w3-code w3-light-grey notranslate">
+  /*!<br>
+  &nbsp; @version&nbsp; 0.9.6df33b8<br>
+  */<br>
+</div>
+<h2 id="a-complete-example">A Complete Example</h2>
+<p>Below is a complete flydoc example with two input files (person.py and mathx.c). Running flydoc on
+these files results in documention with a mainpage, classes, methods, modules, functions and code
+examples.</p>
+<div class="w3-code w3-light-grey notranslate">
+  $ flydoc -v --html -o myfolder person.py mathx.c<br>
+</div>
+<p>File person.py:</p>
+<div class="w3-code w3-light-grey notranslate">
+  #!/usr/bin/env python3<br>
+  <br>
+  ##!<br>
+  #&nbsp; &nbsp;@mainpage Sample - a weird collection of source code<br>
+  #&nbsp; &nbsp;@version 0.95.3<br>
+  #<br>
+  #&nbsp; &nbsp;Contains both a Person class and a MathX module.<br>
+  <br>
+  class Person:<br>
+  &nbsp; &nbsp; """!<br>
+  &nbsp; &nbsp; @class Person A class for people useful in many applications<br>
+  <br>
+  &nbsp; &nbsp; Default attributes:&nbsp; <br>
+  &nbsp; &nbsp; &nbsp; &nbsp; name&nbsp; &nbsp; full name of person&nbsp; <br>
+  &nbsp; &nbsp; &nbsp; &nbsp; age&nbsp; &nbsp; &nbsp;age of person in years&nbsp; <br>
+  &nbsp; &nbsp; """<br>
+  <br>
+  &nbsp; &nbsp; def __init__(self, name, age):<br>
+  &nbsp; &nbsp; &nbsp; &nbsp; """!<br>
+  &nbsp; &nbsp; &nbsp; &nbsp; Person class constructor<br>
+  <br>
+  &nbsp; &nbsp; &nbsp; &nbsp; Future versions will have height, weight and other fields.<br>
+  <br>
+  &nbsp; &nbsp; &nbsp; &nbsp; @example&nbsp; Create and display a person<br>
+  <br>
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; person = Person("Guy", 42)<br>
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; person.printme()<br>
+  <br>
+  &nbsp; &nbsp; &nbsp; &nbsp; @param&nbsp; name&nbsp; &nbsp; full name&nbsp; <br>
+  &nbsp; &nbsp; &nbsp; &nbsp; @param&nbsp; age&nbsp; &nbsp; &nbsp;age in years (0-n)&nbsp; <br>
+  &nbsp; &nbsp; &nbsp; &nbsp; """<br>
+  &nbsp; &nbsp; &nbsp; &nbsp; self.name = name<br>
+  &nbsp; &nbsp; &nbsp; &nbsp; self.age = age<br>
+  <br>
+  &nbsp; &nbsp; def printme(self):<br>
+  &nbsp; &nbsp; &nbsp; &nbsp; """!<br>
+  &nbsp; &nbsp; &nbsp; &nbsp; Display Person<br>
+  &nbsp; &nbsp; &nbsp; &nbsp; """<br>
+  &nbsp; &nbsp; &nbsp; &nbsp; print("Hello my name is", self.name + ". I can't believe I'm already", str(self.age) + "!")<br>
+  <br>
+  if __name__ == '__main__':<br>
+  &nbsp; person = Person("Indigo Montoya", 28)<br>
+  &nbsp; person.printme()<br>
+</div>
+<p>File mathx.c:</p>
+<div class="w3-code w3-light-grey notranslate">
+  /*!<br>
+  &nbsp; @defgroup&nbsp; &nbsp;MathX&nbsp; &nbsp;A set of math functions<br>
+  <br>
+  &nbsp; ![img_MathX](https://raw.githubusercontent.com/drewagislason/public1/main/file.png)<br>
+  <br>
+  &nbsp; MathX may someday rival MatLab or NumPy!<br>
+  <br>
+  &nbsp; @example&nbsp; All Things Circles<br>
+  <br>
+  &nbsp; &nbsp; &nbsp; printf("Circumference (%f) = %f\n", radius, MathxCircleCircumference(radius));<br>
+  &nbsp; &nbsp; &nbsp; printf("Area&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (%f) = %f\n", radius, MathxCircleArea(radius));<br>
+  &nbsp; &nbsp; &nbsp; printf("Volume&nbsp; &nbsp; &nbsp; &nbsp; (%f) = %f\n", radius, MathxSphereVolume(radius));<br>
+  &nbsp; &nbsp; &nbsp; printf("SurfaceArea&nbsp; &nbsp;(%f) = %f\n", radius, MathxSphereSurface(radius));<br>
+  */<br>
+  #include &lt;stdio.h><br>
+  <br>
+  #ifndef MATHX_LIB<br>
+  &nbsp;#define MATHX_LIB 0<br>
+  #endif<br>
+  <br>
+  double mathxPi = 3.14159265358;<br>
+  <br>
+  /*!<br>
+  &nbsp;* Calculate the circumference of a circle. Only as accurate as a double.<br>
+  &nbsp;* <br>
+  &nbsp;* For higher resolution, use mathNum_t and MathNumCircleCircumference().<br>
+  &nbsp;* <br>
+  &nbsp;* @param&nbsp; &nbsp;radius&nbsp; <br>
+  &nbsp;* @return&nbsp; circumference&nbsp; <br>
+  */<br>
+  double MathxCircleCircumference(double radius)<br>
+  {<br>
+  &nbsp; return 2.0 * mathxPi * radius;<br>
+  }<br>
+  <br>
+  ///&nbsp; &nbsp;Calculate area of circle<br>
+  ///<br>
+  ///&nbsp; &nbsp;@param radius&nbsp; <br>
+  ///&nbsp; &nbsp;return area&nbsp; <br>
+  double MathxCircleArea(double radius)<br>
+  {<br>
+  &nbsp; return mathxPi * radius * radius;<br>
+  }<br>
+  <br>
+  /*!-------------------------------------------------------------<br>
+  &nbsp; Calculate Volume of Sphere<br>
+  <br>
+  &nbsp; @example&nbsp; Volume Sphere (4/3 Pi r^3)<br>
+  <br>
+  &nbsp; &nbsp; &nbsp; #include "MathX.h"<br>
+  &nbsp; &nbsp; &nbsp; int main(void)<br>
+  &nbsp; &nbsp; &nbsp; {<br>
+  &nbsp; &nbsp; &nbsp; &nbsp; printf("SurfaceArea(5.0) = %f\n", MathxSphereSurface(5.0));<br>
+  &nbsp; &nbsp; &nbsp; &nbsp; return 0;<br>
+  &nbsp; &nbsp; &nbsp; }<br>
+  <br>
+  &nbsp; @param&nbsp; radius&nbsp; <br>
+  &nbsp; @return volume&nbsp; <br>
+  *///------------------------------------------------------------<br>
+  double MathxSphereVolume(double radius)<br>
+  {<br>
+  &nbsp; return 4.0 / 3.0 * mathxPi * radius * radius * radius;<br>
+  }<br>
+  <br>
+  /*!<br>
+  &nbsp; Calculate surface area of a sphere<br>
+  <br>
+  &nbsp; @param&nbsp; radius&nbsp; <br>
+  &nbsp; @return surface area&nbsp; <br>
+  */<br>
+  double MathxSphereSurface(double radius)<br>
+  {<br>
+  &nbsp; return 4.0 * mathxPi * radius * radius;<br>
+  }<br>
+  <br>
+  #if !MATHX_LIB<br>
+  int main(void)<br>
+  {<br>
+  &nbsp; double radius = 12.0;<br>
+  <br>
+  &nbsp; printf("Circumference (%f) = %f\n", radius, MathxCircleCircumference(radius));<br>
+  &nbsp; printf("Area&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (%f) = %f\n", radius, MathxCircleArea(radius));<br>
+  &nbsp; printf("Volume&nbsp; &nbsp; &nbsp; &nbsp; (%f) = %f\n", radius, MathxSphereVolume(radius));<br>
+  &nbsp; printf("SurfaceArea&nbsp; &nbsp;(%f) = %f\n", radius, MathxSphereSurface(radius));<br>
+  &nbsp; return 0;<br>
+  }<br>
+  #endif<br>
+</div>
+<h2 id="warnings-and-errors">Warnings and errors</h2>
+<p>flydoc will produce warnings in the standard format if something is wrong with the input comments.</p>
+<div class="w3-code w3-light-grey notranslate">
+  $ flydoc -o mytest.md test.*<br>
+  test.c:7:10: warning: unknown keyword<br>
+  test.py:99:10: warning: no class or module<br>
+  test.rs:100:1: warning: duplicate class or module<br>
+  test.cs:222:1: warning: no function found after comment<br>
+</div>
+<p>If there are warnings, your HTML or markdown documentation may look or link poorly.</p>
+<h2 id="advanced-topics">Advanced topics</h2>
+<p>While hopefully flydoc is pretty clear by now, here are some more advanced flydoc topics.</p>
+<h3 id="links">Links</h3>
+<p>All HTML links produced by flydoc are predictable. All spaces are converted to dashes. Case is
+preserved. Classes and examples get the prefix "class_" and "example_" respectively.</p>
+<p>HTML has various rules for special characters with references (links). It's complicated, and
+depends on the version of your browser. Keep to alphanumeric, spaces and underscores as much as
+possible.</p>
+<p>See <a href="https://stackoverflow.com/questions/1236856/in-the-dom-are-node-ids-case-sensititve">https://stackoverflow.com/questions/1236856/in-the-dom-are-node-ids-case-sensititve</a></p>
+<p>Examples of links:</p>
+<table class="w3-table-all" style="width:auto">
+<tr>
+  <th>This</th>
+  <th>Becomes link</th>
+</tr>
+<tr>
+  <td>MyModule</td>
+  <td>MyModule.html</td>
+</tr>
+<tr>
+  <td>MyClass</td>
+  <td>class_MyClass.html</td>
+</tr>
+<tr>
+  <td>MyClassMethod</td>
+  <td>class_MyClass.html#MyClassMethod</td>
+</tr>
+<tr>
+  <td>My Example Title</td>
+  <td>#example_My-Example-Title</td>
+</tr>
+<tr>
+  <td>my_func</td>
+  <td>#my_func</td>
+</tr>
+<tr>
+  <td>myMethod</td>
+  <td>#myMethod</td>
+</tr>
+</table>
+<p>That is <code class="w3-codespan">@class MyClass description</code> produces file <code class="w3-codespan">class_MyClass.html</code>. If there is a method in
+that class called <code class="w3-codespan">MyClassMethod</code>, then the link to it locally would be <code class="w3-codespan">#MyClassMethod</code>. The link
+to it from another class or module would be <code class="w3-codespan">class_MyClass.html#MyClassMethod</code>.</p>
+<p>If you have a heading called <code class="w3-codespan"># My Heading 1</code>, in the file <code class="w3-codespan">mymarkdown.md</code>, then you could link to
+it from a class or module with <code class="w3-codespan">mymarkdown.html#My-Heading-1</code>.</p>
+<p>An example of adding links to your function documentation:</p>
+<div class="w3-code w3-light-grey notranslate">
+  /*!<br>
+  &nbsp; Copy src string to the destination.<br>
+  &nbsp; @param&nbsp; &nbsp; dst&nbsp; &nbsp;destination string at least as large as src<br>
+  &nbsp; @param&nbsp; &nbsp; src&nbsp; &nbsp;source asciiz string<br>
+  &nbsp; @return&nbsp; &nbsp;ptr to dst string<br>
+  <br>
+  &nbsp; See also: [strcat](#strcat)<br>
+  &nbsp; For a safe version, see [strncpy](#strncpy)<br>
+  &nbsp; For a safe version that guarantees '\0' termination, see [FlyStrZCpy](FlyStr.html#FlyStrZCpy)<br>
+  */<br>
+  char * strcpy(char *dst, const char *src)<br>
+</div>
+<h3 id="best-practices">Best Practices</h3>
+<p>Keep source code documentation minimal. Keep it to a brief explanation of the function or modules's
+purpose, parameters and return value(s) as a reference. You can always write a full tutorial book
+in some other tool if your APIs need it.</p>
+<p>Only document public APIs. Private functions and methods classes and modules may have comments in
+the source code, but don't put them in flydoc special comments. Good coding practice hides
+implementation details.</p>
+<p>flydoc special comments should be in in the source files, not header files, as flydoc doesn't
+search .h or .hpp files by default.</p>
+<p>Stick to the basics for your markdown: text, bullets, ordered lists, tables, code blocks, images
+and links. The markdown engine is pretty good, but some corner cases may break it.</p>
+<p>Only define one @defgroup or @class per module or class, as any others of the same name will be
+ignored. If a module or class is spread across multiple source files, use @inclass or @ingroup at
+the top the other source files.</p>
+<h3 id="images">Images</h3>
+<p>Markdown uses the following form for image links:</p>
+<div class="w3-code w3-light-grey notranslate">
+  ![Alt text](https://somelocation.com/folder/file.png "a title")<br>
+</div>
+<p>You can use a relative link if your image files are on the same site, for example in the same
+folder as your .html files:</p>
+<div class="w3-code w3-light-grey notranslate">
+  ![](file.png)<br>
+</div>
+<p>Since flydoc understands W3.CSS, it searches the <code class="w3-codespan">[Alt text]</code> for W#.CSS keywords. For example, if
+you want your logo to be converted to a circle and in grey scale, use:</p>
+<div class="w3-code w3-light-grey notranslate">
+  ![w3-circle w3-grayscale-max](mypic.jpg "my title")<br>
+</div>
+<p>The output HTML would be:</p>
+<div class="w3-code w3-light-grey notranslate">
+  &lt;img src="mypic.jpg" class="w3-circle" title="my title" alt="mypic.jpg"><br>
+</div>
+<p>See <a href="https://www.w3schools.com/w3css/w3css_images.asp">https://www.w3schools.com/w3css/w3css_images.asp</a></p>
+<h2 id="documenting-source-code-with-flydoc">Documenting Source Code with flydoc</h2>
+<p>This section gives examples in various languages for documenting the code.</p>
+<p>The flydoc tool only pays attention to documenation inside of "special" comments, that is, those
+that generally have a bang <code class="w3-codespan">!</code> character. Example of comment types across languages is below.</p>
+<div class="w3-code w3-light-grey notranslate">
+  /*!<br>
+  &nbsp; &nbsp; Preferred C/C++, Java, Javascript, Swift or Typescript flydoc comment<br>
+  */<br>
+  <br>
+  /*!<br>
+  &nbsp;*&nbsp; Another type of C/C++ flydoc comment<br>
+  &nbsp;*/<br>
+  <br>
+  ##!<br>
+  #&nbsp; &nbsp;Preferred Python or Ruby flydoc comment<br>
+  #<br>
+  <br>
+  //!<br>
+  //&nbsp; Preferred&nbsp; Rust flydoc comment (also works with rustdoc)<br>
+  // <br>
+</div>
+<h3 id="c-documentation-example">C Documentation Example</h3>
+<div class="w3-code w3-light-grey notranslate">
+  #include "maths.h"<br>
+  <br>
+  /*!<br>
+  &nbsp; @mainpage Maths<br>
+  &nbsp; @version&nbsp; 0.42<br>
+  <br>
+  &nbsp; A multi-language math library that may someday rival MATLAB<br>
+  <br>
+  &nbsp; @defgroup maths A language independent API for higher mathematics<br>
+  <br>
+  &nbsp; Works across the top languages of today: C, C++, C#, Go, Java, Javascript, Python, Ruby, Rust,<br>
+  &nbsp; Swift and Typescript<br>
+  <br>
+  &nbsp; @example maths&nbsp; An example of calculating area.<br>
+  <br>
+  &nbsp; &nbsp; &nbsp; #include "maths.h"<br>
+  &nbsp; &nbsp; &nbsp; int main(void) {<br>
+  &nbsp; &nbsp; &nbsp; &nbsp; printf("Area of 5x4 rectangle = %u\n", area(h,w));<br>
+  &nbsp; &nbsp; &nbsp; &nbsp; return 0;<br>
+  &nbsp; &nbsp; &nbsp; }<br>
+  */<br>
+  <br>
+  /*!<br>
+  &nbsp; Calculates area of a rectangle<br>
+  &nbsp; @param&nbsp; h&nbsp; &nbsp;height<br>
+  &nbsp; @param&nbsp; w&nbsp; &nbsp;width<br>
+  &nbsp; @return area of rectangle<br>
+  */<br>
+  unsigned area(unsigned h, unsigned w)<br>
+  {<br>
+  &nbsp; return h * w;<br>
+  }<br>
+  <br>
+  /*!<br>
+  &nbsp; Calculates volume of a cube<br>
+  <br>
+  &nbsp; @example volume&nbsp; &nbsp;An example of calculating volume.<br>
+  <br>
+  &nbsp; &nbsp; &nbsp; printf("volume of 3x4x5 cube = %u\n", volume(3,4,5));<br>
+  <br>
+  &nbsp; @param&nbsp; h&nbsp; &nbsp;height<br>
+  &nbsp; @param&nbsp; w&nbsp; &nbsp;width<br>
+  &nbsp; @param&nbsp; d&nbsp; &nbsp;depth<br>
+  &nbsp; @return volume of the cube<br>
+  */<br>
+  unsigned volume(unsigned h, unsigned w, unsigned d)<br>
+  {<br>
+  &nbsp; return h * w * d;<br>
+  }<br>
+  <br>
+  int main(void)<br>
+  {<br>
+  &nbsp; printf("Area of 5x4 rectangle = %u\n", area(h,w));<br>
+  &nbsp; printf("volume of 3x4x5 cube = %u\n", volume(3,4,5));<br>
+  &nbsp; return 0;<br>
+  }<br>
+</div>
+<h3 id="c-documentation-example">C++ Documentation Example</h3>
+  <div class="w3-code w3-light-grey notranslate">
+  #include &lt;iostream><br>
+  using namespace std;<br>
+  <br>
+  /*!<br>
+  &nbsp; @class Cars A class for listing automobiles<br>
+  <br>
+  &nbsp; Eventually target market will be car and dealerships and repair shops.<br>
+  */<br>
+  class Car {<br>
+  &nbsp; public:<br>
+  &nbsp; &nbsp; string brand;<br>
+  &nbsp; &nbsp; string model;<br>
+  &nbsp; &nbsp; int year;<br>
+  <br>
+  &nbsp; &nbsp; /*!<br>
+  &nbsp; &nbsp; &nbsp; Constructor for Car<br>
+  &nbsp; &nbsp; &nbsp; @param&nbsp; &nbsp; _brand&nbsp; &nbsp; brand of car (e.g. Honda)<br>
+  &nbsp; &nbsp; &nbsp; @param&nbsp; &nbsp; _model&nbsp; &nbsp; model of car (e.g. Ridgeline)<br>
+  &nbsp; &nbsp; &nbsp; @param&nbsp; &nbsp; _year&nbsp; &nbsp; &nbsp;year of car (e.g. 2022)<br>
+  &nbsp; &nbsp; */<br>
+  &nbsp; &nbsp; Car(string _brand, string _model, int _year) {<br>
+  &nbsp; &nbsp; &nbsp; brand = _brand;<br>
+  &nbsp; &nbsp; &nbsp; model = _model;<br>
+  &nbsp; &nbsp; &nbsp; year = _year;<br>
+  &nbsp; &nbsp; }<br>
+  &nbsp; &nbsp; void Print(void);<br>
+  };<br>
+  <br>
+  int IsCarNewish(int year)<br>
+  {<br>
+  &nbsp; return (year >= 1999);<br>
+  } <br>
+  <br>
+  /*!<br>
+  &nbsp; Print out make, model, year of the car<br>
+  &nbsp; @return none<br>
+  */<br>
+  void Car::Print(void)<br>
+  {<br>
+  &nbsp; cout &lt;&lt; this->brand &lt;&lt; " " &lt;&lt; this->model &lt;&lt; " " &lt;&lt; this->year;<br>
+  &nbsp; if(IsCarNewish(this->year))<br>
+  &nbsp; &nbsp; cout &lt;&lt; " new(ish)";<br>
+  &nbsp; cout &lt;&lt; "\n";<br>
+  }<br>
+  <br>
+  int main() {<br>
+  &nbsp; // Create Car objects and call the constructor with different values<br>
+  &nbsp; Car carObj1("BMW", "X5", 1999);<br>
+  &nbsp; Car carObj2("Ford", "Mustang", 1969);<br>
+  <br>
+  &nbsp; // Print values<br>
+  &nbsp; cout &lt;&lt; carObj1.brand &lt;&lt; " " &lt;&lt; carObj1.model &lt;&lt; " " &lt;&lt; carObj1.year &lt;&lt; "\n";<br>
+  &nbsp; cout &lt;&lt; carObj2.brand &lt;&lt; " " &lt;&lt; carObj2.model &lt;&lt; " " &lt;&lt; carObj2.year &lt;&lt; "\n";<br>
+  &nbsp; carObj1.Print();<br>
+  <br>
+  &nbsp; return 0;<br>
+  }<br>
+</div>
+<h3 id="javascript-documentation-example">Javascript Documentation Example</h3>
+<div class="w3-code w3-light-grey notranslate">
+  #!/usr/bin/env node<br>
+  <br>
+  /*!<br>
+  &nbsp; Calculates area of a rectangle<br>
+  &nbsp; @ingroup&nbsp; maths<br>
+  &nbsp; @param&nbsp; h&nbsp; &nbsp;height<br>
+  &nbsp; @param&nbsp; w&nbsp; &nbsp;width<br>
+  &nbsp; @return area of rectangle<br>
+  */<br>
+  function jsArea(h, w) {<br>
+  &nbsp; return h * w; <br>
+  }<br>
+  <br>
+  console.log( "Javascript example: area = %d", jsArea(5,4));<br>
+</div>
+<h3 id="python-documentation-example">Python Documentation Example</h3>
+<div class="w3-code w3-light-grey notranslate">
+  #!/usr/bin/env python3<br>
+  <br>
+  def PyArea(h,w):<br>
+  &nbsp; &nbsp; """!<br>
+  &nbsp; &nbsp; &nbsp; &nbsp; Calculate the area of a rectangle<br>
+  &nbsp; &nbsp; &nbsp; &nbsp; @param&nbsp; h&nbsp; &nbsp;height<br>
+  &nbsp; &nbsp; &nbsp; &nbsp; @param&nbsp; w&nbsp; &nbsp;width<br>
+  &nbsp; &nbsp; &nbsp; &nbsp; @return area of rectangle<br>
+  &nbsp; &nbsp; """<br>
+  &nbsp; &nbsp; return h * w<br>
+  <br>
+  print("Python example: area = ", PyArea(5,4))<br>
+</div>
+<h3 id="ruby-documentation-example">Ruby Documentation Example</h3>
+<p>You can always use RDoc to document Ruby source code. But if using flydoc, do the following:</p>
+<div class="w3-code w3-light-grey notranslate">
+  ##!<br>
+  # Find higest altitude given an array of gain/loss points.<br>
+  # @param&nbsp; gain&nbsp; Integer[]<br>
+  # @return Integer<br>
+  def highest_altitude(gain)<br>
+  &nbsp; # ...<br>
+  end <br>
+</div>
+<h3 id="rust-documentation-example">Rust Documentation Example</h3>
+<p>Rust documents <a href="https://doc.rust-lang.org/rustdoc/what-is-rustdoc.html">rustdoc</a>, but other than
+using markdownn inside the comment format, rustdoc and flydoc aren't compatible.</p>
+<p>Below is a flydoc example for commenting.</p>
+<div class="w3-code w3-light-grey notranslate">
+  /// Calculates area of a rectangle<br>
+  /// @ingroup&nbsp; maths<br>
+  /// @param&nbsp; h&nbsp; &nbsp;height<br>
+  /// @param&nbsp; w&nbsp; &nbsp;width<br>
+  /// @return area of rectangle<br>
+  fn rust_area(h: i32, w: i32) -> i32 {<br>
+  &nbsp; &nbsp; h * w<br>
+  }<br>
+  <br>
+  fn main() {<br>
+  &nbsp; println!("Rust example: area = {}", rust_area(5, 4))<br>
+  }<br>
+</div>
+<h3 id="swift-documentation-example">Swift Documentation Example</h3>
+<div class="w3-code w3-light-grey notranslate">
+  /*!<br>
+  &nbsp; Calculates area of a rectangle<br>
+  &nbsp; @ingroup&nbsp; maths<br>
+  &nbsp; @param&nbsp; h&nbsp; &nbsp;height<br>
+  &nbsp; @param&nbsp; w&nbsp; &nbsp;width<br>
+  &nbsp; @return area of rectangle<br>
+  */<br>
+  func SwiftArea(h: Int, w:Int) -> Int {<br>
+  &nbsp; &nbsp; return h * w<br>
+  }<br>
+  <br>
+  func main() {<br>
+  &nbsp; &nbsp; print("Swift example: area = ", SwiftArea(h:5, w:4))<br>
+  }<br>
+</div>
+<h2 id="github-and-gitlab">GitHub and GitLab</h2>
+<p>If you aren't using Git for version control, I highly recommended it. <a href="GitHub.com">GitHub.com</a> and <a href="GitLab.com">GitLab.com</a>
+are two places in the cloud to version control your source code.</p>
+<p>See: <a href="https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control">https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control</a></p>
+<p>Both GitHub and GitLab let you publish static HTML pages (e.g. flydoc pages) using a repository,
+which makes it easy to publish flydoc HTML output and provide a public or private link for your
+project's documentation.</p>
+<p>See: <a href="https://pages.github.com">https://pages.github.com</a>  <br>
+-or- <a href="https://docs.gitlab.com/ee/user/project/pages/">https://docs.gitlab.com/ee/user/project/pages/</a>  <br></p>
+<p>Note: you can also refer to raw files on both GitHub and GitLab, for example, to point to a logo
+from another project. The style below uses {user} and {project} and {branch} for your
+GitHub/GitLab user and project name and the git branch.</p>
+<p>GitHub Style:</p>
+<div class="w3-code w3-light-grey notranslate">
+  &lt;img src="https://raw.githubusercontent.com/{user}/{project}/{branch}/file.png"><br>
+</div>
+<p>GitLab Style:</p>
+<div class="w3-code w3-light-grey notranslate">
+  &lt;img src="https://gitlab.com/{user}/{project}/-/raw/{branch}/docs/NedMainScreen.png"><br>
+</div>
+<p>or in markdown:</p>
+<div class="w3-code w3-light-grey notranslate">
+  ![Folder Structure](https://raw.githubusercontent.com/drewagislason/public1/main/file.png)<br>
+</div>
+  </div>
+</div>
+</body>
+</html>
