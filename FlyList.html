@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlyList</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlyList</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#listfindlast">ListFindLast</a><br>
+      <a href="#listfindprev">ListFindPrev</a><br>
+      <a href="#flylistaddsorted">FlyListAddSorted</a><br>
+      <a href="#flylistappend">FlyListAppend</a><br>
+      <a href="#flylistinsafter">FlyListInsAfter</a><br>
+      <a href="#flylistinsbefore">FlyListInsBefore</a><br>
+      <a href="#flylistisinlist">FlyListIsInList</a><br>
+      <a href="#flylistprepend">FlyListPrepend</a><br>
+      <a href="#flylistremove">FlyListRemove</a><br>
+      <a href="#flylistlen">FlyListLen</a><br>
+      <a href="#flylistprependex">FlyListPrependEx</a><br>
+      <a href="#flylistappendex">FlyListAppendEx</a><br>
+      <a href="#listaddsorted">ListAddSorted</a><br>
+      <a href="#flylistaddsortedex">FlyListAddSortedEx</a><br>
+      <a href="#flylistinsafterex">FlyListInsAfterEx</a><br>
+      <a href="#flylistinsbeforeex">FlyListInsBeforeEx</a><br>
+      <a href="#flylistremoveex">FlyListRemoveEx</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>generic linked list handling.</h3>
+<p>Features:</p>
+<ul>
+<li>Works on generic lists (same functions work with different linked list structures)</li>
+<li>Works with arrays of structures or allocated structures</li>
+<li>Doesn't move the structures, only updates links</li>
+<li>Works with single linked lists, double linked lists (bidirectional)</li>
+<li>Works with circular (wrap-around) and linear lists</li>
+<li>Works with FlySortList() (see FlySort.h)</li>
+</ul>
+<p>Rules:</p>
+<ol>
+<li>Links MUST be at the top of the stucture.</li>
+<li>Only double lists need pPrev. pNext comes before pPrev if double-linked list.</li>
+<li>Use the same fIsCircular and fIsDouble parameters for ALL calls to the same list.</li>
+<li>The same item (ptr) MUST NEVER be in the same list twice, or the behavior is undefined.</li>
+</ol>
+<div class="w3-code w3-light-grey notranslate">
+  #include "FlyList.h"<br>
+  <br>
+  typedef struct myStruct<br>
+  {<br>
+  &nbsp;struct myStruct *pNext;<br>
+  &nbsp;uint64_t&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;id;<br>
+  &nbsp;char&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; *szName;<br>
+  } myStruct_t;<br>
+  <br>
+  int main(void)<br>
+  {<br>
+  &nbsp; myStruct_t *pList = NULL;<br>
+  &nbsp; myStruct_t *pThis;<br>
+  &nbsp; myStruct_t&nbsp; aUsers[] = {<br>
+  &nbsp; &nbsp; { .id=102934, .szName="My Name" },<br>
+  &nbsp; &nbsp; { .id=992345, .szName="Another Name" },<br>
+  &nbsp; &nbsp; { .id=633328, .szName="Who Knows" }<br>
+  &nbsp; };<br>
+  &nbsp; unsigned&nbsp; i;<br>
+  <br>
+  &nbsp; // add users to list<br>
+  &nbsp; for(i = 0; i &lt; NumElements(aUsers); ++i)<br>
+  &nbsp; &nbsp; pList = FlyListAppend(pList, &aUsers[i]);<br>
+  <br>
+  &nbsp; // print list<br>
+  &nbsp; pThis = pList;<br>
+  &nbsp; while(pThis)<br>
+  &nbsp; {<br>
+  &nbsp; &nbsp; printf("%p, user %llu: %s\n", pThis, pThis->id, pThis->szName);<br>
+  &nbsp; &nbsp; pThis = pThis->pNext;<br>
+  &nbsp; }<br>
+  <br>
+  &nbsp; return 0;<br>
+  }<br>
+  <br>
+  #include "FlyList.h"<br>
+  <br>
+  #define MAX_STRS 12<br>
+  typedef struct myDoubleList<br>
+  {<br>
+  &nbsp;struct myDoubleList *pNext;<br>
+  &nbsp;struct myDoubleList *pPrev;<br>
+  &nbsp;char&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; *sz;<br>
+  } myDoubleList_t;<br>
+  <br>
+  int main(void)<br>
+  {<br>
+  &nbsp; myDoubleList_t *pHead&nbsp; &nbsp; &nbsp; &nbsp;= NULL;<br>
+  &nbsp; myDoubleList_t *pThis;<br>
+  &nbsp; myDoubleList_t *aUsers&nbsp; &nbsp; &nbsp; = malloc(MAX_STRS * sizeof(myDoubleList_t));<br>
+  &nbsp; const char&nbsp; &nbsp; &nbsp;*aszStrs[]&nbsp; &nbsp;= { "Every", "Good", "Boy", "Does", "Fine" };<br>
+  &nbsp; bool_t&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; fIsCircular = TRUE;<br>
+  &nbsp; unsigned&nbsp; &nbsp; &nbsp; &nbsp; i;<br>
+  &nbsp; bool_t&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; fIsCircular = TRUE;<br>
+  &nbsp; bool_t&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; fIsDouble&nbsp; &nbsp;= TRUE;<br>
+  <br>
+  &nbsp; // add strings to list<br>
+  &nbsp; for(i = 0; i &lt; NumElements(aszStrs); ++i)<br>
+  &nbsp; {<br>
+  &nbsp; &nbsp; aUsers[i].sz = aszStrs[i];<br>
+  &nbsp; &nbsp; pHead = FlyListAddSortedEx(pHead, &aUsers[i], fIsCircular, fIsDouble, FlyListCmpStrEx);<br>
+  &nbsp; }<br>
+  <br>
+  &nbsp; // print list<br>
+  &nbsp; pThis = pHead;<br>
+  &nbsp; for(i = 0; i &lt; FlyListLenEx(pHead, fIsCircular, fIsDouble))<br>
+  &nbsp; {<br>
+  &nbsp; &nbsp; printf("user %d: %s\n", pThis->id, pThis->szName);<br>
+  &nbsp; &nbsp; pThis = pThis->pNext;<br>
+  &nbsp; }<br>
+  <br>
+  &nbsp; free(aUsers);<br>
+  &nbsp; return 0;<br>
+  }<br>
+</div>
+    <h3 id="listfindlast" class="w3-text-blue">ListFindLast</h3>
+    <p>Find the node just before the end of the list</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      static flyList_t * ListFindLast(const flyList_t *pList)<br>
+      <br>
+      @param  pList     ptr to head or NULL for new list  <br>
+      @return ptr to last entry, or NULL if list is empty  <br>
+    </div>
+    <h3 id="listfindprev" class="w3-text-blue">ListFindPrev</h3>
+    <p>Find the node previous to pThat</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      static flyList_t * ListFindPrev(const flyList_t *pList, const flyList_t *pThat)<br>
+      <br>
+      @param  pList     ptr to head or NULL for new list  <br>
+      @return ptr to last entry, or NULL if list is empty  <br>
+    </div>
+    <h3 id="flylistaddsorted" class="w3-text-blue">FlyListAddSorted</h3>
+    <p>Add to the list in sorted order. Doesn't sort the list, just adds this one item in proper place.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void * FlyListAddSorted(void *pList, void *pItem, pfnListCmp_t pfnCmp)<br>
+      <br>
+      @param  pList     ptr to head or NULL for new list  <br>
+      @param  pItem     ptr to allocated, static structure with *pNext as first field  <br>
+      @param  pfnCmp    compare function  <br>
+      @return ptr to (possibly new) head  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>The compare function returns -1 for pItem &lt; pItemInList, 0 if equal, 1 if >. </p>
+    <h3 id="flylistappend" class="w3-text-blue">FlyListAppend</h3>
+    <p>Append the item to the list. Returns the head.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void * FlyListAppend(void *pList, void *pItem)<br>
+      <br>
+      @param  pList     ptr to head or NULL for new list  <br>
+      @param  pItem     ptr to allocated, static structure with *pNext as first field  <br>
+      @return ptr to (possibly new) head  <br>
+    </div>
+    <h3 id="flylistinsafter" class="w3-text-blue">FlyListInsAfter</h3>
+    <p>Insert pItem after pThis. Fixup all ptrs.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void * FlyListInsAfter(void *pList, void *pItem, void *pThis)<br>
+      <br>
+      @param  pList     ptr to head or NULL for new list  <br>
+      @param  pItem     ptr to allocated, static structure with *pNext as first field  <br>
+      @param  pThis     ptr to item in list, or NULL (append)  <br>
+      @return ptr to (possibly new) head  <br>
+    </div>
+    <h3 id="flylistinsbefore" class="w3-text-blue">FlyListInsBefore</h3>
+    <p>Insert the item before pThis. If pThis is NULL, then appends.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void * FlyListInsBefore(void *pList, void *pItem, void *pThis)<br>
+      <br>
+      @param  pList         ptr to head or NULL for new list  <br>
+      @param  pItem         ptr to allocated, static structure with *pNext as first field  <br>
+      @param  pThis         ptr to item in list, or NULL (prepend)  <br>
+      @return ptr to (possibly new) head  <br>
+    </div>
+    <h3 id="flylistisinlist" class="w3-text-blue">FlyListIsInList</h3>
+    <p>Insert the item before pThis. If pThis is not in list, then appends.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyListIsInList(void *pList, void *pItem)<br>
+      <br>
+      @param  pList         ptr to head or NULL for new list  <br>
+      @param  pItem         ptr to allocated, static structure with *pNext as first field  <br>
+      @param  fIsCircular   list is circular (wraps)  <br>
+      @param  fIsDouble     list has both pNext and pPrev (bidirectional)  <br>
+      @param  pThis         item in list  <br>
+      @return ptr to (possibly new) head  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>If pThis is NOT in pList, then behavior is undefined.</p>
+    <h3 id="flylistprepend" class="w3-text-blue">FlyListPrepend</h3>
+    <p>Prepend the item to the list. Returns the item as head.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void * FlyListPrepend(void *pList, void *pItem)<br>
+      <br>
+      @param  pList     ptr to head or NULL for new list  <br>
+      @param  pItem     ptr to allocated, static structure with *pNext as first field  <br>
+      @return ptr to new head (pItem)  <br>
+    </div>
+    <h3 id="flylistremove" class="w3-text-blue">FlyListRemove</h3>
+    <p>Remove the item from the list. All links are fixed up.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void * FlyListRemove(void *pList, void *pItem)<br>
+      <br>
+      @param  pList     ptr to head or NULL for new list  <br>
+      @param  pItem     ptr to allocated, static structure with *pNext as first field  <br>
+      @param  pfnCmp    compare function  <br>
+      @return ptr to (possibly new) head  <br>
+    </div>
+    <h3 id="flylistlen" class="w3-text-blue">FlyListLen</h3>
+    <p>Get the # of items in the list.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyListLen(void *pList)<br>
+      <br>
+      @param  pList     ptr to head or NULL for new list  <br>
+      @return length of list (# of items)  <br>
+    </div>
+    <h3 id="flylistprependex" class="w3-text-blue">FlyListPrependEx</h3>
+    <p>Prepend the item to the list. Returns the item as head.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void * FlyListPrependEx(void *pList, void *pItem, bool_t fIsCircular, bool_t fIsDouble)<br>
+      <br>
+      @param  pHead         ptr to head or NULL for new list  <br>
+      @param  pItem         ptr to allocated, static structure with *pNext as first field  <br>
+      @param  fIsCircular   list is circular (wraps)  <br>
+      @param  fIsDouble     list has both pNext and pPrev (bidirectional)  <br>
+      @return ptr to new head (pItem)  <br>
+    </div>
+    <h3 id="flylistappendex" class="w3-text-blue">FlyListAppendEx</h3>
+    <p>Append the item to the list. Returns the head.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void * FlyListAppendEx(void *pList, void *pItem, bool_t fIsCircular, bool_t fIsDouble)<br>
+      <br>
+      @param  pHead         ptr to head or NULL for new list  <br>
+      @param  pItem         ptr to allocated, static structure with *pNext as first field  <br>
+      @param  fIsCircular   list is circular (wraps)  <br>
+      @param  fIsDouble     list has both pNext and pPrev (bidirectional)  <br>
+      @return ptr to (possibly new) head  <br>
+    </div>
+    <h3 id="listaddsorted" class="w3-text-blue">ListAddSorted</h3>
+    <p>Add to the list in sorterd order. Shared by FlyListAddSorted() and FlyListAddSortedEx()</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      static void * ListAddSorted(<br>
+        void   *pList,<br>
+        void   *pItem,<br>
+        bool_t  fIsCircular,<br>
+        bool_t  fIsDouble,<br>
+        bool_t  fEx,<br>
+        void   *pArg,<br>
+        void   *pCmpFunc)<br>
+      <br>
+      @param  pList         ptr to head or NULL for new list  <br>
+      @param  pItem         ptr to allocated, static structure with *pNext as first field  <br>
+      @param  fIsCircular   list is circular (wraps)  <br>
+      @param  fIsDouble     list has both pNext and pPrev (bidirectional)  <br>
+      @param  fEx           Is this the ex compare?  <br>
+      @param  pArg          Argument (exta info) to ex compare.  <br>
+      @param  pfnCmp        compare function  <br>
+      @return ptr to (possibly new) head  <br>
+    </div>
+    <h3 id="flylistaddsortedex" class="w3-text-blue">FlyListAddSortedEx</h3>
+    <p>Add to the list in its proper place to keep list sorted.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void * FlyListAddSortedEx(void *pList, void *pItem, bool_t fIsCircular, bool_t fIsDouble, void *pArg, pfnListCmpEx_t pfnCmpEx)<br>
+      <br>
+      @param  pHead         ptr to head or NULL for new list  <br>
+      @param  pItem         ptr to allocated, static structure with *pNext as first field  <br>
+      @param  fIsCircular   list is circular (wraps)  <br>
+      @param  fIsDouble     list has both pNext and pPrev (bidirectional)  <br>
+      @param  pArg          argument to compare function or NULL  <br>
+      @param  pfnCmp        user supplied compare function  <br>
+      @return ptr to (possibly new) head  <br>
+    </div>
+    <h3 id="flylistinsafterex" class="w3-text-blue">FlyListInsAfterEx</h3>
+    <p>Insert pItem after pThis. Fixup all ptrs.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void * FlyListInsAfterEx(void *pList, void *pItem, bool_t fIsCircular, bool_t fIsDouble, void *pThat)<br>
+      <br>
+      @param  pThis         ptr to an item in a list  <br>
+      @param  pItem         ptr to allocated, static structure with *pNext as first field  <br>
+      @param  fIsCircular   list is circular (wraps)  <br>
+      @param  fIsDouble     list has both pNext and pPrev (bidirectional)  <br>
+      @param  pThat         ptr to item in list, or NULL to append  <br>
+      @return ptr to (possibly new) head  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>If pThis is NOT in pList, then behavior is undefined.</p>
+    <h3 id="flylistinsbeforeex" class="w3-text-blue">FlyListInsBeforeEx</h3>
+    <p>Insert the item before pThis. If pThis is not in list, then appends.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void * FlyListInsBeforeEx(void *pList, void *pItem, bool_t fIsCircular, bool_t fIsDouble, void *pThat)<br>
+      <br>
+      @param  pList         ptr to head or NULL for new list  <br>
+      @param  pItem         ptr to allocated, static structure with *pNext as first field  <br>
+      @param  fIsCircular   list is circular (wraps)  <br>
+      @param  fIsDouble     list has both pNext and pPrev (bidirectional)  <br>
+      @param  pThis         item in list, or NULL to prepend  <br>
+      @return ptr to (possibly new) head  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>If pThis is NOT in pList, then behavior is undefined.</p>
+    <h3 id="flylistremoveex" class="w3-text-blue">FlyListRemoveEx</h3>
+    <p>Remove the item from the list. All links are fixed up.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void * FlyListRemoveEx(void *pList, void *pItem, bool_t fIsCircular, bool_t fIsDouble)<br>
+      <br>
+      @param  pList         ptr to head or NULL for new list  <br>
+      @param  pItem         ptr to allocated, static structure with *pNext as first field  <br>
+      @param  fIsCircular   list is circular (wraps)  <br>
+      @param  fIsDouble     list has both pNext and pPrev (bidirectional)  <br>
+      @return ptr to (possibly new) head  <br>
+    </div>
+  </div>
+</div>
+</body>
+</html>

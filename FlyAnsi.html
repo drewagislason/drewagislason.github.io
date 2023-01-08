@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlyAnsi</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlyAnsi</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#ansicharcount">AnsiCharCount</a><br>
+      <a href="#ansicharcountreset">AnsiCharCountReset</a><br>
+      <a href="#ansigoto">AnsiGoto</a><br>
+      <a href="#ansiclearscreen">AnsiClearScreen</a><br>
+      <a href="#ansicleareol">AnsiClearEol</a><br>
+      <a href="#ansisetattr">AnsiSetAttr</a><br>
+      <a href="#ansigetrowscols">AnsiGetRowsCols</a><br>
+      <a href="#ansishowallcolors">AnsiShowAllColors</a><br>
+      <a href="#ansigetattrstr">AnsiGetAttrStr</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>ANSI color, cursor position, and screen clearing API</h3>
+<p>Features:</p>
+<ol>
+<li>Get size of screen</li>
+<li>Position cursor anywhere on screen</li>
+<li>Set current color for text, including background</li>
+<li>Colors are simple combination of foreground/background colors</li>
+</ol>
+    <h3 id="ansicharcount" class="w3-text-blue">AnsiCharCount</h3>
+    <p>Return total # of characters printed via this interface</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t AnsiCharCount(void)<br>
+      <br>
+      @return   none  <br>
+    </div>
+    <h3 id="ansicharcountreset" class="w3-text-blue">AnsiCharCountReset</h3>
+    <p>Reset total character count (useful for optimizing)</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void AnsiCharCountReset(void)<br>
+      <br>
+      @return   none  <br>
+    </div>
+    <h3 id="ansigoto" class="w3-text-blue">AnsiGoto</h3>
+    <p>Goto row/column (use 0 based row/col, ANSI treats it as 1 based)</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void AnsiGoto(unsigned row, unsigned col)<br>
+      <br>
+      @param    row    terminal screen row 0-n  <br>
+      @param    col    terminal screen col 0-n  <br>
+      @return   none  <br>
+    </div>
+    <h3 id="ansiclearscreen" class="w3-text-blue">AnsiClearScreen</h3>
+    <p>Clear the screen to the current attribute.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void AnsiClearScreen(void)<br>
+      <br>
+      @return   none  <br>
+    </div>
+    <h3 id="ansicleareol" class="w3-text-blue">AnsiClearEol</h3>
+    <p>Clear to end of line with the current attribute.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void AnsiClearEol(void)<br>
+      <br>
+      @return   none  <br>
+    </div>
+    <h3 id="ansisetattr" class="w3-text-blue">AnsiSetAttr</h3>
+    <p>Set the color to one of 256 values using a mask of FLYATTR_x and NEDBACK_x. See</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void AnsiSetAttr(fflyAttr_t attr)<br>
+      <br>
+      @param    attr        Attribute mask that includes foreground and background color.  <br>
+      @return   none  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>also ::nedAttr_t.</p>
+    <h3 id="ansigetrowscols" class="w3-text-blue">AnsiGetRowsCols</h3>
+    <p>Get the current # of rows and cols in the terminal screen.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void AnsiGetRowsCols(unsigned * pRows, unsigned * pCols)<br>
+      <br>
+      @param    pRows   pointer to an unsigned to receive # of rows  <br>
+      @param    pCols   pointer to an unsigned to receive # of cols  <br>
+      @return   none  <br>
+    </div>
+    <h3 id="ansishowallcolors" class="w3-text-blue">AnsiShowAllColors</h3>
+    <p>Display all the colors in a grid. Won't look very good if the terminal is not</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void AnsiShowAllColors(void)<br>
+      <br>
+      @return   none  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>at least 18 rows by 182 columns.</p>
+    <h3 id="ansigetattrstr" class="w3-text-blue">AnsiGetAttrStr</h3>
+    <p>Get the attribute string from the attribute, not including the preceding \033 (ESC).</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * AnsiGetAttrStr(fflyAttr_t attr)<br>
+      <br>
+      @param    attr        Attribute mask that includes foreground and background color.  <br>
+      @return   constant string pointing to attribute. Overwritten by next call to AnsiGetAttrStr()  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>ANSI Foreground colors are 30-37, or 90-97, background colors are 0, 40-47 or 100-107
+Pattern is [1;FORE;BACKm, or [0;FORE;BACKm</p>
+  </div>
+</div>
+</body>
+</html>

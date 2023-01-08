@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlyFile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlyFile</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#flyfileread">FlyFileRead</a><br>
+      <a href="#flyfilewrite">FlyFileWrite</a><br>
+      <a href="#flyfilefindinpath">FlyFileFindInPath</a><br>
+      <a href="#flyfilefindinfolder">FlyFileFindInFolder</a><br>
+      <a href="#flyfilegethomefolder">FlyFileGetHomeFolder</a><br>
+      <a href="#flyfileexpandhome">FlyFileExpandHome</a><br>
+      <a href="#flyfilereducehome">FlyFileReduceHome</a><br>
+      <a href="#flyfilegetcwd">FlyFileGetCwd</a><br>
+      <a href="#flyfilemakedir">FlyFileMakeDir</a><br>
+      <a href="#flyfilefullpath">FlyFileFullPath</a><br>
+      <a href="#flyfileinfoget">FlyFileInfoGet</a><br>
+      <a href="#flyfilefolderexists">FlyFileFolderExists</a><br>
+      <a href="#flyfileexists">FlyFileExists</a><br>
+      <a href="#flyfilelistislist">FlyFileListIsList</a><br>
+      <a href="#flyfilelistnew">FlyFileListNew</a><br>
+      <a href="#flyfilelistfree">FlyFileListFree</a><br>
+      <a href="#flyfilelistlen">FlyFileListLen</a><br>
+      <a href="#flyfilelistgetname">FlyFileListGetName</a><br>
+      <a href="#flyfilelistfind">FlyFileListFind</a><br>
+      <a href="#flyfilelistlenex">FlyFileListLenEx</a><br>
+      <a href="#flyfilelistgetnameex">FlyFileListGetNameEx</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>Generic file utilities for checking if a file or path exists</h3>
+<p>Features:</p>
+<ol>
+<li>Can determine if a path points to a file or folder</li>
+<li>Can determine if a file has changed since last checked</li>
+<li>Exapands paths to full path</li>
+<li>Supports '~' for $HOME folder</li>
+<li>Read a whole file into memory with one command</li>
+<li>Determine lengths of files</li>
+<li>Parse entire folder trees</li>
+</ol>
+    <p id="example-flyfile-parse-files-in-folder"><b>Example: FlyFile Parse files in folder</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  Include example here...&nbsp; <br>
+</div>
+    <h3 id="flyfileread" class="w3-text-blue">FlyFileRead</h3>
+    <p>Read a text file into memory (does not support binary files). User must free the memory. If file</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char * FlyFileRead(const char *szFilename)<br>
+      <br>
+      @param    szFilename    Filename to read. Can include full or partial path.  <br>
+      @return   pointer file in memory, or NULL if failed. Caller must free file memory  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>couldn't be read, returns NULL.</p>
+<p>See Also FlyFileReadBin()</p>
+    <h3 id="flyfilewrite" class="w3-text-blue">FlyFileWrite</h3>
+    <p>Write a text file from memory.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyFileWrite(const char *szFilename, const char *szContents)<br>
+      <br>
+      @param    szFilename    Filename to read. Can include full or partial path.  <br>
+      @param    szContents    contents of file  <br>
+      @return   pointer file in memory, or NULL if failed. Caller must free file memory  <br>
+    </div>
+    <h3 id="flyfilefindinpath" class="w3-text-blue">FlyFileFindInPath</h3>
+    <p>Essentially "which" under Linux/Mac or "where" under Windows. Looks for the file szBaseName</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyFileFindInPath(char *szPath, unsigned maxSize, const char *szBaseName, bool_t cwdFirst)<br>
+      <br>
+      @param    szPath          destination path string  <br>
+      @param    maxSize         sizeof(szPath) buffer  <br>
+      @param    szBaseName      file to look for (could be exec name for example)  <br>
+      @param    cwdFirst        Look at cwd first, before scanning path for file  <br>
+      @return   TRUE and path in szPath if found, FALSE if not found.  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>in the current directory or path.</p>
+<p>/Library/Frameworks/Python.framework/Versions/3.8/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:
+/sbin:/Applications/VMware Fusion.app/Contents/Public</p>
+    <h3 id="flyfilefindinfolder" class="w3-text-blue">FlyFileFindInFolder</h3>
+    <p>Searches for this file, going from szBaseFolder to root, then in user folder. If szBaseFolder is</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyFileFindInFolder(char *szPath, unsigned maxSize, const char *szBaseName, const char *szBaseFolder)<br>
+      <br>
+      @param    szPath          destination path string  <br>
+      @param    maxSize         sizeof(szPath) buffer  <br>
+      @param    szBaseName      name of file to look for  <br>
+      @param    szBaseFolder    NULL to use cwd, or folder to search starting at the folder  <br>
+      @return   TRUE and path in szPath if found, FALSE if not found.  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>NULL, the uses cwd.</p>
+<p>For example, if szBaseFolder is "/Users/drewg/Git/ned/test", and basename is "foo" searches:</p>
+<p>"/Users/drewg/Git/ned/test/foo"
+"/Users/drewg/Git/ned/foo"
+"/Users/drewg/Git/foo"
+"/Users/drewg/foo"
+"/Users/foo"
+"/foo"</p>
+    <h3 id="flyfilegethomefolder" class="w3-text-blue">FlyFileGetHomeFolder</h3>
+    <p>Get home folder</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyFileGetHomeFolder(char *szPath, unsigned maxSize)<br>
+      <br>
+      @param    szPath      pointer to dst string  <br>
+      @param    maxSize     usually PATH_MAX  <br>
+      @return   filled in szPath with home folder.  <br>
+    </div>
+    <h3 id="flyfileexpandhome" class="w3-text-blue">FlyFileExpandHome</h3>
+    <p>Expands home folder in-place in path string. E.g. "~/Doc*" becomes "/Users/drewg/Doc*". Does</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyFileExpandHome(char *szPath, unsigned maxSize)<br>
+      <br>
+      @param    szPath      pointer to dst string  <br>
+      @param    maxSize     sizeof szPath string  <br>
+      @return   TRUE if expanded. FALSE if not  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>nothing if string doesn't begin with "~/" or length of strings are too long.</p>
+    <h3 id="flyfilereducehome" class="w3-text-blue">FlyFileReduceHome</h3>
+    <p>If string starts with home folder, reduce string to use tilde. Examples:</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyFileReduceHome(char *szPath)<br>
+      <br>
+      @param    szPath      pointer string  <br>
+      @return   TRUE if reduced  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>"/Users/drewg" becomes "~"
+"/Users/drewg/Work/X<i>" becomes "~/Work/X</i>"
+"myfile.txt" remains unchanged</p>
+    <h3 id="flyfilegetcwd" class="w3-text-blue">FlyFileGetCwd</h3>
+    <p>Gets the current working directory (folder) into szPath</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyFileGetCwd(char *szPath, unsigned maxSize)<br>
+      <br>
+      @param    szPath    string to receive cwd  <br>
+      @param    maxSize   sizeof(szPath) string  <br>
+      @return   none  <br>
+    </div>
+    <h3 id="flyfilemakedir" class="w3-text-blue">FlyFileMakeDir</h3>
+    <p>Make a directory with the "standard" flags.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlyFileMakeDir(const char *szPath)<br>
+      <br>
+      @param    szPath    string to receive cwd  <br>
+      @return   0 on success, -1 and errno if failed  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Use C standard library mkdir() if you want to fiddle with flags.</p>
+    <h3 id="flyfilefullpath" class="w3-text-blue">FlyFileFullPath</h3>
+    <p>Returns the full path from a partial name. It's OK if the file doesn't exists as long as the</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyFileFullPath(char *szPath, const char *szPartialPath)<br>
+      <br>
+      @param    szFullPath      ptr to buffer to receive full path  <br>
+      @param    szPartialPath   pointer to a partial path like "file.c" or "../file.h" or "~/file.c"  <br>
+      @return   TRUE if worked. FALSE if bad path.  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>folder does.</p>
+<p>Examples assume cwd is "/Users/me/cwd":</p>
+<div class="w3-code w3-light-grey notranslate">
+  szPartialPath&nbsp; &nbsp; &nbsp;| szFullPath[out]<br>
+  ----------------- | -------------------------<br>
+  ~/folder/file.txt | /Users/me/folder/file.txt<br>
+  nothere.txt&nbsp; &nbsp; &nbsp; &nbsp;| /User/me/cwd/nothere.txt<br>
+  /bad/path&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;| <br>
+</div>
+    <h3 id="flyfileinfoget" class="w3-text-blue">FlyFileInfoGet</h3>
+    <p>Get information about this file. The preallocated pInfo should be filled with 0s the first time</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyFileInfoGet(sFlyFileInfo_t *pInfo, const char *szPath)<br>
+      <br>
+      @param    szPath     pointer to a file or dir path (relative or absolute).  <br>
+      @param    pInfo      pointer to preallocated pInfo structure.  <br>
+      @return   TRUE if file/folder exists and results in sFlyFileInfo_t structure.  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>this is called on a file. Subsequent calls (which are used to check if a file was modified after
+loading the file) should used on the same structure.</p>
+    <h3 id="flyfilefolderexists" class="w3-text-blue">FlyFileFolderExists</h3>
+    <p>Return TRUE if folder exists. Must point to a folder/</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyFileFolderExists(const char *szPath)<br>
+      <br>
+      @param      szPath         pointer to path string  <br>
+      @return     TRUE   <br>
+    </div>
+    <h3 id="flyfileexists" class="w3-text-blue">FlyFileExists</h3>
+    <p>Return TRUE if file exists. Returns FALSE if path is to a folder or doesn't exist.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyFileExists(const char *szPath)<br>
+      <br>
+      @param      szPath         pointer to path string  <br>
+      @return     TRUE if file exists, FALSE if file path does not exist or is a folder  <br>
+    </div>
+    <h3 id="flyfilelistislist" class="w3-text-blue">FlyFileListIsList</h3>
+    <p>Is this a pointer to an ::sFlyFileList_t structure?</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyFileListIsList(void *hList)<br>
+      <br>
+      @param      hList         pointer to file list handle  <br>
+      @return     none  <br>
+    </div>
+    <h3 id="flyfilelistnew" class="w3-text-blue">FlyFileListNew</h3>
+    <p>Create a list of files and directories. Uses glob under the hood. Returns filenames only.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void * FlyFileListNew(const char *pszWildPath)<br>
+      <br>
+      @param          pszWildPath    a wildcard path (e.g. "*.c", or a directory, e.g. "..")  <br>
+      @return         Returns handle to file list or NULL if bad parameter or empty list  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Example Inputs:</p>
+<div class="w3-code w3-light-grey notranslate">
+  "tcdata_*.txt"<br>
+  "*"<br>
+  "/Users/drewg"<br>
+  "."<br>
+</div>
+<p>Example Outputs:
+  READ.ME
+  docs/
+  src/
+  x file is y.z</p>
+    <h3 id="flyfilelistfree" class="w3-text-blue">FlyFileListFree</h3>
+    <p>Free a list of files that was made using FlyFileListNew().</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyFileListFree(void *hList)<br>
+      <br>
+      @param      hList          A list previously allocated with FlyFileListNew()  <br>
+      @return     none  <br>
+    </div>
+    <h3 id="flyfilelistlen" class="w3-text-blue">FlyFileListLen</h3>
+    <p>Return length of file list (that is, # of items in file list)</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlyFileListLen(void *hList)<br>
+      <br>
+      @param      List       A list previously allocated with FlyFileListNew()  <br>
+      @return     length of file list (1-n)  <br>
+    </div>
+    <h3 id="flyfilelistgetname" class="w3-text-blue">FlyFileListGetName</h3>
+    <p>Get the name at the index (0-n). To check if it's a folder, use FlyStrPathIsFolder().</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyFileListGetName(void *hList, unsigned i)<br>
+      <br>
+      @param      List      A list previously allocated with FlyFileListNew()  <br>
+      @param      i         index (0-n) into list  <br>
+      @return     ptr to filename, or NULL if at end of list  <br>
+    </div>
+    <h3 id="flyfilelistfind" class="w3-text-blue">FlyFileListFind</h3>
+    <p>Find an item in the list</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlyFileListFind(void *hList, const char *sz, unsigned startIndex, flyFileListOpts_t opts)<br>
+      <br>
+      @param      List        A list previously allocated with FlyFileListNew()  <br>
+      @param      sz          string to find  <br>
+      @param      startIndex  starting index (0-n)  <br>
+      @param      opts        search options (e.g. FLYFILELIST_OPTS_BEG)  <br>
+      @return     0-n index if found, FLYFILELIST_NOT_FOUND if not found  <br>
+    </div>
+    <h3 id="flyfilelistlenex" class="w3-text-blue">FlyFileListLenEx</h3>
+    <p>Return length assuming ".." is first entry, unless at /.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlyFileListLenEx(void *hList)<br>
+      <br>
+      @param      List      A list previously allocated with FlyFileListNew()  <br>
+      @return     length of file list (1-n)  <br>
+    </div>
+    <h3 id="flyfilelistgetnameex" class="w3-text-blue">FlyFileListGetNameEx</h3>
+    <p>Get the name at the index, where index 0 is always ".."</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyFileListGetNameEx(void *hList, unsigned i)<br>
+      <br>
+      @param      List      A list previously allocated with FlyFileListNew()  <br>
+      @param      i         index (0-n) into list  <br>
+      @return     ptr to filename, or NULL if at end of list  <br>
+    </div>
+  </div>
+</div>
+</body>
+</html>

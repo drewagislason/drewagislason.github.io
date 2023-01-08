@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlyCard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>Class FlyCard</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#flycarddecksetup">FlyCardDeckSetup</a><br>
+      <a href="#flycardmake">FlyCardMake</a><br>
+      <a href="#flycardrank">FlyCardRank</a><br>
+      <a href="#flycardsuit">FlyCardSuit</a><br>
+      <a href="#flycardprint">FlyCardPrint</a><br>
+      <a href="#flycarddecknew">FlyCardDeckNew</a><br>
+      <a href="#flycarddeckinit">FlyCardDeckInit</a><br>
+      <a href="#flycarddeckshuffle">FlyCardDeckShuffle</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>A cardgame API. Create, shuffle and deal cards.</h3>
+<p>Features:</p>
+<ol>
+<li>Designed to make creating card games easy</li>
+<li>API can be used in any coding language that supports interacting with C</li>
+<li>Cards can be displayed in the terminal, or used in a GUI</li>
+<li>Includes shuffling muliple decks, allow 0-n jokers per deck</li>
+<li>Includes sample solitaire game</li>
+</ol>
+<p>The only function that displays cards (to a terminal) is FlyCardPrint(). It allows for both UTF-8
+text graphics for clubs, diamonds, hearts, spades. Otherwise,  ascii <code class="w3-codespan">+ < @ ^</code> kind of look like
+clubs, diamonds, hearts, spades.</p>
+<div class="w3-code w3-light-grey notranslate">
+  +----+ +----+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;+----+ +----+<br>
+  |10^ | |K@&nbsp; |&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|10&#9827; | |K&#9829;&nbsp; |<br>
+  |&nbsp; &nbsp; | |&nbsp; &nbsp; |&nbsp; &nbsp;vs.&nbsp; &nbsp;|&nbsp; &nbsp; | |&nbsp; &nbsp; |<br>
+  | 10^| |&nbsp; K@|&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;| 10&#9827;| |&nbsp; K&#9829;|<br>
+  +----+ +----+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;+----+ +----+<br>
+</div>
+<p>You can create your own card backs with FlyCardDeckBackSet(), or use the defaults:</p>
+<div class="w3-code w3-light-grey notranslate">
+  Plain&nbsp; &nbsp; X&nbsp; &nbsp; &nbsp; Square&nbsp; &nbsp;Fancy&nbsp; &nbsp;O<br>
+  +----+&nbsp; +----+&nbsp; +----+&nbsp; +----+&nbsp; +----+&nbsp; <br>
+  |&nbsp; &nbsp; |&nbsp; |XXXX|&nbsp; |_|__|&nbsp; |&&nbsp; %|&nbsp; |oooo|<br>
+  |&nbsp; &nbsp; |&nbsp; |XXXX|&nbsp; |__|_|&nbsp; | &lt;> |&nbsp; |oooo|<br>
+  |&nbsp; &nbsp; |&nbsp; |XXXX|&nbsp; | |&nbsp; |&nbsp; |%&nbsp; &|&nbsp; |oooo|<br>
+  +----+&nbsp; +----+&nbsp; +----+&nbsp; +----+&nbsp; +----+&nbsp; <br>
+</div>
+<p>Note: decks and hands are interchangeable. The names are there for symantic reasons.</p>
+    <h3 id="flycarddecksetup" class="w3-text-blue">FlyCardDeckSetup</h3>
+    <p>Choose setup options.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyCardDeckSetup(flyCardDeck_t *pDeck, bool_t fAsciiOnly, flyCardBack_t back)<br>
+      <br>
+      @param  fAsciiOnly    Don't use the UTF-8 chars for clubs/spades, etc.., instead use ascii chars.  <br>
+      @return none  <br>
+    </div>
+    <h3 id="flycardmake" class="w3-text-blue">FlyCardMake</h3>
+    <p>Create card based on rank/suit. Leaves faceup status and card back alone.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flyCard_t FlyCardMake(unsigned rank, flyCardSuit_t suit)<br>
+      <br>
+      @param  rank    0=none, 1-13= Ace-King, 14=joker  <br>
+      @param  suit    e.g. FLY_CARD_CLUBS  <br>
+      @return the card  <br>
+    </div>
+    <h3 id="flycardrank" class="w3-text-blue">FlyCardRank</h3>
+    <p>Get rank of card</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlyCardRank(flyCard_t card)<br>
+      <br>
+      @param  card  <br>
+      @return rank 0 = not a card, (1 - 13) of card, 14 = joker  <br>
+    </div>
+    <h3 id="flycardsuit" class="w3-text-blue">FlyCardSuit</h3>
+    <p>Get suit of card, which are ranked with clubs lowest and spades highest, just like in poker.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flyCardSuit_t FlyCardSuit(flyCard_t card)<br>
+      <br>
+      @param  card  <br>
+      @return suit   FLY_CARD_CLUBS, FLY_CARD_DIAMONDS, FLY_CARD_HEARTS, FLY_CARD_SPADES  <br>
+    </div>
+    <h3 id="flycardprint" class="w3-text-blue">FlyCardPrint</h3>
+    <p>Print a hand of cards to terminal. This prints all cards on the same line.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyCardPrint(const flyCard_t *pCards, unsigned nCards)<br>
+    </div>
+    <p><b>Notes</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  +----+ +----+<br>
+  |10+ | |K@&nbsp; |<br>
+  |&nbsp; &nbsp; | |&nbsp; &nbsp; |<br>
+  | 10+| |&nbsp; K@|<br>
+  +----+ +----+<br>
+</div>
+    <h3 id="flycarddecknew" class="w3-text-blue">FlyCardDeckNew</h3>
+    <p>Create a new deck or cards (or set of decks).</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flyCardDeck_t *FlyCardDeckNew(unsigned nDecks, bool_t fAsciiOnly, unsigned nJokers)<br>
+      <br>
+      @param  nDecks      # of decks  <br>
+      @param  fAsciiOnly  use Ascii rather than UTF-8 for card display  <br>
+      @param  jokers      jokers per deck  <br>
+      @return none  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>A black-jack game may utilize 6 shuffled decks, whereas crazy eights uses a single deck.</p>
+<p>Cards will be in in order like they come out of a fresh pack of cards. Make sure to shuffle them
+if needed.</p>
+    <p id="example-create-and-deal-a-game-of-crazy-eights"><b>Example: Create and deal a game of crazy eights</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  #define NPLAYERS&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 4&nbsp; <br>
+  #define NCARDS_AT_DEAL&nbsp; &nbsp; 8&nbsp; <br>
+  <br>
+  flyCardDeck_t * Crazy8Deal(unsigned nPlayers, flyCardHand_t *pHands)&nbsp; <br>
+  {&nbsp; <br>
+  &nbsp; flyCardDeck_t *pDeck = FlyCardDeckNew(1, TRUE, 0);&nbsp; <br>
+  &nbsp; if(pDeck)&nbsp; <br>
+  &nbsp; {&nbsp; <br>
+  &nbsp; &nbsp; FlyCardDeckShuffle(pDeck);&nbsp; <br>
+  &nbsp; &nbsp; FlyCardDeckDeal(pDeck, NCARDS_AT_DEAL, nPlayers, pHands);&nbsp; <br>
+  &nbsp; }&nbsp; <br>
+  }&nbsp; <br>
+  <br>
+  int main(void)&nbsp; <br>
+  {&nbsp; <br>
+  &nbsp; flyCardHand_t *pHands = FlyCardDeckNew(NPLAYERS, TRUE, 0);&nbsp; <br>
+  }&nbsp; <br>
+</div>
+    <h3 id="flycarddeckinit" class="w3-text-blue">FlyCardDeckInit</h3>
+    <p>Initialize a deck of cards, (or only some cards). Initializes with spades, hearts, diamonds,</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyCardDeckInit(flyCardDeck_t *pDeck)<br>
+      <br>
+      @param    pCardDeck   pointer to array of cards  <br>
+      @param    nCards      number of cards in array  <br>
+      @returns  none  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>clubs. Can even initialize multiple decks. Examples:</p>
+    <h3 id="flycarddeckshuffle" class="w3-text-blue">FlyCardDeckShuffle</h3>
+    <p>Shuffle cards. Simply pass the deck.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyCardDeckShuffle(flyCardDeck_t *pDeck)<br>
+      <br>
+      @param    pCards   pointer to array of cards  <br>
+      @param    nCards   number of cards in array  <br>
+      @returns  none  <br>
+    </div>
+  </div>
+</div>
+</body>
+</html>

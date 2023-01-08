@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlySec</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlySec</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#flysecpad">FlySecPad</a><br>
+      <a href="#flysecpadremove">FlySecPadRemove</a><br>
+      <a href="#flysecnew">FlySecNew</a><br>
+      <a href="#flysecissec">FlySecIsSec</a><br>
+      <a href="#flysecfree">FlySecFree</a><br>
+      <a href="#flysecprint">FlySecPrint</a><br>
+      <a href="#flyseckeyset">FlySecKeySet</a><br>
+      <a href="#flysecpwdrandom">FlySecPwdRandom</a><br>
+      <a href="#flysecnonceget">FlySecNonceGet</a><br>
+      <a href="#flysecnoncenew">FlySecNonceNew</a><br>
+      <a href="#flysecnoncereset">FlySecNonceReset</a><br>
+      <a href="#flysecnonceset">FlySecNonceSet</a><br>
+      <a href="#flysecencode">FlySecEncode</a><br>
+      <a href="#secdecodepreamble">SecDecodePreamble</a><br>
+      <a href="#flysecstreamsize">FlySecStreamSize</a><br>
+      <a href="#flysecstreamleft">FlySecStreamLeft</a><br>
+      <a href="#flysecstreamlen">FlySecStreamLen</a><br>
+      <a href="#flysecstreamflush">FlySecStreamFlush</a><br>
+      <a href="#flysecstreamfeed">FlySecStreamFeed</a><br>
+      <a href="#flysecdecode">FlySecDecode</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>A secure interface that works with streams.</h3>
+<p>It doesn't know about the transport protocol (could be TCP, UDP, something else). It simply
+encodes/decodes. Allows for custom header to facilitate key lookup. Uses random nonce for</p>
+<ol>
+<li>Allows for variable, application specific header (0-n bytes)</li>
+<li>Header can contain key lookup/hash info for decoding</li>
+<li>Uses symmetic AES-256 for all application data</li>
+<li>Takes stream input (feed), and provides application packet data output</li>
+<li>Detects tampering with any bits</li>
+</ol>
+<p>Preamble for all secure packets is fixed in size:</p>
+<div class="w3-code w3-light-grey notranslate">
+  &nbsp;0&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;2&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;3<br>
+  &nbsp;0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 <br>
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ <br>
+  |1 1 1 1 1 1 1 0|reserved |0 0 1|&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;crc-16&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |<br>
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ <br>
+  |&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; totalLen&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;hdrlLen&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|<br>
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ <br>
+  |&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; hdr...&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|<br>
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ <br>
+  |&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; encrypted padded data...&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|<br>
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ <br>
+</div>
+<p>The encrypted packets are binary. However, if you need to send it over HTML, you can use base64,
+a common format for converting binary to ascii. See FlyBase64.h.</p>
+    <h3 id="flysecpad" class="w3-text-blue">FlySecPad</h3>
+    <p>Pads the string to an even 16 bytes. Assumes data can be appended up to 15 bytes.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlySecPad(uint8_t *pData, unsigned len)<br>
+      <br>
+      @param    pData   data to pad  <br>
+      @param    len     length of data  <br>
+      @returns  new (potentially larger) length, filled with 1-0xf padded bytes  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>See https://en.wikipedia.org/wiki/Padding_(cryptography)#PKCS7</p>
+    <h3 id="flysecpadremove" class="w3-text-blue">FlySecPadRemove</h3>
+    <p>Reduce length based on padding. If not valid padding, leaves length unchanged.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlySecPadRemove(uint8_t *pData, unsigned len)<br>
+      <br>
+      @param    pData   padded data  <br>
+      @param    len     length of padded data  <br>
+      @returns  reduce length to ignore padding  <br>
+    </div>
+    <h3 id="flysecnew" class="w3-text-blue">FlySecNew</h3>
+    <p>Create a new security object</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      hSec_t FlySecNew(unsigned maxPacketSize)<br>
+      <br>
+      @param    maxPacketSize   maximum size of user header + data  <br>
+      @returns  handle to security object  <br>
+    </div>
+    <h3 id="flysecissec" class="w3-text-blue">FlySecIsSec</h3>
+    <p>Is this a valid pSec strucure?</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlySecIsSec(const hSec_t hSec)<br>
+      <br>
+      @param    hSec      Pointer to object returned by FlySecNew()  <br>
+      @returns  TRUE if this is a valid pSec  <br>
+    </div>
+    <h3 id="flysecfree" class="w3-text-blue">FlySecFree</h3>
+    <p>Free the secure structure</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlySecFree(hSec_t hSec)<br>
+      <br>
+      @param    hSec      Pointer to object returned by FlySecNew()  <br>
+      @returns  none  <br>
+    </div>
+    <h3 id="flysecprint" class="w3-text-blue">FlySecPrint</h3>
+    <p>Print the security object</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlySecPrint(const hSec_t hSec)<br>
+      <br>
+      @param    hSec      Pointer to object returned by FlySecNew()  <br>
+      @returns  none  <br>
+    </div>
+    <h3 id="flyseckeyset" class="w3-text-blue">FlySecKeySet</h3>
+    <p>Hash into the key</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlySecKeySet(hSec_t hSec, const void *pKey, unsigned lenKey)<br>
+      <br>
+      @param    hSec      Pointer to object returned by FlySecNew()  <br>
+      @param    pKey      some key data, e.g. password (if NULL, key will be random)  <br>
+      @param    lenKey    length of key data  <br>
+      @returns  none  <br>
+    </div>
+    <h3 id="flysecpwdrandom" class="w3-text-blue">FlySecPwdRandom</h3>
+    <p>Create a random password of a given size. The password is all ascii.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlySecPwdRandom(char *szPwd, unsigned sizePwd)<br>
+      <br>
+      @param    hSec     to object returned by FlySecNew()  <br>
+      @returns  current nonce  <br>
+    </div>
+    <h3 id="flysecnonceget" class="w3-text-blue">FlySecNonceGet</h3>
+    <p>Return the current nonce</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      long FlySecNonceGet(const hSec_t hSec)<br>
+      <br>
+      @param    hSec     to object returned by FlySecNew()  <br>
+      @returns  current nonce  <br>
+    </div>
+    <h3 id="flysecnoncenew" class="w3-text-blue">FlySecNonceNew</h3>
+    <p>Create a new random nonce</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlySecNonceNew(hSec_t hSec)<br>
+      <br>
+      @param    hSec     to object returned by FlySecNew()  <br>
+      @returns  none  <br>
+    </div>
+    <h3 id="flysecnoncereset" class="w3-text-blue">FlySecNonceReset</h3>
+    <p>Reset to current nonce. Higher layer must manage counters if desired</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlySecNonceReset(hSec_t hSec)<br>
+      <br>
+      @param    hSec     to object returned by FlySecNew()  <br>
+      @returns  current nonce  <br>
+    </div>
+    <h3 id="flysecnonceset" class="w3-text-blue">FlySecNonceSet</h3>
+    <p>The nonce is an additional random component to encryption</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlySecNonceSet(hSec_t hSec, long randNumber)<br>
+      <br>
+      @param    hSec          Pointer to object returned by FlySecNew()  <br>
+      @param    randomNumber  a number to feed Nonce  <br>
+      @returns  none  <br>
+    </div>
+    <h3 id="flysecencode" class="w3-text-blue">FlySecEncode</h3>
+    <p>Encode the packet. The encryption header is fixed in size. The user header may be anything, but</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlySecEncode(hSec_t hSec, void *pBuf, const void *pHdr, unsigned hdrLen, const void *pData, unsigned dataLen)<br>
+      <br>
+      @param    hSec      object returned by FlySecNew()  <br>
+      @param    pBuf      outbuf, assumed to be FlySecStreamSize(hSec) in size  <br>
+      @param    pHdr      ptr to user header  <br>
+      @param    hdrLen    length of user header  <br>
+      @param    pData     ptr to application data  <br>
+      @param    dataLen   length of application data  <br>
+      @returns  length of encoded packet, or 0 if invalid parameters or data too large  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>the user header + data + pad bytes must all fit in the maxPacketSize set upon FlySecNew().</p>
+<p>The packet will look like:</p>
+<p><code class="w3-codespan">[pre][crc][totalLen][hdrLen][hdr...][encrypted padded data...]</code></p>
+    <h3 id="secdecodepreamble" class="w3-text-blue">SecDecodePreamble</h3>
+    <p>Checks for valid packets. This does NOT affect the stream at all, only examines what is in it.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      static secErr_t SecDecodePreamble(const flySec_t *pSec, unsigned *pHdrLen, unsigned *pTotalLen)<br>
+      <br>
+      @param    hSec        to object returned by FlySecNew()  <br>
+      @param    hdrLen      returned value, size of header. OK if it's NULL if don't need the value  <br>
+      @param    totalLen    returned value, size of packet or fuzz (1st bad byte), OK if it's NULL  <br>
+      @returns  TRUE if packet looks OK so far   <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Returns 1 of 3 states:</p>
+<p>SEC_ERR_READY         packet is ready in the stream
+SEC_ERR_INCOMPLETE    0 or more bytes of packet received, but not complete
+SEC_ERR_FUZZ          bad data is in the stream</p>
+<p>NOTE: if the CRC for the packet is wrong, even if everything else is OK, the entire packet is
+considered fuzz.</p>
+<p>NOTE: if there is more than 1 packet in the stream, that's OK. This only examines the 1st
+packet.</p>
+    <h3 id="flysecstreamsize" class="w3-text-blue">FlySecStreamSize</h3>
+    <p>Return the maximum packet size set on FlySecNew()</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlySecStreamSize(const hSec_t hSec)<br>
+      <br>
+      @param    hSec      Pointer to object returned by FlySecNew()  <br>
+      @returns  size of the stream for this security object  <br>
+    </div>
+    <h3 id="flysecstreamleft" class="w3-text-blue">FlySecStreamLeft</h3>
+    <p>How much room is left in the incoming packet stream?</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlySecStreamLeft(const hSec_t hSec)<br>
+      <br>
+      @param    hSec      to object returned by FlySecNew()  <br>
+      @returns  0-n bytes left in the stream  <br>
+    </div>
+    <h3 id="flysecstreamlen" class="w3-text-blue">FlySecStreamLen</h3>
+    <p>How much data is currently in the stream?</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlySecStreamLen(const hSec_t hSec)<br>
+      <br>
+      @param    hSec      to object returned by FlySecNew()  <br>
+      @returns  0-n bytes in the stream  <br>
+    </div>
+    <h3 id="flysecstreamflush" class="w3-text-blue">FlySecStreamFlush</h3>
+    <p>Flush (throw out) the input stream of all data</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlySecStreamFlush(hSec_t hSec)<br>
+      <br>
+      @param    hSec     to object returned by FlySecNew()  <br>
+      @returns  none  <br>
+    </div>
+    <h3 id="flysecstreamfeed" class="w3-text-blue">FlySecStreamFeed</h3>
+    <p>Feed data into the stream. This is an all or nothing operation. If "len" amount of data won't fit</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlySecStreamFeed(hSec_t hSec, const void *pIn, unsigned len)<br>
+      <br>
+      @param    hSec      to object returned by FlySecNew()  <br>
+      @param    pIn       ptr to data to feed into stream  <br>
+      @param    len       length of data to feed into stream  <br>
+      @returns  TRUE if this data was added to the stream, FALSE if not  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>in the stream, it's rejected. See also FlySecStreamLeft().</p>
+<p>Note: This will also remove fuzz (bad data in the stream)</p>
+    <h3 id="flysecdecode" class="w3-text-blue">FlySecDecode</h3>
+    <p>This decodes and decryptes a packet in the stream. Copies the user data pBuf.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlySecDecode(hSec_t hSec, void *pOut, pfnProcessHdr_t pfnProcessHdr, void *pHdrAuxData)<br>
+      <br>
+      @param    hSec            to object returned by FlySecNew()  <br>
+      @param    pBuf            ptr to buffer to receive application data  <br>
+      @param    pfnProcessHdr   NULL or ptr to function to check header  <br>
+      @param    pHdrAuxData     data to pass to ProcessHdr (in addition pHdr/hdrLen)  <br>
+      @returns  1-n or FLY_SEC_NO_DATA  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>FLY_SEC_NO_DATA   if no or incomplete packet
+FLY_SEC_ERR       if bad header (rejected by higher layer)</p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlySocket</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlySocket</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#flysocknew">FlySockNew</a><br>
+      <a href="#flysockistcp">FlySockIsTcp</a><br>
+      <a href="#flysockisipv6">FlySockIsIpv6</a><br>
+      <a href="#flysockissock">FlySockIsSock</a><br>
+      <a href="#flysockisserver">FlySockIsServer</a><br>
+      <a href="#flysockfd">FlySockFd</a><br>
+      <a href="#flysocksetnonblock">FlySockSetNonBlock</a><br>
+      <a href="#flysockhostget">FlySockHostGet</a><br>
+      <a href="#flysockaccept">FlySockAccept</a><br>
+      <a href="#flysockfree">FlySockFree</a><br>
+      <a href="#flysockreceive">FlySockReceive</a><br>
+      <a href="#flysocksend">FlySockSend</a><br>
+      <a href="#flysockerrno">FLySockErrno</a><br>
+      <a href="#flysockaddrnew">FlySockAddrNew</a><br>
+      <a href="#flysockaddrisaddr">FlySockAddrIsAddr</a><br>
+      <a href="#flysockaddrfree">FlySockAddrFree</a><br>
+      <a href="#flysockaddrhostget">FlySockAddrHostGet</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>A simplified socket interface for any combo of TCP/UDP, IPv4/IPv6, server or client</h3>
+<p>See: https://beej.us for a primer on C sockets</p>
+<p>Features:</p>
+<ul>
+<li>Simplifies sockets for C applications, simply include "FLySocket.h"</li>
+<li>Supports any combo of TCP/UDP, IPv4/IPv6, server or client</li>
+<li>Supports multi-tasking or event loop, or simple blocking</li>
+<li>See example: flychat.c and flychatserver.c</li>
+</ul>
+    <h3 id="flysocknew" class="w3-text-blue">FlySockNew</h3>
+    <p>Create a new socket. If server, this binds it to a port and starts listening.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      hFlySock_t FlySockNew(const char *szHost, const char *szPort, flySockType_t type, bool_t fServer)<br>
+      <br>
+      @param    szHost    host to connect to  <br>
+      @param    szPort    port to connect to, can be service like   <br>
+      @param    type      e.g. FFLY_SOCK_IPV4_TCP  <br>
+      @param    fServer   TRUE if this is binding to a port (a server)  <br>
+      @return   handle to socket, or NULL if failed  <br>
+    </div>
+    <h3 id="flysockistcp" class="w3-text-blue">FlySockIsTcp</h3>
+    <p>Is this type tcp?</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlySockIsTcp(flySockType_t type)<br>
+      <br>
+      @param    type   see flySockType_t, e.g. FLY_SOCK_TYPE_IPV4_TCP  <br>
+      @return   TRUE if TCP, FALSE if UDP  <br>
+    </div>
+    <h3 id="flysockisipv6" class="w3-text-blue">FlySockIsIpv6</h3>
+    <p>Is this type IPv6?</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlySockIsIpv6(flySockType_t type)<br>
+      <br>
+      @param    type   see flySockType_t, e.g. FLY_SOCK_TYPE_IPV4_TCP  <br>
+      @return   TRUE if IPv6, FALSE if IPv4  <br>
+    </div>
+    <h3 id="flysockissock" class="w3-text-blue">FlySockIsSock</h3>
+    <p>Is this a valid socket handle?</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlySockIsSock(hFlySock_t hSock)<br>
+      <br>
+      @param    hSock   A socket created with FlySockNew()  <br>
+      @return   TRUE if valid  <br>
+    </div>
+    <h3 id="flysockisserver" class="w3-text-blue">FlySockIsServer</h3>
+    <p>Is this socket created with FlySockNew() a server?</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlySockIsServer(hFlySock_t hSock)<br>
+      <br>
+      @param    hSock   A socket created with FlySockNew()  <br>
+      @return   TRUE if a server  <br>
+    </div>
+    <h3 id="flysockfd" class="w3-text-blue">FlySockFd</h3>
+    <p>Returns socket handle, or -1 if bad handle. Useful to set flags on the file handle that this</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlySockFd(hFlySock_t hSock)<br>
+      <br>
+      @param    hSock   A socket created with FlySockNew()  <br>
+      @return   socket handle (int), or -1 if bad handle or socket  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>framework doesn't support. Otherwise, don't use</p>
+    <h3 id="flysocksetnonblock" class="w3-text-blue">FlySockSetNonBlock</h3>
+    <p>Set to blocking or non-block. Call AFTER FlySockNew() and BEFORE FlySockAccept(). Any already</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlySockSetNonBlock(hFlySock_t hSock, bool_t fNonBlock)<br>
+      <br>
+      @param    hSock   A socket created with FlySockNew()  <br>
+      @return   Returns the previous state of non-block  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>accepted sockets won't be changed by this call.</p>
+    <h3 id="flysockhostget" class="w3-text-blue">FlySockHostGet</h3>
+    <p>Get the host for this socket. On a server, the means the localhost/port. On a client, that</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlySockHostGet(hFlySock_t hSock, char *pszHost, unsigned *pPort)<br>
+      <br>
+      @param    hSock   A socket created with FlySockNew()  <br>
+      @return   Returns TRUE if worked, FALSE if bad parameter  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>means the destination host/port.</p>
+    <h3 id="flysockaccept" class="w3-text-blue">FlySockAccept</h3>
+    <p>Only to be used on server sockets that were opened with FlySockNew().</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      hFlySockAddr_t FlySockAccept(hFlySock_t hSock, bool_t *pfNonBlock)<br>
+      <br>
+      @param    hSock         A socket created with FlySockNew()  <br>
+      @param    fNonBlock     Return value if TRUE means failure was due to nonblock behavior  <br>
+      @return   handle to Addr or NULL if failed  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Returns a handle to a structure which contains address, port and socket file descriptor to be
+used with FlySockSend() or FlySockReceive().</p>
+    <h3 id="flysockfree" class="w3-text-blue">FlySockFree</h3>
+    <p>Free a socket allocated by FlySockNew(). Returns NULL as a convenience for the caller:</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void * FlySockFree(hFlySock_t hSock)<br>
+      <br>
+      @param    hSock     A socket created with FlySockNew()  <br>
+      @returns  NULL  <br>
+    </div>
+    <p><b>Notes</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  pSock = FlySockFree(pSock);<br>
+</div>
+    <h3 id="flysockreceive" class="w3-text-blue">FlySockReceive</h3>
+    <p>Receive data on a socket. Assumes socket was opened as part of FlySockNew(), and the hAddr was</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlySockReceive(hFlySock_t hSock, hFlySockAddr_t hAddr, uint8_t *pBuf, int bufLen)<br>
+      <br>
+      @param    hSock       The hSock returned from FlySockNew()  <br>
+      @param    hAddr       The hAddr returned from FlySockAccept() or FlySockAddrNew()  <br>
+      @param    pBuf        Buffer to hold received data  <br>
+      @param    bufLen      size of buffer (1-n)  <br>
+      @return   number of bytes received, or -1 on error, 0 if other closed  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>returned from FlySockAccept()</p>
+    <h3 id="flysocksend" class="w3-text-blue">FlySockSend</h3>
+    <p>Send data on a socket. Assumes socket was opened as part of FlySockNew(), and the hAddr was</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlySockSend(hFlySock_t hSock, hFlySockAddr_t hAddr, const uint8_t *pBuf, int bufLen)<br>
+      <br>
+      @param    hSock       The hSock returned from FlySockNew()  <br>
+      @param    hAddr       The hAddr returned from FlySockAccept() or FlytSockAddrNew()  <br>
+      @param    pBuf        Buffer to send  <br>
+      @param    bufLen      Length of buffer (1-n)  <br>
+      @return   number of bytes sent or -1 if error, 0 if other side closed  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>returned from FlySockAccept()</p>
+    <h3 id="flysockerrno" class="w3-text-blue">FLySockErrno</h3>
+    <p>Return last errno. Note a successful call will set this to 0.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FLySockErrno(hFlySock_t hSock)<br>
+      <br>
+      @param    hSock       The hSock returned from FlySockNew()  <br>
+      @return   last errno  <br>
+    </div>
+    <h3 id="flysockaddrnew" class="w3-text-blue">FlySockAddrNew</h3>
+    <p>Create a new socket address which contains storage for both address and file handle. Copies the</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      hFlySockAddr_t FlySockAddrNew(hFlySock_t hSock)<br>
+      <br>
+      @return   handle to new socket address  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>address already stored in the socket.</p>
+    <h3 id="flysockaddrisaddr" class="w3-text-blue">FlySockAddrIsAddr</h3>
+    <p>Create a new socket address which ontains storage for both address and file handle</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlySockAddrIsAddr(hFlySockAddr_t hAddr)<br>
+      <br>
+      @param    handle created by FlySockAddrNew()  <br>
+      @return   TRUE if it's a valid handle, FALSE if not  <br>
+    </div>
+    <h3 id="flysockaddrfree" class="w3-text-blue">FlySockAddrFree</h3>
+    <p>Free the socket address structure</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void * FlySockAddrFree(hFlySockAddr_t hAddr)<br>
+      <br>
+      @param    handle created by FlySockAddrNew()  <br>
+      @return   TRUE if it's a valid handle, FALSE if not  <br>
+    </div>
+    <h3 id="flysockaddrhostget" class="w3-text-blue">FlySockAddrHostGet</h3>
+    <p>Free the socket address structure</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlySockAddrHostGet(hFlySockAddr_t hAddr, char *pszHost, unsigned *pPort)<br>
+      <br>
+      @param    handle created by FlySockAddrNew()  <br>
+      @return   TRUE if it's a valid handle, FALSE if not  <br>
+    </div>
+  </div>
+</div>
+</body>
+</html>

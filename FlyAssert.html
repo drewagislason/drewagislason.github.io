@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlyAssert</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlyAssert</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#flyerrorprint">FlyErrorPrint</a><br>
+      <a href="#flyassertsetexit">FlyAssertSetExit</a><br>
+      <a href="#flyerror">FlyError</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>An Assert API which allows control of output</h3>
+<p>Features:</p>
+<ol>
+<li>Set an exit function for "cleanup" or file save</li>
+<li>Determine exactly how output looks</li>
+<li>Use "simple" assert with file ID and line only to reduce space</li>
+<li>Use "full" assert that includes file, function, line, expression</li>
+<li>Debug level asserts so only most important are left in production code</li>
+</ol>
+    <h3 id="flyerrorprint" class="w3-text-blue">FlyErrorPrint</h3>
+    <p>Default assert print function.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlyErrorPrint(const char *szExpr, const char *szFile, const char *szFunc, unsigned line)<br>
+      <br>
+      @param    szxExpr     assert expression or helpful message  <br>
+      @param    szFile      string version of the file  <br>
+      @param    szFunc      string function name  <br>
+      @param    line        line number  <br>
+      @return   1 (error code for failed)  <br>
+    </div>
+    <h3 id="flyassertsetexit" class="w3-text-blue">FlyAssertSetExit</h3>
+    <p>Set the exit function when an assert happens. Note: exit function asserts are ignored.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyAssertSetExit(pfnFlyAssert_t pfnAssert)<br>
+      <br>
+      @param    pfnAssert   ptr to assert function to use on exit instead of default  <br>
+      @return   none  <br>
+    </div>
+    <h3 id="flyerror" class="w3-text-blue">FlyError</h3>
+    <p>An Assert has occurred. Exit with error code. Prevents exit/shutdown functions from asserting</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyError(const char *szExpr, const char *szFile, const char *szFunc, unsigned line)<br>
+      <br>
+      @param    szxExpr     assert expression or helpful message  <br>
+      @param    szFile      string version of the file  <br>
+      @param    szFunc      string function name  <br>
+      @param    line        line number  <br>
+      @return   none  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>more than once.</p>
+  </div>
+</div>
+</body>
+</html>

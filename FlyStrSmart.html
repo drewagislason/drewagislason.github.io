@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlyStrSmart</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlyStrSmart</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#flystrsmartalloc">FlyStrSmartAlloc</a><br>
+      <a href="#flystrsmartcat">FlyStrSmartCat</a><br>
+      <a href="#flystrsmartcpy">FlyStrSmartCpy</a><br>
+      <a href="#flystrsmartfit">FlyStrSmartFit</a><br>
+      <a href="#flystrsmartfree">FlyStrSmartFree</a><br>
+      <a href="#flystrsmartncat">FlyStrSmartNCat</a><br>
+      <a href="#flystrsmartncpy">FlyStrSmartNCpy</a><br>
+      <a href="#flystrsmartneed">FlyStrSmartNeed</a><br>
+      <a href="#flystrsmartnew">FlyStrSmartNew</a><br>
+      <a href="#flystrsmartslice">FlyStrSmartSlice</a><br>
+      <a href="#flystrsmartsprintf">FlyStrSmartSprintf</a><br>
+      <a href="#flystrsmartresize">FlyStrSmartResize</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>Smart strings cannot overflow and are always 0 terminated.</h3>
+<p>Many programming languages protect the programmer from buffer overruns, use after free and ease
+of slicing or combining strings. This is an attempt to do that in C.</p>
+<p>Features:</p>
+<ul>
+<li>String copy, cat and sprintf functions that allocate automatically</li>
+<li>String is guaranteed '\0' terminated</li>
+<li>Fast: direct string access</li>
+<li>Minimizes reallocs and memory fragmentation</li>
+<li>Detects memory overruns</li>
+<li>Includes slicing similar to Python strings</li>
+<li>Use pStr->sz to access string and pStr->size to determine string buffer size</li>
+</ul>
+    <p id="example-basic-smart-string-use"><b>Example: Basic Smart String Use</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  #include "FlyStr.h"&nbsp; <br>
+  <br>
+  void print_hello_world(void)&nbsp; <br>
+  {&nbsp; <br>
+  &nbsp; flyStrSmart_t *pStr;&nbsp; <br>
+  &nbsp; flyStrSmart_t *pStr2;&nbsp; <br>
+  <br>
+  &nbsp; pStr = FlyStrSmartNew("Hello", 0);&nbsp; <br>
+  &nbsp; FlyStrSmartCat(pStr, " World!");&nbsp; <br>
+  &nbsp; printf("%s\n", pStr->sz);&nbsp; <br>
+  <br>
+  &nbsp; pStr2 = FlyStrSmartSlice(pStr, -6, UINT_MAX);&nbsp; <br>
+  &nbsp; printf("%s\n", pStr2->sz);&nbsp; <br>
+  <br>
+  &nbsp; FlyStrSmartSprintf(pStr, "5 strings: [%s,%s,%s,%s,%s]","Every","Good","Boy","Does","Fine");&nbsp; <br>
+  &nbsp; printf("%s\n", pStr->sz);&nbsp; <br>
+  <br>
+  &nbsp; FlyStrSmartFree(pStr);&nbsp; <br>
+  &nbsp; FlyStrSmartFree(pStr2);&nbsp; <br>
+  }&nbsp; <br>
+</div>
+<p>One of the key features is slicing. This allows the programmer to get left, right or middle
+portions of the string into a new smart string easily.</p>
+<p>Most of the functions are pretty self-explanitory.</p>
+    <h3 id="flystrsmartalloc" class="w3-text-blue">FlyStrSmartAlloc</h3>
+    <p>Allocate (create) a smart string. Yes, the name is very funny, Smart Alec.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flyStrSmart_t * FlyStrSmartAlloc(size_t size)<br>
+      <br>
+      @param    size    size of string to allocate.  <br>
+      @return ptr to static string with C version in it  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>If size == 0, it is changed to 1 as a smart string is ALWAYS '\0' terminated.</p>
+    <h3 id="flystrsmartcat" class="w3-text-blue">FlyStrSmartCat</h3>
+    <p>Concatenate the string to end of smart string. Resizes mem if needed.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char * FlyStrSmartCat(flyStrSmart_t *pStr, const char *sz)<br>
+      <br>
+      @param    pStr    ptr to smart string  <br>
+      @param    sz      string to concatinate to smart string  <br>
+      @return ptr where sz was copied into smart string or NULL if memory couldn't be allocatd  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>If memory couldn't be allocated, smart string is left unchanged.</p>
+    <h3 id="flystrsmartcpy" class="w3-text-blue">FlyStrSmartCpy</h3>
+    <p>Copy the string to start of smart string. Resizes mem if needed.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char * FlyStrSmartCpy(flyStrSmart_t *pStr, const char *sz)<br>
+      <br>
+      @param    pStr    ptr to smart string  <br>
+      @param    sz      string to copy to smart string  <br>
+      @return ptr where sz was copied into smart string or NULL if couldn't allocate memory  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>If memory couldn't be allocated, smart string is left unchanged.</p>
+    <h3 id="flystrsmartfit" class="w3-text-blue">FlyStrSmartFit</h3>
+    <p>Shrinks mem if needed. Use FlyStrSmartStr() to access string.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyStrSmartFit(flyStrSmart_t *pStr)<br>
+      <br>
+      @param    size    size of string to allocate (may be 0)  <br>
+      @return ptr to static string with C version in it  <br>
+    </div>
+    <h3 id="flystrsmartfree" class="w3-text-blue">FlyStrSmartFree</h3>
+    <p>Free the smart string</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyStrSmartFree(flyStrSmart_t *pStr)<br>
+      <br>
+      @param    size    size of string to allocate (may be 0)  <br>
+      @return ptr to static string with C version in it  <br>
+    </div>
+    <h3 id="flystrsmartncat" class="w3-text-blue">FlyStrSmartNCat</h3>
+    <p>Concatinate length of string to smart string. Resizes memory of needed.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char * FlyStrSmartNCat(flyStrSmart_t *pStr, const char *sz, size_t len)<br>
+      <br>
+      @param    pStr    ptr to smart string  <br>
+      @param    sz      string to copy to smart string  <br>
+      @param    len     length of string to concatenate to smart string  <br>
+      @return ptr where sz was copied into smart string or NULL if couldn't allocate mem  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>If memory couldn't be allocated, smart string is left unchanged.</p>
+    <h3 id="flystrsmartncpy" class="w3-text-blue">FlyStrSmartNCpy</h3>
+    <p>Copy length of string to smart string. Resizes memory of needed.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char * FlyStrSmartNCpy(flyStrSmart_t *pStr, const char *sz, size_t len)<br>
+      <br>
+      @param    pStr    ptr to smart string  <br>
+      @param    sz      string to copy to smart string  <br>
+      @param    len     length of string to copy to smart string  <br>
+      @return ptr where sz was copied into smart string  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>If memory couldn't be allocated, smart string is left unchanged.</p>
+    <h3 id="flystrsmartneed" class="w3-text-blue">FlyStrSmartNeed</h3>
+    <p>Make sure we can concatinate at least len bytes to smart string.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyStrSmartNeed(flyStrSmart_t *pStr, size_t len)<br>
+      <br>
+      @param    pStr    ptr to smart string  <br>
+      @param    sz      string to copy to smart string  <br>
+      @param    len     length of string to copy to smart string  <br>
+      @return ptr to start of concatenated string.  <br>
+    </div>
+    <h3 id="flystrsmartnew" class="w3-text-blue">FlyStrSmartNew</h3>
+    <p>Create a new smart string from a normal asciiz C string.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flyStrSmart_t * FlyStrSmartNew(const char *sz, size_t len)<br>
+      <br>
+      @param    sz      string to copy to smart string  <br>
+      @param    len     length of string to use, or 0 for whole string  <br>
+      @return ptr to new smart string  <br>
+    </div>
+    <h3 id="flystrsmartslice" class="w3-text-blue">FlyStrSmartSlice</h3>
+    <p>Creates a new smart string from a slice of another smart string.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flyStrSmart_t * FlyStrSmartSlice(flyStrSmart_t *pStr, int left, int right)<br>
+      <br>
+      @param    pStr    ptr to smart string  <br>
+      @param    left    left position of slice  <br>
+      @param    right   left position of slice  <br>
+      @return ptr to new smart string or NULL if out of memory  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Position may be negative to mean backwards from end of string. If parameters are invalid, e.g.
+calculated position of right &lt; left or left > strlen string, will return an empty slice. String
+length must be &lt; INT_MAX.</p>
+<p>Examples with string "Hello World[":</p>
+<table class="w3-table-all" style="width:auto">
+<tr>
+  <th class="w3-right-align">left</th>
+  <th class="w3-right-align">right</th>
+  <th>new slice</th>
+</tr>
+<tr>
+  <td class="w3-right-align">0</td>
+  <td class="w3-right-align">INT_MAX</td>
+  <td>"Hello World["</td>
+</tr>
+<tr>
+  <td class="w3-right-align">0</td>
+  <td class="w3-right-align">-1</td>
+  <td>"Hello World"</td>
+</tr>
+<tr>
+  <td class="w3-right-align">0</td>
+  <td class="w3-right-align">2</td>
+  <td>"He"</td>
+</tr>
+<tr>
+  <td class="w3-right-align">2</td>
+  <td class="w3-right-align">5</td>
+  <td>"llo"</td>
+</tr>
+<tr>
+  <td class="w3-right-align">-6</td>
+  <td class="w3-right-align">-1</td>
+  <td>"World"</td>
+</tr>
+<tr>
+  <td class="w3-right-align">6</td>
+  <td class="w3-right-align">1</td>
+  <td>"World"</td>
+</tr>
+</table>
+    <p id="example-flystrsmartslice"><b>Example: FlyStrSmartSlice()</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  #include "FlyStr.h"&nbsp; <br>
+  <br>
+  // get a slice for the left and right and combine them&nbsp; <br>
+  flyStrSmart_t * get_start_end(const flyStrSmart_t *pStr, int width)&nbsp; <br>
+  {&nbsp; <br>
+  &nbsp; flyStrSmart_t&nbsp; *pLeft&nbsp; = FlyStrSmartSlice(pStr, 0, width);;&nbsp; <br>
+  &nbsp; flyStrSmart_t&nbsp; *pRight = FlyStrSmartSlice(pStr, -1 * width, FLYSTRSMART_RIGHT);&nbsp; <br>
+  <br>
+  &nbsp; pLeft&nbsp; = FlyStrSmartCombine(pLeft, pRight);&nbsp; <br>
+  &nbsp; FlyStrSmartFree(pRight);&nbsp; <br>
+  <br>
+  &nbsp; return pLeft;&nbsp; <br>
+  }&nbsp; <br>
+</div>
+    <h3 id="flystrsmartsprintf" class="w3-text-blue">FlyStrSmartSprintf</h3>
+    <p>Like snprintf(), but allocates memory if needed to fit.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlyStrSmartSprintf(flyStrSmart_t *pStr, const char *szFmt, ...)<br>
+      <br>
+      @param    pStr    ptr to smart string  <br>
+      @param    szFmt   format, e.g. "hello %3d %*s"  <br>
+      @return strlen of formatted string, or 0 if failed (no memory).  <br>
+    </div>
+    <h3 id="flystrsmartresize" class="w3-text-blue">FlyStrSmartResize</h3>
+    <p>Resize the smart string to a specific size.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyStrSmartResize(flyStrSmart_t *pStr, size_t size)<br>
+      <br>
+      @param    pStr    ptr to smart string  <br>
+      @param    size    new size, may be 0 to free string  <br>
+      @return ptr to reallocated string, or NULL if it couldn't be allocated  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>If size is larger, then the bytes past end of old buffer are set to 0. If size is less, the
+string may be truncated, but will remain '\0' terminated.</p>
+<p>If memory couldn't be allocated, smart string is left unchanged.</p>
+  </div>
+</div>
+</body>
+</html>

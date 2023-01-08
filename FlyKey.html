@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlyKey</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlyKey</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#flykeysetidle">FlyKeySetIdle</a><br>
+      <a href="#flykeyinmacro">FlyKeyInMacro</a><br>
+      <a href="#flykeymacrorecording">FlyKeyMacroRecording</a><br>
+      <a href="#flykeymacroplay">FlyKeyMacroPlay</a><br>
+      <a href="#flykeymacroclear">FlyKeyMacroClear</a><br>
+      <a href="#flykeymacrorecord">FlyKeyMacroRecord</a><br>
+      <a href="#flykeymacroendrecord">FlyKeyMacroEndRecord</a><br>
+      <a href="#flykeymacroaddkey">FlyKeyMacroAddKey</a><br>
+      <a href="#flykeymacroget">FlyKeyMacroGet</a><br>
+      <a href="#flykeygetkey">FlyKeyGetKey</a><br>
+      <a href="#flykeyname">FlyKeyName</a><br>
+      <a href="#flykeyfromname">FlyKeyFromName</a><br>
+      <a href="#flykeyrawenable">FlyKeyRawEnable</a><br>
+      <a href="#flykeyrawdisable">FlyKeyRawDisable</a><br>
+      <a href="#flykeyrawgetkey">FlyKeyRawGetKey</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>Keyboard input API with idle for other processing</h3>
+<p>This module is designed to make terminal apps that need things like arrow keys, ctrl-keys, alt-keys, and functtion</p>
+<p>Features:</p>
+<ol>
+<li>Supports ctrl-, alt- and function keys</li>
+<li>Converts the key into a single keycode.</li>
+<li>Provdes names for keys, e.g. "Enter", "Ctrl-Left", "Fn10", etc...</li>
+<li>Allows idle processing for other computing (for example, TCP/IP)</li>
+</ol>
+    <h3 id="flykeysetidle" class="w3-text-blue">FlyKeySetIdle</h3>
+    <p>Sets the idle function for when keyboard is idle</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyKeySetIdle(pfnFlyKeyIdle_t pfnIdle, void *pData)<br>
+      <br>
+      @param    pfnIdle   idle function, or NULL to turn off  <br>
+      @param    pData     any data app wants associated with idle  <br>
+      @return   TRUE if the FLY_KEY_IDLE should be returned on idle  <br>
+    </div>
+    <h3 id="flykeyinmacro" class="w3-text-blue">FlyKeyInMacro</h3>
+    <p>Return TRUE if playing back the macro</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyKeyInMacro(void)<br>
+      <br>
+      @return   TRUE if playing back the macro  <br>
+    </div>
+    <h3 id="flykeymacrorecording" class="w3-text-blue">FlyKeyMacroRecording</h3>
+    <p>Currently recording the macro</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyKeyMacroRecording(void)<br>
+      <br>
+      @return   TRUE if recording  <br>
+    </div>
+    <h3 id="flykeymacroplay" class="w3-text-blue">FlyKeyMacroPlay</h3>
+    <p>Play the macro (if any)</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyKeyMacroPlay(void)<br>
+      <br>
+      @return   none  <br>
+    </div>
+    <h3 id="flykeymacroclear" class="w3-text-blue">FlyKeyMacroClear</h3>
+    <p>Brings the macro state machine back to factory condition (nothing recorded, everything stopped</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyKeyMacroClear(void)<br>
+      <br>
+      @return   none  <br>
+    </div>
+    <h3 id="flykeymacrorecord" class="w3-text-blue">FlyKeyMacroRecord</h3>
+    <p>Record the macro</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyKeyMacroRecord(void)<br>
+      <br>
+      @return   none  <br>
+    </div>
+    <h3 id="flykeymacroendrecord" class="w3-text-blue">FlyKeyMacroEndRecord</h3>
+    <p>Record the macro</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyKeyMacroEndRecord(void)<br>
+      <br>
+      @return   none  <br>
+    </div>
+    <h3 id="flykeymacroaddkey" class="w3-text-blue">FlyKeyMacroAddKey</h3>
+    <p>Add a key to the macro sequence. Playback remains stopped.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyKeyMacroAddKey(flyKey_t key)<br>
+      <br>
+      @return   none  <br>
+    </div>
+    <h3 id="flykeymacroget" class="w3-text-blue">FlyKeyMacroGet</h3>
+    <p>Get the current macro key sequence</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const flyKey_t *FlyKeyMacroGet(unsigned *pNumKeys)<br>
+      <br>
+      @param    pNumKeys    pointer to returned # of keys  <br>
+      @return   a pointer to the key sequence and the number of keys  <br>
+    </div>
+    <h3 id="flykeygetkey" class="w3-text-blue">FlyKeyGetKey</h3>
+    <p>Gets a key from either the macro system (if playing back), or from the raw terminal.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flyKey_t FlyKeyGetKey(void)<br>
+      <br>
+      @return   key code (0-255). See ::flyKey_t  <br>
+    </div>
+    <h3 id="flykeyname" class="w3-text-blue">FlyKeyName</h3>
+    <p>Gets name of the Ned Key in string form (e.g "Ctrl-A"). Note: this is built on the</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyKeyName(flyKey_t key)<br>
+      <br>
+      @param    key     The key code. See ::flyKey_t  <br>
+      @return   string name of key code  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>fly, so copy if it must be remembered after next call to FlyKeyName().</p>
+    <h3 id="flykeyfromname" class="w3-text-blue">FlyKeyFromName</h3>
+    <p>Return the nedKey code that matches the name, or FLY_KEY_NONE if no match.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flyKey_t FlyKeyFromName(const char *szName)<br>
+      <br>
+      @return       The nedKey that matches the name. See ::flyKey_t, or FLY_KEY_NONE  <br>
+    </div>
+    <h3 id="flykeyrawenable" class="w3-text-blue">FlyKeyRawEnable</h3>
+    <p>enable raw mode if not already enabled.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyKeyRawEnable(void)<br>
+      <br>
+      @return   none  <br>
+    </div>
+    <h3 id="flykeyrawdisable" class="w3-text-blue">FlyKeyRawDisable</h3>
+    <p>Go back to original terminal settings. Do this if using FlyKeyRawGetKey() or FlyKeyRawEnable()</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyKeyRawDisable(void)<br>
+      <br>
+      @return   none  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>before exiting the programing.</p>
+<p>As the keyboard is places in raw mode, make sure to call FlyKeyRawDisable() before exiting your</p>
+    <h3 id="flykeyrawgetkey" class="w3-text-blue">FlyKeyRawGetKey</h3>
+    <p>Returns the raw key code from the read() function, one byte at a time. Waits only 1/10th of a</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flyKey_t FlyKeyRawGetKey(void)<br>
+      <br>
+      @return   FLY_KEY_NONE or key value  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>second and, if no key is available, returns psudo key FLY_KEY_NONE.</p>
+<p>This places the console in raw mode, make sure to call FlyKeyRawDisable() before exiting your
+program. When raw mode is enabled, you need to use \r\n with printf().</p>
+<p>Some keys are multi-byte, for examples arrows. Since some of the multi-byte sequences begin with
+Esc (27), the only way to tell if it's an Esc or an arrow is if a FLY_KEY_NONE occurs after the
+Esc key. See also ::flyKey_t.</p>
+  </div>
+</div>
+</body>
+</html>

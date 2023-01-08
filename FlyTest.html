@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlyTest</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlyTest</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#flytestnew">FlyTestNew</a><br>
+      <a href="#flytestfree">FlyTestFree</a><br>
+      <a href="#flytestrun">FlyTestRun</a><br>
+      <a href="#flyteststop">FlyTestStop</a><br>
+      <a href="#flytestsummary">FlyTestSummary</a><br>
+      <a href="#t-end">T_End</a><br>
+      <a href="#t-begin">T_Begin</a><br>
+      <a href="#flytestprintf">FlyTestPrintf</a><br>
+      <a href="#flytestdump">FlyTestDump</a><br>
+      <a href="#flytestdumpcmp">FlyTestDumpCmp</a><br>
+      <a href="#flytestautomated">FlyTestAutomated</a><br>
+      <a href="#flytestverbose">FlyTestVerbose</a><br>
+      <a href="#flytestverboseset">FlyTestVerboseSet</a><br>
+      <a href="#flytestrandrange">FlyTestRandRange</a><br>
+      <a href="#flytestgetanswer">FlyTestGetAnswer</a><br>
+      <a href="#flytestgetyesno">FlyTestGetYesNo</a><br>
+      <a href="#flytestcalclogtotals">FlyTestCalcLogTotals</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>A Test API for testing submodules in any C program</h3>
+<p>This is a simple but powerful test framework for C programs. Allows any C module to be tested
+independant of the overall system, thereby reducing bugs in the final code.</p>
+<p>This is used extensively by all Firefly APIs.</p>
+<p>Produces a test suite for that can be used to verify code passes test suite even prior to it
+being checked into Git.</p>
+<p>Features:</p>
+<ol>
+<li>Manual and autoamted tests</li>
+<li>Customizable/searchable log output for quickly identifying bugs</li>
+<li>Test case, test sute framework</li>
+<li>Run "quick" tests or all tests</li>
+<li>Run specific tests based on filters</li>
+<li>Verbose flags allow module code to add test ouput, but be compiled out of code without the test framwork</li>
+</ol>
+<p>A compiled test program (e.g. test_mymodule) uses the following cmdline</p>
+<div class="w3-code w3-light-grey notranslate">
+  Usage = TestSuite [test_suite_args] [-a] [-f filter] [-m] [-v]<br>
+</div>
+    <h3 id="flytestnew" class="w3-text-blue">FlyTestNew</h3>
+    <p>Create a test suite from test cases</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      hTestSuite_t FlyTestNew(const char *szSuiteName, unsigned numCases, const sTestCase_t *pTestCases)<br>
+      <br>
+      @param    szSuiteName     ptr to persistent string  <br>
+      @param    numCases        number of test cases  <br>
+      @param    pTestCases      pointer to peristent array of test cases  <br>
+      @returns  length of printed string  <br>
+    </div>
+    <h3 id="flytestfree" class="w3-text-blue">FlyTestFree</h3>
+    <p>Free the test suite</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyTestFree(hTestSuite_t hSuite)<br>
+      <br>
+      @param    hSuite          handle to test suite  <br>
+      @returns  none  <br>
+    </div>
+    <h3 id="flytestrun" class="w3-text-blue">FlyTestRun</h3>
+    <p>Free the test suite</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyTestRun(hTestSuite_t hSuite)<br>
+      <br>
+      @param    hSuite          handle to test suite  <br>
+      @returns  none  <br>
+    </div>
+    <h3 id="flyteststop" class="w3-text-blue">FlyTestStop</h3>
+    <p>Stop the test run. Used by test cases that know continuing would be bad</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyTestStop(hTestSuite_t hSuite)<br>
+      <br>
+      @param    hSuite    valid test suite  <br>
+      @returns  TRUE if verbose, FALSE if not  <br>
+    </div>
+    <h3 id="flytestsummary" class="w3-text-blue">FlyTestSummary</h3>
+    <p>Summarize the test in both log and on-screen. Assumes any full-screen stuff is done.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlyTestSummary(hTestSuite_t hSuite)<br>
+      <br>
+      @param    hSuite    valid test suite  <br>
+      @returns  0 if all tests passed, 1 if any tests failed, 2 if all tests skipped  <br>
+    </div>
+    <h3 id="t-end" class="w3-text-blue">T_End</h3>
+    <p>Small banner for log, shows test case name and result</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void T_End(unsigned attr, const char *szResult)<br>
+      <br>
+      @returns  TRUE if verbose, FALSE if not  <br>
+    </div>
+    <h3 id="t-begin" class="w3-text-blue">T_Begin</h3>
+    <p>Indicates the name of the test with small banner</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void T_Begin(void)<br>
+      <br>
+      @returns  TRUE if verbose, FALSE if not  <br>
+    </div>
+    <h3 id="flytestprintf" class="w3-text-blue">FlyTestPrintf</h3>
+    <p>Print to screen and the log. Doesn't print to screen if TC_SCREEN flag is set for this test</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlyTestPrintf(const char *szFormat, ...)<br>
+      <br>
+      @param    szFormat    constant format string  <br>
+      @param    ...         optional variable number of parameters  <br>
+      @returns  length of printed string  <br>
+    </div>
+    <h3 id="flytestdump" class="w3-text-blue">FlyTestDump</h3>
+    <p>Dump to screen and log</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyTestDump(const void *pData, unsigned len)<br>
+      <br>
+      @param    pData   data to dump  <br>
+      @param    len     length of data  <br>
+      @returns  none  <br>
+    </div>
+    <h3 id="flytestdumpcmp" class="w3-text-blue">FlyTestDumpCmp</h3>
+    <p>Dump to screen and log</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyTestDumpCmp(const void *pThis, const void *pThat, size_t len)<br>
+      <br>
+      @param    pData   data to dump  <br>
+      @param    len     length of data  <br>
+      @returns  none  <br>
+    </div>
+    <h3 id="flytestautomated" class="w3-text-blue">FlyTestAutomated</h3>
+    <p>Run tests in automated mode only?</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyTestAutomated(void)<br>
+      <br>
+      @returns  TRUE if automated tests only, FALSE if not  <br>
+    </div>
+    <h3 id="flytestverbose" class="w3-text-blue">FlyTestVerbose</h3>
+    <p>What level is verbose on for this test case?</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlyTestVerbose(void)<br>
+      <br>
+      @returns  verbose level (0-n)  <br>
+    </div>
+    <h3 id="flytestverboseset" class="w3-text-blue">FlyTestVerboseSet</h3>
+    <p>Turn verbose on or off</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyTestVerboseSet(unsigned verboseLevel)<br>
+      <br>
+      @param    verboseLevel  <br>
+      @returns  none  <br>
+    </div>
+    <h3 id="flytestrandrange" class="w3-text-blue">FlyTestRandRange</h3>
+    <p>Get command-line arguments (argv and argc). </p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlyTestRandRange(unsigned low, unsigned high)<br>
+      <br>
+      @param      pArgc   pointer to recieve argc  <br>
+      @returns    argv (return char**), and argc (parm int *pArgc)  <br>
+    </div>
+    <h3 id="flytestgetanswer" class="w3-text-blue">FlyTestGetAnswer</h3>
+    <p>Get one of multiple choice from console user and return index into the choices (0-n).</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlyTestGetAnswer(const char *szPrompt, const char *szChoices)<br>
+      <br>
+      @param      szPrompt    prompt to display  <br>
+      @param      szChoices   choices to display  <br>
+      @returns    index into choices 0-n. Enter = choice index 0  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Repeats prommpt if user gives invalid anser. Enter = choice index 0</p>
+    <h3 id="flytestgetyesno" class="w3-text-blue">FlyTestGetYesNo</h3>
+    <p>Get yes/no choice with prompt</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyTestGetYesNo(const char *szPrompt)<br>
+      <br>
+      @param      szPrompt    prompt to display  <br>
+      @returns    TRUE or FALSE  <br>
+    </div>
+    <h3 id="flytestcalclogtotals" class="w3-text-blue">FlyTestCalcLogTotals</h3>
+    <p>Calculate totals from log file</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyTestCalcLogTotals(unsigned *pPassed, unsigned *pFailed, unsigned *pSkipped)<br>
+      <br>
+      @param    pPassed    pointer to receive passed count  <br>
+      @param    pFailed    pointer to receive failed count  <br>
+      @param    pSkipped   pointer to receive skipped count  <br>
+      @returns  TRUE if log file contains test results, FALSE if not  <br>
+    </div>
+  </div>
+</div>
+</body>
+</html>

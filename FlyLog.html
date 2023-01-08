@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlyLog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlyLog</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#flylogdefaultname">FlyLogDefaultName</a><br>
+      <a href="#flylogfileopen">FlyLogFileOpen</a><br>
+      <a href="#flylogfileappend">FlyLogFileAppend</a><br>
+      <a href="#flylogfileclose">FlyLogFileClose</a><br>
+      <a href="#flylogprintf">FlyLogPrintf</a><br>
+      <a href="#flylogprintfex">FlyLogPrintfEx</a><br>
+      <a href="#flyloghexdump">FlyLogHexDump</a><br>
+      <a href="#flyloghexdumpex">FlyLogHexDumpEx</a><br>
+      <a href="#flylogmaskset">FlyLogMaskSet</a><br>
+      <a href="#flylogmaskget">FlyLogMaskGet</a><br>
+      <a href="#flylogsizeget">FlyLogSizeGet</a><br>
+      <a href="#flylogsizereset">FlyLogSizeReset</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>A logging API useful in both desktop and embedded environments</h3>
+<p>Features:</p>
+<ol>
+<li>By default, logs to a file and to the screen</li>
+<li>The log lines can be directed anywhere (e.g. to TCP/IP)</li>
+<li>Enable/disable log flags for selective logging</li>
+<li>Supports logging colors if desired</li>
+<li>Supports limiting size of log so it never overflows alloted space</li>
+</ol>
+<p>This logger can aid debugging of many systems, or simply record event.</p>
+    <h3 id="flylogdefaultname" class="w3-text-blue">FlyLogDefaultName</h3>
+    <p>Create a new log file. This doesn't append, creates a new log.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyLogDefaultName(void)<br>
+      <br>
+      @param    szFilePath    standard printf format  <br>
+      @return   length of printed string  <br>
+    </div>
+    <h3 id="flylogfileopen" class="w3-text-blue">FlyLogFileOpen</h3>
+    <p>Create a new log file. This doesn't append, creates a new log.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyLogFileOpen(const char *szFilePath)<br>
+      <br>
+      @param    szFilePath    standard printf format  <br>
+      @return   length of printed string  <br>
+    </div>
+    <h3 id="flylogfileappend" class="w3-text-blue">FlyLogFileAppend</h3>
+    <p>Create a new log file. This doesn't append, creates a new log.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyLogFileAppend(const char *szFilePath)<br>
+      <br>
+      @param    szFilePath    standard printf format  <br>
+      @return   length of printed string  <br>
+    </div>
+    <h3 id="flylogfileclose" class="w3-text-blue">FlyLogFileClose</h3>
+    <p>Close the log file if open</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyLogFileClose(void)<br>
+      <br>
+      @return   none  <br>
+    </div>
+    <h3 id="flylogprintf" class="w3-text-blue">FlyLogPrintf</h3>
+    <p>print to the log file. Flushed every call.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlyLogPrintf(const char *szFormat, ...)<br>
+      <br>
+      @param    szFormat    standard printf format  <br>
+      @return   length of printed string  <br>
+    </div>
+    <h3 id="flylogprintfex" class="w3-text-blue">FlyLogPrintfEx</h3>
+    <p>print to the log file, but only if the mask bit is set. Flushed every call.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlyLogPrintfEx(flyLogMask_t mask, const char *szFormat, ...)<br>
+      <br>
+      @param    mask        mask for this printf  <br>
+      @param    szFormat    standard printf format  <br>
+      @return   length of printed string  <br>
+    </div>
+    <h3 id="flyloghexdump" class="w3-text-blue">FlyLogHexDump</h3>
+    <p>Dump hex data to the log file.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyLogHexDump(const void *pDataIn, unsigned len, unsigned linelen, unsigned indent)<br>
+      <br>
+      @param    pData     data to dump  <br>
+      @param    len       length of data to dump  <br>
+      @param    linlen    length of line  <br>
+      @param    indent    indent  <br>
+      @return   length of dump text  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>41 41 41 41 41 41 41 41  42 42 42 42 42 42 42 42  |AAAAAAAABBBBBBBB|</p>
+    <h3 id="flyloghexdumpex" class="w3-text-blue">FlyLogHexDumpEx</h3>
+    <p>Dump hex data to the log file, but only if the mask matches.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyLogHexDumpEx(flyLogMask_t mask, const void *pData, unsigned len, unsigned linelen, unsigned indent)<br>
+      <br>
+      @param    pData     data to dump  <br>
+      @param    len       length of data to dump  <br>
+      @param    linlen    length of line  <br>
+      @param    indent    indent  <br>
+      @return   length of dump text  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>41 41 41 41 41 41 41 41  42 42 42 42 42 42 42 42  |AAAAAAAABBBBBBBB|</p>
+    <h3 id="flylogmaskset" class="w3-text-blue">FlyLogMaskSet</h3>
+    <p>Set the log mask bits, affects what will print with FlyLogPrintfEx()</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flyLogMask_t FlyLogMaskSet(flyLogMask_t mask)<br>
+      <br>
+      @param    mask      bitmask, affects FlyLogPrintfEx()  <br>
+      @return   old mask  <br>
+    </div>
+    <h3 id="flylogmaskget" class="w3-text-blue">FlyLogMaskGet</h3>
+    <p>Get the current mask</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flyLogMask_t FlyLogMaskGet(void)<br>
+      <br>
+      @return   current bitmask, affects FlyLogPrintfEx()  <br>
+    </div>
+    <h3 id="flylogsizeget" class="w3-text-blue">FlyLogSizeGet</h3>
+    <p>Get the total size of the log</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyLogSizeGet(void)<br>
+      <br>
+      @return   size of the log in bytes  <br>
+    </div>
+    <h3 id="flylogsizereset" class="w3-text-blue">FlyLogSizeReset</h3>
+    <p>Reset size of log (does not delete the file. Higher layer must do that)</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyLogSizeReset(void)<br>
+      <br>
+      @return   none  <br>
+    </div>
+  </div>
+</div>
+</body>
+</html>

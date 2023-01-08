@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlyAes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlyAes</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#aes-ecb-encrypt">AES_ECB_encrypt</a><br>
+      <a href="#aes-ecb-decrypt">AES_ECB_decrypt</a><br>
+      <a href="#aes-cbc-encrypt-buffer">AES_CBC_encrypt_buffer</a><br>
+      <a href="#aes-cbc-decrypt-buffer">AES_CBC_decrypt_buffer</a><br>
+      <a href="#aes-ctr-xcrypt-buffer">AES_CTR_xcrypt_buffer</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>A small implementation of the AES algorithm</h3>
+<p>This is an implementation of the AES algorithm, specifically ECB, CTR and CBC mode. Block size
+can be chosen in aes.h - available choices are AES128, AES192, AES256.</p>
+<p>The implementation is verified against the test vectors in: National Institute of Standards and
+Technology Special Publication 800-38A 2001 ED</p>
+<p>ECB-AES128</p>
+<p>  plain-text:
+    6bc1bee22e409f96e93d7e117393172a
+    ae2d8a571e03ac9c9eb76fac45af8e51
+    30c81c46a35ce411e5fbc1191a0a52ef
+    f69f2445df4f9b17ad2b417be66c3710</p>
+<p>  key:
+    2b7e151628aed2a6abf7158809cf4f3c</p>
+<p>  resulting cipher
+    3ad77bb40d7a3660a89ecaf32466ef97 
+    f5d3d58503b9699de785895a96fdbaaf 
+    43b1cd7f598ece23881b00e3ed030688 
+    7b0c785e27e8ad3f8223207104725dd4 </p>
+<p>Note: String length must be evenly divisible by 16 bytes (str_len % 16 == 0) You should pad the
+end of the string with zeros if this is not the case. AES 128/192/256 simply defines key size.</p>
+    <h3 id="aes-ecb-encrypt" class="w3-text-blue">AES_ECB_encrypt</h3>
+    <p>Encrypt a block using ECB mode.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void AES_ECB_encrypt(const struct AES_ctx* ctx, uint8_t* buf)<br>
+      <br>
+      @param  ctx       context  <br>
+      @param  buf       buffer to encrypt/decrypt  <br>
+      @return none  <br>
+    </div>
+    <h3 id="aes-ecb-decrypt" class="w3-text-blue">AES_ECB_decrypt</h3>
+    <p>Decrypt a block using ECB mode.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void AES_ECB_decrypt(const struct AES_ctx* ctx, uint8_t* buf)<br>
+      <br>
+      @param  ctx       context  <br>
+      @param  buf       buffer to encrypt/decrypt  <br>
+      @return none  <br>
+    </div>
+    <h3 id="aes-cbc-encrypt-buffer" class="w3-text-blue">AES_CBC_encrypt_buffer</h3>
+    <p>Encrypt a block using CBC mode.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void AES_CBC_encrypt_buffer(struct AES_ctx *ctx, uint8_t* buf, size_t length)<br>
+      <br>
+      @param  ctx       context  <br>
+      @param  buf       buffer to encrypt/decrypt  <br>
+      @param  length    length of buffer  <br>
+      @return none  <br>
+    </div>
+    <h3 id="aes-cbc-decrypt-buffer" class="w3-text-blue">AES_CBC_decrypt_buffer</h3>
+    <p>Decrypt a block using CBC mode.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void AES_CBC_decrypt_buffer(struct AES_ctx* ctx, uint8_t* buf, size_t length)<br>
+      <br>
+      @param  ctx       context  <br>
+      @param  buf       buffer to encrypt/decrypt  <br>
+      @param  length    length of buffer  <br>
+      @return none  <br>
+    </div>
+    <h3 id="aes-ctr-xcrypt-buffer" class="w3-text-blue">AES_CTR_xcrypt_buffer</h3>
+    <p>Encrypt or decrypt a block using CTR mode.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void AES_CTR_xcrypt_buffer(struct AES_ctx* ctx, uint8_t* buf, size_t length)<br>
+      <br>
+      @param  ctx       context  <br>
+      @param  buf       buffer to encrypt/decrypt  <br>
+      @param  length    length of buffer  <br>
+      @return none  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Note: this is a ymmetrical operation: use the same function for encrypting as for decrypting. Any
+IV/nonce should never be reused with the same key</p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlyLibCli</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlyLibCli</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#flycliparse">FlyCliParse</a><br>
+      <a href="#flycliarg">FlyCliArg</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>- A C API for handling the command-line (argc, argv) in a consistent way.</h3>
+<p>FlyCli does not FORCE any option convention, but commonly single character options can be
+combined. For example, "-a" and "-v" are both single character options, and "-av" is both. If a
+multi-character option is desired, then two dashes are required: "--fancy_arg".</p>
+<p>Features:</p>
+<ul>
+<li>Options can be anywhere in the arglist</li>
+<li>Will print error messages (or not) based on settings in </li>
+<li>Get arguments in any order by index</li>
+</ul>
+<p>Example:</p>
+<div class="w3-code w3-light-grey notranslate">
+  <br>
+</div>
+    <h3 id="flycliparse" class="w3-text-blue">FlyCliParse</h3>
+    <p>Parse the command-line for all options. Returns the # of arguments that are NOT options, or -n to</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlyCliParse(const flyCli_t *pCli)<br>
+      <br>
+      @param    pCli    pointer to a filled-in flyCli_t structure  <br>
+      @param    argc    # of args, usually from main()  <br>
+      @param    argv    vector of arg strings, usually from main()  <br>
+      @return   -n on error, or 1-n for # of non-option arguments  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>index into the bad option.</p>
+<p>If the flyLibCli_t says so, it will print out the error (invalid option)</p>
+    <h3 id="flycliarg" class="w3-text-blue">FlyCliArg</h3>
+    <p>Return the arg by index, not counting options.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyCliArg(const flyCli_t *pCli, int index)<br>
+      <br>
+      @param    pCli    pointer to a filled-in flyCli_t structure  <br>
+      @param    argc    # of args, usually from main()  <br>
+      @param    argv    vector of arg strings, usually from main()  <br>
+      @param    index   index (0-n) into arguments  <br>
+      @return   ptr to argument string or NULL if invalid index  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Example: "my_prog arg1 -o arg2", FlyCliArg(2) would return "arg2"</p>
+  </div>
+</div>
+</body>
+</html>

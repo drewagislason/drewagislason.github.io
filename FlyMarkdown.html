@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlyMarkdown</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlyMarkdown</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#mdlisttype">MdListType</a><br>
+      <a href="#mdcatspaces">MdCatSpaces</a><br>
+      <a href="#flymd2htmlisbreak">FlyMd2HtmlIsBreak</a><br>
+      <a href="#flymd2htmliscodeblk">FlyMd2HtmlIsCodeBlk</a><br>
+      <a href="#flymd2htmlcodeblkend">FlyMd2HtmlCodeBlkEnd</a><br>
+      <a href="#flymd2htmlisheader">FlyMd2HtmlIsHeader</a><br>
+      <a href="#flymd2htmlheadertext">FlyMd2HtmlHeaderText</a><br>
+      <a href="#flymd2htmlislist">FlyMd2HtmlIsList</a><br>
+      <a href="#flymd2htmlisref">FlyMd2HtmlIsRef</a><br>
+      <a href="#flymd2htmlisqlink">FlyMd2HtmlIsQLink</a><br>
+      <a href="#flymd2htmlistable">FlyMd2HtmlIsTable</a><br>
+      <a href="#flymd2htmlisbold">FlyMd2HtmlIsBold</a><br>
+      <a href="#flymd2htmlbold">FlyMd2HtmlBold</a><br>
+      <a href="#flymd2htmlcodein">FlyMd2HtmlCodeIn</a><br>
+      <a href="#flymd2htmlcodeblk">FlyMd2HtmlCodeBlk</a><br>
+      <a href="#flymd2htmlimage">FlyMd2HtmlImage</a><br>
+      <a href="#flymd2htmlref">FlyMd2HtmlRef</a><br>
+      <a href="#flymd2htmlheader">FlyMd2HtmlHeader</a><br>
+      <a href="#flymd2htmllist">FlyMd2HtmlList</a><br>
+      <a href="#flymd2htmlparatext">FlyMd2HtmlParaText</a><br>
+      <a href="#flymd2htmlpara">FlyMd2HtmlPara</a><br>
+      <a href="#flymd2htmlqlink">FlyMd2HtmlQLink</a><br>
+      <a href="#flymd2htmltable">FlyMd2HtmlTable</a><br>
+      <a href="#flymd2htmlcontent">FlyMd2HtmlContent</a><br>
+      <a href="#flymdhtmlhead">FlyMdHtmlHead</a><br>
+      <a href="#flymdhtmlend">FlyMdHtmlEnd</a><br>
+      <a href="#flymd2htmlfile">FlyMd2HtmlFile</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>A C API for converting markdown into HTML.</h3>
+<p>Features:</p>
+<ul>
+<li>Converts markdown to static HTML</li>
+<li>Convert individual elements of markdown to HTML</li>
+<li>Does not allocate memory from heap</li>
+</ul>
+<p>Markdown features currently supported:</p>
+<ul>
+<li>Headings (use ##, not === or ---)</li>
+<li>Paragraphs with <code class="w3-codespan">code</code> <b>bold</b>, <a href="mylink.com">mylink.com</a> <a href="mylink.com">myref</a>, etc...</li>
+<li>Line breaks (two spaces at end of line)</li>
+<li>Bold and Italics (use <code class="w3-codespan">*italic*</code>, <code class="w3-codespan">**bold**</code> and <code class="w3-codespan">***both***</code>, not underscores)</li>
+<li>Ordered and unordered nested lists (supports <code class="w3-codespan">*</code>, <code class="w3-codespan">-</code>, <code class="w3-codespan">+</code>, <code class="w3-codespan">1.</code>)</li>
+<li>Code phrase with <code class="w3-codespan">single backticks</code></li>
+<li>Code blocks with triple backticks or indent by 4 spaces</li>
+<li>Image links: <code class="w3-codespan">![alt](link "title")</code></li>
+<li>Quick Links: <code class="w3-codespan">[link text](link)</code>, <code class="w3-codespan"><https://url.com/file></code> and <code class="w3-codespan"><name@email.com></code></li>
+<li>Escapes of <code class="w3-codespan"><&</code> to <code class="w3-codespan">&lt;</code> and <code class="w3-codespan">&amp;</code></li>
+</ul>
+<p>Features NOT yet supported:</p>
+<ul>
+<li>=== or --- under text for headers &lt;h1>, &lt;h2></li>
+<li>Blockquotes</li>
+<li>Horizontal Rules</li>
+<li>Underscores for bold, italics</li>
+<li>Alternate syntax, e.g. waves <code class="w3-codespan">~~~</code> instead of triple backticks</li>
+<li>Reference style links <a href="link.com">1</a></li>
+<li>Paragraphs within lists</li>
+<li>Randomizing email@address.com</li>
+</ul>
+<p>Some functions are line oriented which add CR/LF and process full lines. All others are character
+oriented. Line oriented functions:</p>
+<ul>
+<li>FlyMd2HtmlCodeBlk()</li>
+<li>FlyMd2HtmlHeader()</li>
+<li>FlyMd2HtmlList()</li>
+<li>FlyMd2HtmlPara()</li>
+<li>FlyMd2HtmlTable()</li>
+</ul>
+    <h3 id="mdlisttype" class="w3-text-blue">MdListType</h3>
+    <p>What type is this line? Returns both type and ptr to text following type.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      static const char *MdListType(const char *szLine, mdListType_t *pType)<br>
+      <br>
+      @param  szLine    ptr to a line of markdown  <br>
+      @param  pType     FLY_MD_LIST_TYPE_NOT_LIST, FLY_MD_LIST_TYPE_ORDERED, etc...  <br>
+      @return ptr to text following list type, or szLine if FLY_MD_LIST_TYPE_NOT_LIST  <br>
+    </div>
+    <h3 id="mdcatspaces" class="w3-text-blue">MdCatSpaces</h3>
+    <p>Create spaces that will look correct in HTML by using &nbsp;</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      static size_t MdCatSpaces(char *szHtml, size_t size, unsigned nSpaces)<br>
+      <br>
+      @param  szHtml    ptr to where to put the HTML  <br>
+      @param  size      sizeof HTML  <br>
+      @param  nSpaces   Number of spaces  <br>
+      @return ptr to text following list type, or szLine if FLY_MD_LIST_TYPE_NOT_LIST  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Note: this only concatinates. The szHtml string must already be initialized;  <br></p>
+<p>Rules:</p>
+<ol>
+<li>A single space is always a single space.</li>
+<li>Multiple spaces </li>
+</ol>
+<p>Note: actually uses every other space &amp;nbsp; to make a smaller string with same effect.</p>
+    <h3 id="flymd2htmlisbreak" class="w3-text-blue">FlyMd2HtmlIsBreak</h3>
+    <p>Does this line contain a break (two spaces) at the end of the line?</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyMd2HtmlIsBreak(const char *szLine)<br>
+      <br>
+      @param  szLine    ptr to markdown line  <br>
+      @return TRUE if this line has a link break at the end  <br>
+    </div>
+    <h3 id="flymd2htmliscodeblk" class="w3-text-blue">FlyMd2HtmlIsCodeBlk</h3>
+    <p>Does this line open/close a code block?</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyMd2HtmlIsCodeBlk(const char *szLine, bool_t *pIsBackticks)<br>
+      <br>
+      @param  szLine    ptr to markdown line  <br>
+      @return TRUE if this is a code block line  <br>
+    </div>
+    <h3 id="flymd2htmlcodeblkend" class="w3-text-blue">FlyMd2HtmlCodeBlkEnd</h3>
+    <p>Find the end of the code block. Handles both tripletick kind and indented kind.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char * FlyMd2HtmlCodeBlkEnd(const char *szLine)<br>
+      <br>
+      @param  szLine    ptr to markdown line  <br>
+      @return ptr to line after code block.  <br>
+    </div>
+    <h3 id="flymd2htmlisheader" class="w3-text-blue">FlyMd2HtmlIsHeader</h3>
+    <p>Is this line a header line (does it start with one or more hashes)?</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyMd2HtmlIsHeader(const char *szLine, unsigned *pLevel)<br>
+      <br>
+      @param  szLine    ptr to markdown line  <br>
+      @param  pLevel    number of hashes, e.g. `#`, `##`, `###'  <br>
+      @return length of szHtml output  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>TODO: allow == and -- headers</p>
+    <h3 id="flymd2htmlheadertext" class="w3-text-blue">FlyMd2HtmlHeaderText</h3>
+    <p>Given a header line, return ptr to header text.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyMd2HtmlHeaderText(const char *szLine)<br>
+      <br>
+      @param  szLine    ptr to markdown line  <br>
+      @return ptr to header text (next non-whitespace after ##), or NULL if not a header  <br>
+    </div>
+    <h3 id="flymd2htmlislist" class="w3-text-blue">FlyMd2HtmlIsList</h3>
+    <p>Is this a list line? </p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyMd2HtmlIsList(const char *szLine, bool_t *pIsNumeric)<br>
+      <br>
+      @param  szHtml      ptr to char array or NULL to just get size of resulting HTML  <br>
+      @param  szLine      Is this line a list?  <br>
+      @param  pIsNumeric  ptr to flag whether numeric or not  <br>
+      @return TRUE if this is a list line  <br>
+    </div>
+    <h3 id="flymd2htmlisref" class="w3-text-blue">FlyMd2HtmlIsRef</h3>
+    <p>Is this a reference to a link or image? ![alt](link "title") or [text](link "title")</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyMd2HtmlIsRef(const char *szMd, bool_t *pIsImg)<br>
+      <br>
+      @param  szMd    ptr to markdown  <br>
+      @param  pIsImg  TRUE if this is an image reference  <br>
+      @return TRUE if this is a reference  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Note: this does NOT skip whitespace, szMd must be on the starting character of the reference.</p>
+    <h3 id="flymd2htmlisqlink" class="w3-text-blue">FlyMd2HtmlIsQLink</h3>
+    <p>Is this a quick link? e.g. <https://mysite.com> or <me@mysite.com> or <#pagelink></p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyMd2HtmlIsQLink(const char *szMd)<br>
+      <br>
+      @param  szMd    ptr to markdown  <br>
+      @return TRUE if this is a quick link  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Note: this does NOT skip whitespace, szMd must be on the starting character of the QLink.</p>
+<p>The trick is to distinguish between HTML tags like &lt;span> from <a href="mysite.com">mysite.com</a>. Basic rules are:</p>
+<ol>
+<li>Must have an ending brace</li>
+<li>Must have one of ".@#" in it.</li>
+</ol>
+    <h3 id="flymd2htmlistable" class="w3-text-blue">FlyMd2HtmlIsTable</h3>
+    <p>Does this line start a table? Requires at least one " | "</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyMd2HtmlIsTable(const char *szMd)<br>
+      <br>
+      @param  szMd    ptr to markdown  <br>
+      @return TRUE if this is a quick link  <br>
+    </div>
+    <h3 id="flymd2htmlisbold" class="w3-text-blue">FlyMd2HtmlIsBold</h3>
+    <p>Is this **bold**, *italics*  or ***bold italics*** ?</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyMd2HtmlIsBold(const char *szMd)<br>
+      <br>
+      @param  szMd    ptr to markdown  <br>
+      @return TRUE if this is a bold/italics/both  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Note that it's only bold/italic is the stars are next to words. Only searches same line. Cannot
+bold across lines.</p>
+<p>Example: "** not bold <b>",   "</b>is bold**"</p>
+    <h3 id="flymd2htmlbold" class="w3-text-blue">FlyMd2HtmlBold</h3>
+    <p>Converts **bold**, *italics*  and **bold italics** into HTML</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyMd2HtmlBold(char *szHtml, size_t size, const char **ppszMd)<br>
+      <br>
+      @param  szHtml    ptr to char array or NULL to just get size of resulting HTML  <br>
+      @param  size      sizeof(szHtml)  <br>
+      @param  ppszMd    ptr markdown `code words`, updated to after `code words`  <br>
+      @return length of szHtml output  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>ppszMd is both input and output. It's advanced to end of "consumed" markdown</p>
+    <h3 id="flymd2htmlcodein" class="w3-text-blue">FlyMd2HtmlCodeIn</h3>
+    <p>Converts `code words` into <code class="w3-codespan">code words</code></p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyMd2HtmlCodeIn(char *szHtml, size_t size, const char **ppszMd)<br>
+      <br>
+      @param  szHtml    ptr to char array or NULL to just get size of resulting HTML  <br>
+      @param  size      sizeof(szHtml)  <br>
+      @param  ppszMd    if szHtml, ptr markdown `code words`, updated to after `code words`  <br>
+      @return length of szHtml output  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>ppszMd is both input and output. It's advanced to end of "consumed" markdown</p>
+    <h3 id="flymd2htmlcodeblk" class="w3-text-blue">FlyMd2HtmlCodeBlk</h3>
+    <p>Create a visual HTML code block from a markdown code block. A code block starts with triple</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyMd2HtmlCodeBlk(char *szHtml, size_t size, const char **ppszMd, const char *szTitle, const char *szW3Color)<br>
+      <br>
+      @param  szHtml    ptr to char array or NULL to just get size of resulting HTML  <br>
+      @param  size      sizeof(szHtml)  <br>
+      @param  ppszMd    ptr line of markdown  <br>
+      @return length HTML, or 0 if not a code block  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>backticks or is indented 4 spaces or a tab.</p>
+<p>Note: uses W3.CSS w3-code class if szTitle, otherwise uses w3-card w3-light-grey</p>
+<p>ppszMd is both input and output. It's advanced to end of "consumed" markdown</p>
+<p>Uses 1st line of code block to determine indent to remove. In this way, the code block is always
+flush left. It's up to any higher layer to add back in some indent if needed.</p>
+    <h3 id="flymd2htmlimage" class="w3-text-blue">FlyMd2HtmlImage</h3>
+    <p>Converts from markdown img link ![alt](link "title") to HTML. Title is optional.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyMd2HtmlImage(char *szHtml, size_t size, const char **ppszMd, const char *szAttr)<br>
+      <br>
+      @param  szHtml    ptr to char array or NULL to just get size of resulting HTML  <br>
+      @param  size      sizeof(szHtml)  <br>
+      @param  ppszMd    ptr to markdown ptr, both input and output  <br>
+      @param  szAttr    NULL or any extra attributes, e.g. style="width:150px"  <br>
+      @return len of resulting "<img ...>" or 0 if not a valid markdown image link  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Example: <code class="w3-codespan"><img src="link" alt="alt" title="title"></code></p>
+<p>Note: if alt string starts with "w3-", then a class is created with that flag</p>
+<p>ppszMd is both input and output. It is advanced to end of "consumed" markdown</p>
+    <h3 id="flymd2htmlref" class="w3-text-blue">FlyMd2HtmlRef</h3>
+    <p>Converts from markdown reference [text](link "title") to HTML. Title is optional.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyMd2HtmlRef(char *szHtml, size_t size, const char **ppszMd)<br>
+      <br>
+      @param  szHtml    ptr to char array or NULL to just get size of resulting HTML  <br>
+      @param  size      sizeof(szHtml)  <br>
+      @param  ppszMd    ptr to ptr to reference, e.g. [text](link "title")  <br>
+      @return len of resulting "<a ...>text</a>" or 0 if not a valid markdown reference  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Example: <code class="w3-codespan"><a href="link" title="title">text</a></code></p>
+<p>ppszMd is both input and output. It is advanced to end of "consumed" markdown</p>
+    <h3 id="flymd2htmlheader" class="w3-text-blue">FlyMd2HtmlHeader</h3>
+    <p>Convert markdown header into an HTML header.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyMd2HtmlHeader(char *szHtml, size_t size, const char **ppszMd)<br>
+      <br>
+      @param  szHtml    ptr to char array or NULL to just get size of resulting HTML  <br>
+      @param  pSize     both input/output  <br>
+      @param  ppszMd    ptr to ptr to markdown string  <br>
+      @return ptr to line after list, or szMd if not a list  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>ppszMd is both input and output. It is advanced to end of "consumed" markdown</p>
+    <h3 id="flymd2htmllist" class="w3-text-blue">FlyMd2HtmlList</h3>
+    <p>Convert markdown list into HTML list.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyMd2HtmlList(char *szHtml, size_t size, const char **ppszMd)<br>
+      <br>
+      @param  szHtml    ptr to char array or NULL to just get size of resulting HTML  <br>
+      @param  pSize     both input/output  <br>
+      @param  ppszMd    ptr to ptr to markdown string  <br>
+      @return ptr to line after list, or szMd if not a list  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Handles nested lists, both numeric and not.</p>
+<p>ppszMd is both input and output. It is advanced to end of "consumed" markdown</p>
+    <h3 id="flymd2htmlparatext" class="w3-text-blue">FlyMd2HtmlParaText</h3>
+    <p>Convert a line or less of text from markdown into HTML. Converts [text](link.com), `code`, etc...</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyMd2HtmlParaText(char *szHtml, size_t size, const char *szMd, const char *szMdEnd)<br>
+      <br>
+      @param  szHtml    ptr to char array or NULL to just get size of resulting HTML  <br>
+      @param  pSize     both input/output  <br>
+      @param  szMd      to start of text  <br>
+      @param  szMdEnd   ptr to byte AFTER end of text  <br>
+      @return size   <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>This is used to convert paragraph lines, list items, and table cells.</p>
+<p>ppszMd is both input and output. It is advanced to end of "consumed" markdown</p>
+    <h3 id="flymd2htmlpara" class="w3-text-blue">FlyMd2HtmlPara</h3>
+    <p>Convert markdown paragraph into HTML. Converts [text](ref) and `code`, and `  ` line break</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyMd2HtmlPara(char *szHtml, size_t size, const char **ppszMd)<br>
+      <br>
+      @param  szHtml    ptr to char array or NULL to just get size of resulting HTML  <br>
+      @param  pSize     both input/output  <br>
+      @param  ppszMd    ptr to ptr to markdown string, advanced forward  <br>
+      @return size of HTML, or 0 if not a paragraph (blank line)  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>On input, *ppszMd must point to a non-blank line.</p>
+<p>Stops on first blank line, or on a triple tick line, or on #Header lines.</p>
+<p>ppszMd is both input and output. It is advanced to end of "consumed" markdown</p>
+    <h3 id="flymd2htmlqlink" class="w3-text-blue">FlyMd2HtmlQLink</h3>
+    <p>Convert markdown quick linke into an HTML anchor.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyMd2HtmlQLink(char *szHtml, size_t size, const char **ppszMd)<br>
+      <br>
+      @param  szHtml    ptr to char array or NULL to just get size of resulting HTML  <br>
+      @param  pSize     both input/output  <br>
+      @param  ppszMd    ptr to ptr to markdown string  <br>
+      @return ptr to line after list, or szMd if not a list  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Handles nested lists, both numeric and not.</p>
+<p>ppszMd is both input and output. It is advanced to end of "consumed" markdown</p>
+    <h3 id="flymd2htmltable" class="w3-text-blue">FlyMd2HtmlTable</h3>
+    <p>Convert markdown tabls into an HTML tables using W3.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyMd2HtmlTable(char *szHtml, size_t size, const char **ppszMd)<br>
+      <br>
+      @param  szHtml    ptr to char array or NULL to just get size of resulting HTML  <br>
+      @param  pSize     both input/output  <br>
+      @param  ppszMd    ptr to ptr to markdown string  <br>
+      @return ptr to line after list, or szMd if not a list  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>ppszMd is both input and output. It is advanced to end of "consumed" markdown</p>
+<table class="w3-table-all" style="width:auto">
+<tr>
+  <th>Name</th>
+  <th class="w3-center">Occupation</th>
+  <th class="w3-right-align">Salary</th>
+</tr>
+<tr>
+  <td>Bob</td>
+  <td class="w3-center">Plumber</td>
+  <td class="w3-right-align">100K</td>
+</tr>
+<tr>
+  <td>Joe</td>
+  <td class="w3-center">Salesman</td>
+  <td class="w3-right-align">120K</td>
+</tr>
+<tr>
+  <td>Jane</td>
+  <td class="w3-center">Programmer</td>
+  <td class="w3-right-align">150K</td>
+</tr>
+</table>
+<table class="w3-table-all" style="width:auto">
+<tr>
+  <th>a</th>
+  <th>b</th>
+  <th>c</th>
+</tr>
+<tr>
+  <td>d</td>
+  <td>e</td>
+  <td>f</td>
+</tr>
+</table>
+    <h3 id="flymd2htmlcontent" class="w3-text-blue">FlyMd2HtmlContent</h3>
+    <p>Convert markdown string to an HTML string using W3.CSS. Does not contain front/end matter.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyMd2HtmlContent(char *szHtml, size_t size, const char *szMd)<br>
+      <br>
+      @param  szHtml    ptr to char array or NULL to just get size of resulting HTML  <br>
+      @param  size      sizeof(szHtml)  <br>
+      @param  szMd      ptr to HTML string  <br>
+      @return len of resulting HTML (1-n)  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Note: this is expected to put content inside an HTML framework.</p>
+    <h3 id="flymdhtmlhead" class="w3-text-blue">FlyMdHtmlHead</h3>
+    <p>Write the head of an HTML file to the szHtml string</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyMdHtmlHead(char *szHtml, size_t size, const char *szTitle)<br>
+      <br>
+      @param  szHtml    ptr to char array or NULL to just get size of resulting HTML  <br>
+      @param  size      sizeof(szHtml)  <br>
+      @param  szTitle   optional Title  <br>
+      @return len of resulting HTML (1-n)  <br>
+    </div>
+    <h3 id="flymdhtmlend" class="w3-text-blue">FlyMdHtmlEnd</h3>
+    <p>Write the end of an HTML file to the szHtml string</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyMdHtmlEnd(char *szHtml, size_t size)<br>
+      <br>
+      @param  szHtml    ptr to char array or NULL to just get size of resulting HTML  <br>
+      @param  size      sizeof(szHtml)  <br>
+      @return len of resulting HTML (1-n)  <br>
+    </div>
+    <h3 id="flymd2htmlfile" class="w3-text-blue">FlyMd2HtmlFile</h3>
+    <p>Convert markdown file to an HTML file using W3.CSS </p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyMd2HtmlFile(char *szHtml, size_t size, const char *szMd, const char *szTitle)<br>
+      <br>
+      @param  szHtml    ptr to char array or NULL to just get size of resulting HTML  <br>
+      @param  sizeHtml  sizeof(szHtml)  <br>
+      @param  szFile    ptr to file string  <br>
+      @return len of resulting HTML (1-n)  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>This will handle a </p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlyKeyPrompt</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlyKeyPrompt</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#flykeypromptnew">FlyKeyPromptNew</a><br>
+      <a href="#flykeypromptisprompt">FlyKeyPromptIsPrompt</a><br>
+      <a href="#flykeypromptfree">FlyKeyPromptFree</a><br>
+      <a href="#flykeypromptfeed">FlyKeyPromptFeed</a><br>
+      <a href="#flykeypromptgets">FlyKeyPromptGets</a><br>
+      <a href="#flykeypromptsize">FlyKeyPromptSize</a><br>
+      <a href="#flykeypromptlen">FlyKeyPromptLen</a><br>
+      <a href="#flykeypromptclear">FlyKeyPromptClear</a><br>
+      <a href="#flykeypromptredraw">FlyKeyPromptRedraw</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>A C object that mimics the keyboard input prompt of the terminal</h3>
+<p>This API is useful for "terminal" like applications, and is fully embeddable.</p>
+<p>Features:</p>
+<ol>
+<li>Usual terminatal keys like Ctrl-A (start of line) and Ctrl-E (end of line)</li>
+<li>line-string can be edited, cursor keys work</li>
+<li>Cursor keys up/down go to prev/next saved line.</li>
+<li>Define max # of saved lines at compile-time</li>
+<li>Ctrl-R to search for string in history</li>
+<li>Optional tab-completion of files/folders/commands</li>
+<li>Embeddable (no memory allocation, small footprint)</li>
+</ol>
+    <p id="example-flykeyprompt"><b>Example: FlyKeyPrompt</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  Insert example here...&nbsp; <br>
+</div>
+    <h3 id="flykeypromptnew" class="w3-text-blue">FlyKeyPromptNew</h3>
+    <p>Create a new prompt. Allows for non-blocking keyboard input while preserving state. For now,</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      hFlyKeyPrompt_t FlyKeyPromptNew(unsigned size, const char *sz)<br>
+      <br>
+      @param    size 2-n, as asciiz string is always NUL terminated  <br>
+      @param    sz, a seed string, may be NULL for none  <br>
+      @return   handle to prompt state machine  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>input is stdin, output is stdout</p>
+    <h3 id="flykeypromptisprompt" class="w3-text-blue">FlyKeyPromptIsPrompt</h3>
+    <p>Is this a prompt handle?</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyKeyPromptIsPrompt(hFlyKeyPrompt_t hPrompt)<br>
+      <br>
+      @param    hPrompt   handle to prompt  <br>
+      @return   TRUE if this is a prompt handle  <br>
+    </div>
+    <h3 id="flykeypromptfree" class="w3-text-blue">FlyKeyPromptFree</h3>
+    <p>Free this prompt handle</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyKeyPromptFree(hFlyKeyPrompt_t hPrompt)<br>
+      <br>
+      @param    hPrompt   handle to prompt  <br>
+      @return   none  <br>
+    </div>
+    <h3 id="flykeypromptfeed" class="w3-text-blue">FlyKeyPromptFeed</h3>
+    <p>Feed the prompt with a key, Cases display to update if key will do so.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlyKeyPromptFeed(hFlyKeyPrompt_t hPrompt, flyKey_t c)<br>
+      <br>
+      @param    hPrompt   handle to prompt  <br>
+      @return   -1 if string not yet complete. len of string if Enter is pressed.  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Supports the following keys:
+Ctrl-A, Ctrl-E, Ctrl-B, Ctr-F, Ctrl-K Enter, BS, Del, Left Arrow, Right Arrow</p>
+    <h3 id="flykeypromptgets" class="w3-text-blue">FlyKeyPromptGets</h3>
+    <p>Return the string allocated in the prompt state machine</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char * FlyKeyPromptGets(hFlyKeyPrompt_t hPrompt)<br>
+      <br>
+      @param    hPrompt   handle to prompt  <br>
+      @return   ptr to asciiz string  <br>
+    </div>
+    <h3 id="flykeypromptsize" class="w3-text-blue">FlyKeyPromptSize</h3>
+    <p>Assumes cursor is at start of string. Redraw it, and back up cursor to position.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlyKeyPromptSize(hFlyKeyPrompt_t hPrompt)<br>
+      <br>
+      @param    hPrompt   handle to prompt  <br>
+      @return   ptr to asciiz string  <br>
+    </div>
+    <h3 id="flykeypromptlen" class="w3-text-blue">FlyKeyPromptLen</h3>
+    <p>Assumes cursor is at start of string. Redraw it, and back up cursor to position.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlyKeyPromptLen(hFlyKeyPrompt_t hPrompt)<br>
+      <br>
+      @param    hPrompt   handle to prompt  <br>
+      @return   ptr to asciiz string  <br>
+    </div>
+    <h3 id="flykeypromptclear" class="w3-text-blue">FlyKeyPromptClear</h3>
+    <p>Clears the prompt. Prints nothing to screen</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyKeyPromptClear(hFlyKeyPrompt_t hPrompt)<br>
+      <br>
+      @param    hPrompt   handle to prompt  <br>
+      @return   ptr to asciiz string  <br>
+    </div>
+    <h3 id="flykeypromptredraw" class="w3-text-blue">FlyKeyPromptRedraw</h3>
+    <p>Assumes cursor is at start of string. Redraw it, and back up cursor to position.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyKeyPromptRedraw(hFlyKeyPrompt_t hPrompt)<br>
+      <br>
+      @param    hPrompt   handle to prompt  <br>
+      @return   ptr to asciiz string  <br>
+    </div>
+  </div>
+</div>
+</body>
+</html>

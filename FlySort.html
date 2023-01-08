@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlySort</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlySort</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#flysortbubble">FlySortBubble</a><br>
+      <a href="#flysortqsort">FlySortQSort</a><br>
+      <a href="#flysortlist">FlySortList</a><br>
+      <a href="#flysortcmpdouble">FlySortCmpDouble</a><br>
+      <a href="#flysortcmpdoubleex">FlySortCmpDoubleEx</a><br>
+      <a href="#flysortcmpint">FlySortCmpInt</a><br>
+      <a href="#flysortcmpintex">FlySortCmpIntEx</a><br>
+      <a href="#flysortcmpstr">FlySortCmpStr</a><br>
+      <a href="#flysortcmpstrex">FlySortCmpStrEx</a><br>
+      <a href="#flysortcmpunsigned">FlySortCmpUnsigned</a><br>
+      <a href="#flysortcmpunsignedex">FlySortCmpUnsignedEx</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>Sort linked lists, strings, structures and numbers.</h3>
+<p>Features:</p>
+<ul>
+<li>Sort any data types, both native and struct, unions</li>
+<li>Bubble sort for smallest code (moves objects/data around)</li>
+<li>QSort for reasonably fast sort for random data (moves objects/data around)</li>
+<li>Sort (via merge sort) linked list or array structures in-place. Links change only.</li>
+<li>Provide comparison function (with arg if needed) to sort forward, backward or any criteria </li>
+<li>Prebuilt comparison functions for common built-in C types</li>
+</ul>
+<p>For a good discussion of sorting algorithms, see:  <br>
+<a href="https://www.interviewkickstart.com/learn/merge-sort-vs-quicksort-performance-analysis">https://www.interviewkickstart.com/learn/merge-sort-vs-quicksort-performance-analysis</a></p>
+<p>Some types shared by the sort functions:</p>
+<div class="w3-code w3-light-grey notranslate">
+  typedef int&nbsp; (*pfnSortCmp_t)&nbsp; &nbsp; (const void *pThis, const void *pThat);<br>
+  typedef int&nbsp; (*pfnSortCmpEx_t)&nbsp; (void *pArg, const void *pThis, const void *pThat);<br>
+</div>
+<p>The <code class="w3-codespan">pArg</code> is any argument you want passed to the compare functions. It has no meaning to the
+built-in compare functions.</p>
+<p>The return int is the same as strcmp(), <code class="w3-codespan">< 0</code> means this is less than that, 0 is equal, 1 is
+greater than.</p>
+<p>If you want to avoid potentially pulling in the double math libraries, use: -DFLY_FLAG_NO_MATH
+which will #if out anything that uses floats or doubles.</p>
+    <h3 id="flysortbubble" class="w3-text-blue">FlySortBubble</h3>
+    <p>Basic buble sort. Swaps items in array. To reverse, just provide a different compare function.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlySortBubble(void *pArray, unsigned nElem, unsigned elemSize, pfnSortCmp_t pfnCmp)<br>
+      <br>
+      @param  pArray    ptr to array of items  <br>
+      @param  nElem     number of elements in the array  <br>
+      @param  elemSize  size of each element  <br>
+      @param  pfnCmp    compare function  <br>
+      @param  pfnSwap   swap function  <br>
+      @return none  <br>
+    </div>
+    <h3 id="flysortqsort" class="w3-text-blue">FlySortQSort</h3>
+    <p>This is just another name for the librarys qsort_r.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlySortQSort(void *pArray, size_t nElem, size_t elemSize, void *pArg, pfnSortCmpEx_t pfnCmp)<br>
+      <br>
+      @param  pArray    ptr to array of items  <br>
+      @param  nElem     number of elements in the array  <br>
+      @param  elemSize  size of each element  <br>
+      @param  pfnCmp    compare function  <br>
+      @param  pArg      argument to compare function. Can be NULL.  <br>
+      @return none  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>NOTE: manpages are often wrong on the order of arguments for the compare function. The correct
+order is:</p>
+<div class="w3-code w3-light-grey notranslate">
+  typedef int&nbsp; (*pfnSortCmpEx_t)&nbsp; (void *pArg, const void *pThis, const void *pThat);<br>
+</div>
+    <h3 id="flysortlist" class="w3-text-blue">FlySortList</h3>
+    <p>In-place sort a single or double linked list using merge sort. The list can be circular or not.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void * FlySortList(void *pLinkedList, bool_t fIsCircular, bool_t fIsDouble, void *pArg, pfnSortCmpEx_t pfnCmp)<br>
+      <br>
+      @param  pList         Pointer to the head of the list  <br>
+      @param  fIsCircular   Is the list circular?  <br>
+      @param  fIsDouble     Is the list single or double linked?  <br>
+      @param  pArg          any extra data needed by compare, or NULL  <br>
+      @param  pfnCmp        compare function  <br>
+      @return head of sorted list  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>This doesn't move any of the linked list objects, only changes what the links are pointing to.</p>
+<p>IMPORTANT: make sure your struct starts with the links(pNext before pPrev). Example(s):</p>
+<div class="w3-code w3-light-grey notranslate">
+  typedef struct mySingleList<br>
+  {<br>
+  &nbsp; struct mySingleList&nbsp; *pNext;<br>
+  &nbsp; // some data here...<br>
+  } mySingleList_t;<br>
+  <br>
+  typedef struct myDoubleList<br>
+  {<br>
+  &nbsp; struct myDoubleList&nbsp; *pNext;<br>
+  &nbsp; struct myDoubleList&nbsp; *pPrev;<br>
+  &nbsp; // some data here...<br>
+  } myDoubleList_t;<br>
+</div>
+    <h3 id="flysortcmpdouble" class="w3-text-blue">FlySortCmpDouble</h3>
+    <p>Compare two unsigned. Returns -1 if this < that, 0 if same, 1 if this > that.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlySortCmpDouble(const void *pThis, const void *pThat)<br>
+      <br>
+      @param  pThis   ptr to an unsigned  <br>
+      @param  pThat   ptr to an unsigned  <br>
+      @return Returns -1 if this < that, 0 if same, 1 if this > that.  <br>
+    </div>
+    <h3 id="flysortcmpdoubleex" class="w3-text-blue">FlySortCmpDoubleEx</h3>
+    <p>Compare two unsigned. Returns -1 if this < that, 0 if same, 1 if this > that.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlySortCmpDoubleEx(void *pArg, const void *pThis, const void *pThat)<br>
+      <br>
+      @param  pArg    ignored. For compatibility only  <br>
+      @param  pThis   ptr to an unsigned  <br>
+      @param  pThat   ptr to an unsigned  <br>
+      @return Returns -1 if this < that, 0 if same, 1 if this > that.  <br>
+    </div>
+    <h3 id="flysortcmpint" class="w3-text-blue">FlySortCmpInt</h3>
+    <p>Compare two ints. Returns -1 if this < that, 0 if same, 1 if this > that.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlySortCmpInt(const void *pThis, const void *pThat)<br>
+      <br>
+      @param  pThis   ptr to an int  <br>
+      @param  pThat   ptr to an int  <br>
+      @return Returns -1 if this < that, 0 if same, 1 if this > that.  <br>
+    </div>
+    <h3 id="flysortcmpintex" class="w3-text-blue">FlySortCmpIntEx</h3>
+    <p>Compare two ints. Returns -1 if this < that, 0 if same, 1 if this > that.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlySortCmpIntEx(void *pArg, const void *pThis, const void *pThat)<br>
+      <br>
+      @param  pArg    ignored. For compatibility only  <br>
+      @param  pThis   ptr to an int  <br>
+      @param  pThat   ptr to an int  <br>
+      @return Returns -1 if this < that, 0 if same, 1 if this > that.  <br>
+    </div>
+    <h3 id="flysortcmpstr" class="w3-text-blue">FlySortCmpStr</h3>
+    <p>Compare two strings. Returns -1 if this < that, 0 if same, 1 if this > that.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlySortCmpStr(const void *pThis, const void *pThat)<br>
+      <br>
+      @param  pThis   ptr to a string ptr  <br>
+      @param  pThat   ptr to a string ptr  <br>
+      @return Returns -1 if this < that, 0 if same, 1 if this > that.  <br>
+    </div>
+    <h3 id="flysortcmpstrex" class="w3-text-blue">FlySortCmpStrEx</h3>
+    <p>Compare two strings. Returns -1 if this < that, 0 if same, 1 if this > that.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlySortCmpStrEx(void *pArg, const void *pThis, const void *pThat)<br>
+      <br>
+      @param  pArg    ignored. For compatibility only  <br>
+      @param  pThis   ptr to a string ptr  <br>
+      @param  pThat   ptr to a string ptr  <br>
+      @return Returns -1 if this < that, 0 if same, 1 if this > that.  <br>
+    </div>
+    <h3 id="flysortcmpunsigned" class="w3-text-blue">FlySortCmpUnsigned</h3>
+    <p>Compare two unsigned. Returns -1 if this < that, 0 if same, 1 if this > that.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlySortCmpUnsigned(const void *pThis, const void *pThat)<br>
+      <br>
+      @param  pThis   ptr to an int  <br>
+      @param  pThat   ptr to an int  <br>
+      @return Returns -1 if this < that, 0 if same, 1 if this > that.  <br>
+    </div>
+    <h3 id="flysortcmpunsignedex" class="w3-text-blue">FlySortCmpUnsignedEx</h3>
+    <p>Compare two unsigned. Returns -1 if this < that, 0 if same, 1 if this > that.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlySortCmpUnsignedEx(void *pArg, const void *pThis, const void *pThat)<br>
+      <br>
+      @param  pArg    ignored. For compatibility only  <br>
+      @param  pThis   ptr to an int  <br>
+      @param  pThat   ptr to an int  <br>
+      @return Returns -1 if this < that, 0 if same, 1 if this > that.  <br>
+    </div>
+  </div>
+</div>
+</body>
+</html>

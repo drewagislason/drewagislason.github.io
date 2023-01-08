@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlyToml</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlyToml</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#tomlargnext">TomlArgNext</a><br>
+      <a href="#flytomlparse">FlyTomlParse</a><br>
+      <a href="#flytomlparsearray">FlyTomlParseArray</a><br>
+      <a href="#flytomlsectionkeys">FlyTomlSectionKeys</a><br>
+      <a href="#flytomlstrlen">FlyTomlStrLen</a><br>
+      <a href="#flytomlstrbeg">FlyTomlStrBeg</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>An API for processing .toml files.</h3>
+<p>The .toml file format was invented for the Rust programming language <a href="https://doc.rust-lang.org">https://doc.rust-lang.org</a>.</p>
+<p>This API parses a .toml file or string. This API is simple, small and doesn't allocate any
+memory. An example .toml file follows:</p>
+<div class="w3-code w3-light-grey notranslate">
+  # sample toml file<br>
+  [package]<br>
+  name = "moocow"<br>
+  version = "0.1.0"<br>
+  authors = ["My Name &lt;me@mysite.com>"]<br>
+  <br>
+  [dependencies]<br>
+  rand = "0.5.5"<br>
+  adder = { path="../adder" }<br>
+  flylib = { git="https://github.com/drewgislason/flylib", branch="main", version="0.9" }<br>
+</div>
+<p>toml has <code class="w3-codespan">[sections]</code> and <code class="w3-codespan">key=value</code> pairs, where the value is "string", true, false, number. If
+a string contains a quote, escape it, as shown here:</p>
+<div class="w3-code w3-light-grey notranslate">
+  mystring = "string \"contains\" quotes"&nbsp; <br>
+</div>
+    <h3 id="tomlargnext" class="w3-text-blue">TomlArgNext</h3>
+    <p>Specifically for key=value pair, will stop on the equal.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      static const char * TomlArgNext(const char *sz)<br>
+      <br>
+      @param  sz      ptr to a key=value line  <br>
+      @return ptr to next arg  <br>
+    </div>
+    <h3 id="flytomlparse" class="w3-text-blue">FlyTomlParse</h3>
+    <p>Parse a toml string for a key/value pair.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyTomlParse(const char *szToml, const char *szKeyPath, tomlType_t *pType)<br>
+      <br>
+      @param  szToml      a toml string  <br>
+      @param  szKeyPath   path to toml value, e.g. "package:name" or "dependencies:flylib:version"  <br>
+      @param  pType       ptr to receive type of toml value  <br>
+      @return ptr to value in the key = value pair, or NULL if not found  <br>
+    </div>
+    <h3 id="flytomlparsearray" class="w3-text-blue">FlyTomlParseArray</h3>
+    <p>Parse a toml array for a key/value pairs. This array must be the value returned by FlyTomlParse().</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyTomlParseArray(const char *szTomlArray, tomlType_t *pType, unsigned index)<br>
+      <br>
+      @param  szTomlArray   returned by FlyTomlParse()  <br>
+      @param  pType         ptr to receive type of toml value  <br>
+      @param  index         index  <br>
+      @return ptr to value in the key = value pair, or NULL if not found  <br>
+    </div>
+    <h3 id="flytomlsectionkeys" class="w3-text-blue">FlyTomlSectionKeys</h3>
+    <p>Get the keys in this section. Ignores invalid key = value pairs.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlyTomlSectionKeys(const char *szToml, const char *szSection, unsigned nMaxKeys, tomlKey_t *pKeys)<br>
+      <br>
+      @param  szToml      a toml string  <br>
+      @param  szSection   section name, e.g. "dependencies"  <br>
+      @param  nMaxKeys    max keys in pKeys array of keys  <br>
+      @param  pKeys       ptr to key/value array of size nMaxKeys  <br>
+      @return number of keys/value pairs, or 0 if not a valid section  <br>
+    </div>
+    <h3 id="flytomlstrlen" class="w3-text-blue">FlyTomlStrLen</h3>
+    <p>Get the length of this key or "string". Can handle escaped quotes.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlyTomlStrLen(const char *szTomlStr)<br>
+      <br>
+      @param  szTomlStr   ptr to key or "value" string  <br>
+      @return length of key or contents of "string" or 0 if not valid key or "string"  <br>
+    </div>
+    <h3 id="flytomlstrbeg" class="w3-text-blue">FlyTomlStrBeg</h3>
+    <p>If key, just return key, but if "string" return the char after quote.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char *FlyTomlStrBeg(const char *szTomlStr)<br>
+      <br>
+      @param  szTomlStr   ptr to key or "value" string  <br>
+      @return ptr to string contents  <br>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlyJson</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlyJson</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#flyjsonisjson">FlyJsonIsJson</a><br>
+      <a href="#flyjsongetobj">FlyJsonGetObj</a><br>
+      <a href="#flyjsongetkey">FlyJsonGetKey</a><br>
+      <a href="#flyjsongetvalueptr">FlyJsonGetValuePtr</a><br>
+      <a href="#flyjsongetcount">FlyJsonGetCount</a><br>
+      <a href="#flyjsongetscalar">FlyJsonGetScalar</a><br>
+      <a href="#flyjsongetbool">FlyJsonGetBool</a><br>
+      <a href="#flyjsongetnumber">FlyJsonGetNumber</a><br>
+      <a href="#flyjsonstrlen">FlyJsonStrLen</a><br>
+      <a href="#flyjsonstrcmp">FlyJsonStrCmp</a><br>
+      <a href="#flyjsonstrncpy">FlyJsonStrNCpy</a><br>
+      <a href="#flyjsonnew">FlyJsonNew</a><br>
+      <a href="#flyjsonishandle">FlyJsonIsHandle</a><br>
+      <a href="#flyjsonfree">FlyJsonFree</a><br>
+      <a href="#flyjsonput">FlyJsonPut</a><br>
+      <a href="#flyjsonputscalar">FlyJsonPutScalar</a><br>
+      <a href="#flyjsonputbegin">FlyJsonPutBegin</a><br>
+      <a href="#flyjsonputend">FlyJsonPutEnd</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>A simple API for converting JSON to C and C to JSON</h3>
+<p>Key Features</p>
+<ul>
+<li>Output either compressed (no spaces) or "pretty" (e.g. python -m json.tool [infile] [outfile])</li>
+<li>Supports JSON as described at www.json.org</li>
+<li>Self-contained, only Fly.h, FlyJson.h, FlyJson.c and some standard C library calls are used</li>
+<li>Optionally supports floats (off by default)</li>
+<li>Supports packed JSON or any amount of whitespace</li>
+</ul>
+<p>Limitations (subset of JSON)</p>
+<ul>
+<li>Numbers are long or double. You can typecast them into something smaller</li>
+<li>Floats are disabled by default, and are actually double, see FLYJSON_CFG_FLOAT</li>
+<li>Output "depth" is limited by FLYJSON_MAX_LEVEL (does not affect input depth)</li>
+<li>Total keypath limited to PATH_MAX, see FlyJsonGet()</li>
+</ul>
+<p>See also: python -m json.tool [-h] [--sort-keys] [--json-lines] [infile] [outfile]</p>
+    <p id="example-flyjsonput"><b>Example: FlyJsonPut</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  Insert example here...&nbsp; <br>
+</div>
+    <h3 id="flyjsonisjson" class="w3-text-blue">FlyJsonIsJson</h3>
+    <p>Returns TRUE if JSON (at least 1 object or scalar), FALSE if not</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyJsonIsJson(const char *szJson)<br>
+      <br>
+      @param    szBool      points to "true" or "false"  <br>
+      @return   TRUE if "true", FALSE if not  <br>
+    </div>
+    <h3 id="flyjsongetobj" class="w3-text-blue">FlyJsonGetObj</h3>
+    <p>Gets a JSON object from a JSON input string</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char *FlyJsonGetObj(const char *szJson)<br>
+      <br>
+      @param    szJson      points to the beginning of a JSON file or object  <br>
+      @return   TRUE if "true", FALSE if not  <br>
+    </div>
+    <h3 id="flyjsongetkey" class="w3-text-blue">FlyJsonGetKey</h3>
+    <p>Return a pointer to the indexed key, or NULL if out of range or contains scalars</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char *FlyJsonGetKey(const char *szObj, size_t index)<br>
+      <br>
+      @param    szObj     points to '[' or '{'  <br>
+      @param    index     index into array  <br>
+      @return   pointer indexed to key, or NULL if index out of range  <br>
+    </div>
+    <h3 id="flyjsongetvalueptr" class="w3-text-blue">FlyJsonGetValuePtr</h3>
+    <p>Assuming a "key":"value", get ptr to the value and its type</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyJsonGetValuePtr(const char *szKey, flyJsonType_t *pType)<br>
+      <br>
+      @param    szBool      points to "true" or "false"  <br>
+      @return   ptr to value, NULL if not a key or invalid value  <br>
+    </div>
+    <h3 id="flyjsongetcount" class="w3-text-blue">FlyJsonGetCount</h3>
+    <p>Count of keys (OBJ) or scalars (ARRAY)</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyJsonGetCount(const char *szObj)<br>
+      <br>
+      @param    szObj      points to "{" or "["  <br>
+      @return   count of elements in object or array  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Exmaples: { "key": 99, "key2": "val" } is count 2, [-1, 123, 55] is count 3</p>
+    <h3 id="flyjsongetscalar" class="w3-text-blue">FlyJsonGetScalar</h3>
+    <p>Get the indexed element in the array. Returns NULL if not an array or index out of bounds</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char *FlyJsonGetScalar(const char *szArray, size_t index, flyJsonType_t *pType)<br>
+      <br>
+      @param    szArray       points to "["  <br>
+      @param    index         0-n  <br>
+      @param    pType         pointer to receive type  <br>
+      @return   ptr to value: number, bool, string, obj, array; and type (e.g. FLYJSON_BOOL)  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Example: [99, false, { "key": "val}, [-5, 2]], index 2 would point to { of type FLYJSON_OBJ</p>
+    <h3 id="flyjsongetbool" class="w3-text-blue">FlyJsonGetBool</h3>
+    <p>Get a bool from a JSON file. Must point to the bool.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyJsonGetBool(const char *szBool)<br>
+      <br>
+      @param    szBool      points to "true" or "false"  <br>
+      @return   TRUE if "true", FALSE if not  <br>
+    </div>
+    <h3 id="flyjsongetnumber" class="w3-text-blue">FlyJsonGetNumber</h3>
+    <p>Get a number from a JSON file. Must point to the number.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      long FlyJsonGetNumber(const char *szNumber)<br>
+      <br>
+      @param    szNumber      points to a number like "-1" or "9223372036854775807"  <br>
+      @return   TRUE if "true", FALSE if not  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>For floating point (well, double) numbers, see FlyJsonInGetFloat()</p>
+    <h3 id="flyjsonstrlen" class="w3-text-blue">FlyJsonStrLen</h3>
+    <p>Get a copy of the JSON "string", removing quotes.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyJsonStrLen(const char *szJsonStr)<br>
+      <br>
+      @param    szDst       points to a character array to receive the string  <br>
+      @param    szJsonStr   points to string in a JSON file. "my string"  <br>
+      @param    n           usually sizeof(szDst)  <br>
+      @return   TRUE if "true", FALSE if not  <br>
+    </div>
+    <h3 id="flyjsonstrcmp" class="w3-text-blue">FlyJsonStrCmp</h3>
+    <p>Compare a normal string and a quoted JSON string. Otherwise, same as strcmp()</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlyJsonStrCmp(const char *sz, const char *szJsonStr)<br>
+      <br>
+      @param    sz          points to a '\0' terminated string  <br>
+      @param    szJsonStr   points to string in a JSON file, e.g. "my string"  <br>
+      @return   TRUE if "true", FALSE if not  <br>
+    </div>
+    <h3 id="flyjsonstrncpy" class="w3-text-blue">FlyJsonStrNCpy</h3>
+    <p>Get a copy of the JSON "string", removing quotes. Always NULL terminates.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyJsonStrNCpy(char *szDst, const char *szJsonStr, size_t n)<br>
+      <br>
+      @param    szDst       points to a character array to receive the string  <br>
+      @param    szJsonStr   points to string in a JSON file. "my string"  <br>
+      @param    n           usually sizeof(szDst)  <br>
+      @return   length of string (I know, not the same as strncpy()  <br>
+    </div>
+    <h3 id="flyjsonnew" class="w3-text-blue">FlyJsonNew</h3>
+    <p>Create a new JSON output object. Used for all JSON output functions</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      hFlyJson_t FlyJsonNew(char *szDst, size_t maxSize, bool_t fPretty)<br>
+      <br>
+      @param    szDst       can be NULL if just getting size output would be  <br>
+      @param    fPretty     pack the output, or make it pretty (more human readable)  <br>
+      @param    indent      indent (in spaces) per level. 4 is a good number  <br>
+      @return   NULL if failed, handle to object otherwise  <br>
+    </div>
+    <h3 id="flyjsonishandle" class="w3-text-blue">FlyJsonIsHandle</h3>
+    <p>Free the JSON object</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyJsonIsHandle(hFlyJson_t hJson)<br>
+      <br>
+      @param    hJson       a JSON object created by FlyJsonNew()  <br>
+      @return   none  <br>
+    </div>
+    <h3 id="flyjsonfree" class="w3-text-blue">FlyJsonFree</h3>
+    <p>Free the JSON object</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyJsonFree(hFlyJson_t hJson)<br>
+      <br>
+      @param    hJson       a JSON object created by FlyJsonNew()  <br>
+      @return   none  <br>
+    </div>
+    <h3 id="flyjsonput" class="w3-text-blue">FlyJsonPut</h3>
+    <p>Put a JSON key. For FLYJSON_ARRAY and FLYJSON_OBJ, this is the opener of the array or object.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyJsonPut(hFlyJson_t hJson, const char *szKey, flyJsonType_t type, const void *pValue)<br>
+      <br>
+      @param    hJson       a JSON object created by FlyJsonNew()  <br>
+      @param    szKey       key for a key:value pair  <br>
+      @param    pValue      pointer to value if scalar (ignored on FLYJSON_ARRAY, FLYJSON_OBJ, etc...)  <br>
+      @return   size of the output  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Close it with FlyJsonPutEnd</p>
+    <h3 id="flyjsonputscalar" class="w3-text-blue">FlyJsonPutScalar</h3>
+    <p>Put a JSON scalar value.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyJsonPutScalar(hFlyJson_t hJson, flyJsonType_t type, const void *pValue)<br>
+      <br>
+      @param    hJson       a JSON object created by FlyJsonNew()  <br>
+      @param    type        must be scalar type (FLYJSON_BOOL, FLYJSON_NUMBER, etc...)  <br>
+      @param    pValue      pointer to value  <br>
+      @return   size of the output  <br>
+    </div>
+    <h3 id="flyjsonputbegin" class="w3-text-blue">FlyJsonPutBegin</h3>
+    <p>Used at start of JSON file which is always '{' or '['</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyJsonPutBegin(hFlyJson_t hJson, flyJsonType_t type)<br>
+      <br>
+      @param    hJson       a JSON object created by FlyJsonNew()  <br>
+      @param    type        either FLYJSON_ARRAY or FLYJSON_OBJ  <br>
+      @return   TRUE if this is an obj  <br>
+    </div>
+    <h3 id="flyjsonputend" class="w3-text-blue">FlyJsonPutEnd</h3>
+    <p>End the array or object</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyJsonPutEnd(hFlyJson_t hJson, flyJsonType_t type)<br>
+      <br>
+      @param    hJson       a JSON object created by FlyJsonNew()  <br>
+      @param    type        either FLYJSON_ARRAY or FLYJSON_OBJ  <br>
+      @return   TRUE if this is an obj  <br>
+    </div>
+  </div>
+</div>
+</body>
+</html>

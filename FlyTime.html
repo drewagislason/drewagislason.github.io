@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlyTime</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlyTime</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#flytimeseedrandom">FlyTimeSeedRandom</a><br>
+      <a href="#flytimemsdiff">FlyTimeMsDiff</a><br>
+      <a href="#flytimemsget">FlyTimeMsGet</a><br>
+      <a href="#flytimemssleep">FlyTimeMsSleep</a><br>
+      <a href="#flytimeusdiff">FlyTimeUsDiff</a><br>
+      <a href="#flytimeusget">FlyTimeUsGet</a><br>
+      <a href="#flytimeussleep">FlyTimeUsSleep</a><br>
+      <a href="#flytimeepoch">FlyTimeEpoch</a><br>
+      <a href="#flytimeepochstr">FlyTimeEpochStr</a><br>
+      <a href="#flytimeepochstrlocal">FlyTimeEpochStrLocal</a><br>
+      <a href="#flytimeepochstriso">FlyTimeEpochStrIso</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>A simplified time interface</h3>
+<p>This defines a small set of functions for checking time and date, creating timers and other. It
+relies on standard C time/date functions, or the app provide functions to customize them.</p>
+<p>Small embedded systems (with no OS) may not have time functions available. This API can support
+those systems.</p>
+<p>Features:</p>
+<ol>
+<li>Embeddable: small footprint, no malloc(), redefine inputs</li>
+<li>Understands epoch time</li>
+<li>Understands ISO 8601 standard date/time format</li>
+<li>Create timers</li>
+<li>Check time/date</li>
+<li>Convert from UTC to local time</li>
+<li>Embeddable: time input functions can be redifined for the embedded system.</li>
+<li>Random numbers for doing things at random times</li>
+</ol>
+<p>See also: <a href="https://www.epochconverter.com">https://www.epochconverter.com</a></p>
+    <h3 id="flytimeseedrandom" class="w3-text-blue">FlyTimeSeedRandom</h3>
+    <p>Seed random() generator with current time. Also returns the current time.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flytime_t FlyTimeSeedRandom(void)<br>
+      <br>
+      @return   # of seconds since Epoch UTC (1970).  <br>
+    </div>
+    <h3 id="flytimemsdiff" class="w3-text-blue">FlyTimeMsDiff</h3>
+    <p>Determine time difference in milliseconds from time now. Expects timeMs to be <= time now or</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flytime_t FlyTimeMsDiff(flytime_t timeMs)<br>
+      <br>
+      @param    timeMs   time returned by FlyTimeMsGet()  <br>
+      @return   time difference  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>the number may be quite large.</p>
+    <h3 id="flytimemsget" class="w3-text-blue">FlyTimeMsGet</h3>
+    <p>Get the current # of milliseconds.  </p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flytime_t FlyTimeMsGet(void)<br>
+      <br>
+      @param    milliseconds  <br>
+      @return   current time from epoch in ms  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>NOTE: this can roll-over if time_t is less than 64-bits</p>
+    <h3 id="flytimemssleep" class="w3-text-blue">FlyTimeMsSleep</h3>
+    <p>Wait a certain number of milliseconds</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyTimeMsSleep(unsigned long milliseconds)<br>
+      <br>
+      @param    milliseconds  <br>
+      @return   none  <br>
+    </div>
+    <h3 id="flytimeusdiff" class="w3-text-blue">FlyTimeUsDiff</h3>
+    <p>Determine time difference in microseconds from time now. Expects timeUs to be <= time now or</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flytime_t FlyTimeUsDiff(flytime_t timeUs)<br>
+      <br>
+      @param    timeMs   time returned by FlyTimeMsGet()  <br>
+      @return   time difference.  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>number by be quite large.</p>
+    <h3 id="flytimeusget" class="w3-text-blue">FlyTimeUsGet</h3>
+    <p>Get the current # of microseconds.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flytime_t FlyTimeUsGet(void)<br>
+      <br>
+      @param    milliseconds  <br>
+      @return   current time from epoch in ms  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>NOTE: this can roll-over even if time_t is 64-bits</p>
+    <h3 id="flytimeussleep" class="w3-text-blue">FlyTimeUsSleep</h3>
+    <p>Wait a certain number of milliseconds</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyTimeUsSleep(unsigned long microseconds)<br>
+      <br>
+      @param    milliseconds  <br>
+      @return   none  <br>
+    </div>
+    <h3 id="flytimeepoch" class="w3-text-blue">FlyTimeEpoch</h3>
+    <p>Current UTC epoch time.  </p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flytime_t FlyTimeEpoch(long *pMicroseconds)<br>
+      <br>
+      @return   UTC epoch time  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>NOTE: if time_t is only 32 bits, this limits the year to 2106, eopch</p>
+    <h3 id="flytimeepochstr" class="w3-text-blue">FlyTimeEpochStr</h3>
+    <p>Similar to cmdline "date" format, Return epoch time string form: Fri Sep 16 15:31:52 2022</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyTimeEpochStr(flytime_t epoch, char *szDst, unsigned size)<br>
+      <br>
+      @return   UTC epoch time  <br>
+    </div>
+    <h3 id="flytimeepochstrlocal" class="w3-text-blue">FlyTimeEpochStrLocal</h3>
+    <p>Similar to cmdline "date" format, Return local time string form: Fri Sep 16 15:31:52 2022</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyTimeEpochStrLocal(flytime_t epoch, char *szDst, unsigned size)<br>
+      <br>
+      @return   UTC epoch time  <br>
+    </div>
+    <h3 id="flytimeepochstriso" class="w3-text-blue">FlyTimeEpochStrIso</h3>
+    <p>Return epoch time in the ISO 8601 string format: "2022-09-16T02:31:09"</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyTimeEpochStrIso(flytime_t epoch, char *szDst, unsigned size)<br>
+      <br>
+      @return   string in ISO 8601 format  <br>
+    </div>
+  </div>
+</div>
+</body>
+</html>

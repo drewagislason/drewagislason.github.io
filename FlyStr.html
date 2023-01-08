@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlyStr</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlyStr</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#flystrnullof">FlyStrNullOf</a><br>
+      <a href="#flystrlinechr">FlyStrLineChr</a><br>
+      <a href="#flystrlinenext">FlyStrLineNext</a><br>
+      <a href="#flystrlineprev">FlyStrLinePrev</a><br>
+      <a href="#flystrlinepos">FlyStrLinePos</a><br>
+      <a href="#flystrlinebeg">FlyStrLineBeg</a><br>
+      <a href="#flystrlineend">FlyStrLineEnd</a><br>
+      <a href="#flystrlineeof">FlyStrLineEof</a><br>
+      <a href="#flystrlinecount">FlyStrLineCount</a><br>
+      <a href="#flystrlineskipblank">FlyStrLineSkipBlank</a><br>
+      <a href="#flystrlineindent">FlyStrLineIndent</a><br>
+      <a href="#flystrlineindenttab">FlyStrLineIndentTab</a><br>
+      <a href="#flystrlinelen">FlyStrLineLen</a><br>
+      <a href="#flystrlinelenex">FlyStrLineLenEx</a><br>
+      <a href="#flystrlineisblank">FlyStrLineIsBlank</a><br>
+      <a href="#flystrlineblankremove">FlyStrLineBlankRemove</a><br>
+      <a href="#flystrblankremove">FlyStrBlankRemove</a><br>
+      <a href="#flystrargcpy">FlyStrArgCpy</a><br>
+      <a href="#flystrargcmp">FlyStrArgCmp</a><br>
+      <a href="#flystrarglen">FlyStrArgLen</a><br>
+      <a href="#flystrargnext">FlyStrArgNext</a><br>
+      <a href="#flystrskipwhite">FlyStrSkipWhite</a><br>
+      <a href="#flystrskipwhiteex">FlyStrSkipWhiteEx</a><br>
+      <a href="#flystrskipchars">FlyStrSkipChars</a><br>
+      <a href="#flystrskiptoend">FlyStrSkipToEnd</a><br>
+      <a href="#flystrskiptobeg">FlyStrSkipToBeg</a><br>
+      <a href="#flystricmp">FlyStrICmp</a><br>
+      <a href="#flychariscname">FlyCharIsCName</a><br>
+      <a href="#flycharisdozenal">FlyCharIsDozenal</a><br>
+      <a href="#flycharprev">FlyCharPrev</a><br>
+      <a href="#flychariseol">FlyCharIsEol</a><br>
+      <a href="#flystrchrcount">FlyStrChrCount</a><br>
+      <a href="#flystrchrcountrev">FlyStrChrCountRev</a><br>
+      <a href="#flystrisspace">FlyStrIsSpace</a><br>
+      <a href="#flystriscase">FlyStrIsCase</a><br>
+      <a href="#flystrtocase">FlyStrToCase</a><br>
+      <a href="#flystrtolower">FlyStrToLower</a><br>
+      <a href="#flystrdatetime">FlyStrDateTime</a><br>
+      <a href="#flystrdatetimecur">FlyStrDateTimeCur</a><br>
+      <a href="#flystrpathhome">FlyStrPathHome</a><br>
+      <a href="#flystrpathisfolder">FlyStrPathIsFolder</a><br>
+      <a href="#flystrlastslash">FlyStrLastSlash</a><br>
+      <a href="#flystrprevslash">FlyStrPrevSlash</a><br>
+      <a href="#flystrlastchar">FlyStrLastChar</a><br>
+      <a href="#flystrlastcharof">FlyStrLastCharOf</a><br>
+      <a href="#flystrpathnameonly">FlyStrPathNameOnly</a><br>
+      <a href="#flystrpathhasext">FlyStrPathHasExt</a><br>
+      <a href="#flystrpathonly">FlyStrPathOnly</a><br>
+      <a href="#flystrpathparent">FlyStrPathParent</a><br>
+      <a href="#flystrisfolder">FlyStrIsFolder</a><br>
+      <a href="#flystrpathext">FlyStrPathExt</a><br>
+      <a href="#flystrpathchangeext">FlyStrPathChangeExt</a><br>
+      <a href="#flystrpathlang">FlyStrPathLang</a><br>
+      <a href="#flystrpathhomeexpand">FlyStrPathHomeExpand</a><br>
+      <a href="#flystrfit">FlyStrFit</a><br>
+      <a href="#flystrpathappend">FlyStrPathAppend</a><br>
+      <a href="#memisfilled">memisfilled</a><br>
+      <a href="#flymemrchr">FlyMemRChr</a><br>
+      <a href="#flymemicmp">FlyMemICmp</a><br>
+      <a href="#flymemswap">FlyMemSwap</a><br>
+      <a href="#flymemdiff">FlyMemDiff</a><br>
+      <a href="#flystrichr">FlyStrIChr</a><br>
+      <a href="#flystrcat">FlyStrCat</a><br>
+      <a href="#flystrcatfill">FlyStrCatFill</a><br>
+      <a href="#flystrins">FlyStrIns</a><br>
+      <a href="#flystrnchr">FlyStrNChr</a><br>
+      <a href="#flystrnchrmatch">FlyStrNChrMatch</a><br>
+      <a href="#flystrwidetoutf8">FlyStrWideToUtf8</a><br>
+      <a href="#flymemremoveextraspaces">FlyMemRemoveExtraSpaces</a><br>
+      <a href="#flymemfindwrap">FlyMemFindWrap</a><br>
+      <a href="#flystrwherediff">FlyStrWhereDiff</a><br>
+      <a href="#flystrdump">FlyStrDump</a><br>
+      <a href="#flystrdumpex">FlyStrDumpEx</a><br>
+      <a href="#flystrdumpline">FlyStrDumpLine</a><br>
+      <a href="#flystrarraycopy">FlyStrArrayCopy</a><br>
+      <a href="#flystrarrayfree">FlyStrArrayFree</a><br>
+      <a href="#flystrarraycmp">FlyStrArrayCmp</a><br>
+      <a href="#flystrarraymalloc">FlyStrArrayMalloc</a><br>
+      <a href="#flystrarraytext">FlyStrArrayText</a><br>
+      <a href="#flystrarraynumelem">FlyStrArrayNumElem</a><br>
+      <a href="#flystrarraysizeof">FlyStrArraySizeOf</a><br>
+      <a href="#flystrarrayprint">FlyStrArrayPrint</a><br>
+      <a href="#flystrhdrfind">FlyStrHdrFind</a><br>
+      <a href="#flystrhdrisdoc">FlyStrHdrIsDoc</a><br>
+      <a href="#flystrhdrisline">FlyStrHdrIsLine</a><br>
+      <a href="#flystrhdrispydoc">FlyStrHdrIsPyDoc</a><br>
+      <a href="#flystrhdrlen">FlyStrHdrLen</a><br>
+      <a href="#flystrhdrstrip">FlyStrHdrStrip</a><br>
+      <a href="#flystralloc">FlyStrAlloc</a><br>
+      <a href="#flystrnalloc">FlyStrNAlloc</a><br>
+      <a href="#flystrallocappend">FlyStrAllocAppend</a><br>
+      <a href="#flystrfnprotolen">FlyStrFnProtoLen</a><br>
+      <a href="#flystrcnamelen">FlyStrCNameLen</a><br>
+      <a href="#flystrzcpy">FlyStrZCpy</a><br>
+      <a href="#flystrzncpy">FlyStrZNCpy</a><br>
+      <a href="#flystrzcat">FlyStrZCat</a><br>
+      <a href="#flystrzncat">FlyStrZNCat</a><br>
+      <a href="#flystrzfill">FlyStrZFill</a><br>
+      <a href="#flystrzcatfill">FlyStrZCatFill</a><br>
+      <a href="#flystrcver">FlyStrCVer</a><br>
+      <a href="#flystrslug">FlyStrSlug</a><br>
+      <a href="#flystrask">FlyStrAsk</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>A set of C string utilities to augment string.h</h3>
+<p>Let's face it: C is a poor language for string manipulation. This module attempts to make it
+easier.</p>
+<p>Features:</p>
+<ul>
+<li>Python-like safe strings: FlyPyStrNew(), FlyPyStrCat(), FlyPyStrCheck()</li>
+<li>Line parsing: FlyStrLineNext(), FlyStrLinePrev(), FlyStrLineLen()</li>
+<li>Case parsing: lowercase, UPPERCASE, camelCase, MixedCase, snake_case, CONSTANT_CASE</li>
+<li>Path handling: FlyStrPathAppend(), FlyStrPathParent(), FlyStrPathExt()</li>
+<li>Dump text/binary: FlyStrDump(), FlyStrDumps()</li>
+<li>Easy string building: FlyStrZCat(), FlyStrZFill()</li>
+<li>Copy/compare arrays of strings</li>
+<li>Many other string utility functions</li>
+</ul>
+<p>FlyStrZ...() functions have a few properties:</p>
+<ol>
+<li>They always result in an ASCIIZ ('\0' termianted) string</li>
+<li>They always fit in the # of bytes specified as size</li>
+<li>They can have a NULL szDst, which means just calculate size</li>
+</ol>
+<p>One use of FLyStrZ..() is to determine size of strings so you can allocate them. Set the first
+parameter (szDst) to NULL.</p>
+    <p id="example-use-flystrzcat-to-create-hello-world"><b>Example: Use FlyStrZCat() to create `["Hello","World","!"]`</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  #include "FlyStr.h"&nbsp; <br>
+  <br>
+  size_t MyAllocArray(char *szDst, size_t size, const char *asz[])&nbsp; <br>
+  {&nbsp; <br>
+  &nbsp; const char&nbsp; **ppsz&nbsp; &nbsp; = asz;&nbsp; <br>
+  &nbsp; size_t&nbsp; &nbsp; &nbsp; &nbsp; lenDst&nbsp; = 0;&nbsp; <br>
+  &nbsp; bool_t&nbsp; &nbsp; &nbsp; &nbsp; fFirstTime = TRUE;&nbsp; <br>
+  <br>
+  &nbsp; lenDst += FlyStrZCpy(szDst, size, "[");&nbsp; <br>
+  &nbsp; while(*ppsz)&nbsp; <br>
+  &nbsp; {&nbsp; <br>
+  &nbsp; &nbsp; lenDst += FlyStrZCat(szDst, size, fFirstTime ? "\"" : ",\"");&nbsp; <br>
+  &nbsp; &nbsp; lenDst += FlyStrZCat(szDst, size, *ppsz);&nbsp; <br>
+  &nbsp; &nbsp; lenDst += FlyStrZCat(szDst, size, "\"");&nbsp; <br>
+  &nbsp; &nbsp; fFirstTime = FALSE;&nbsp; <br>
+  &nbsp; &nbsp; ++ppsz;&nbsp; <br>
+  &nbsp; }&nbsp; <br>
+  &nbsp; lenDst += FlyStrZCat(szDst, size, "]");&nbsp; <br>
+  <br>
+  &nbsp; return lenDst;&nbsp; <br>
+  }&nbsp; <br>
+  <br>
+  int main(void)&nbsp; <br>
+  {&nbsp; <br>
+  &nbsp; const char *ArrayOfStrings[] = { "Hello", "World", "!", NULL };&nbsp; <br>
+  &nbsp; char&nbsp; &nbsp; *szDst;&nbsp; <br>
+  &nbsp; size_t&nbsp; len;&nbsp; <br>
+  <br>
+  &nbsp; len = MyAllocArray(NULL, SIZE_MAX, asz);&nbsp; <br>
+  &nbsp; szDst = malloc(len + 1);&nbsp; <br>
+  &nbsp; if(szDst)&nbsp; <br>
+  &nbsp; {&nbsp; <br>
+  &nbsp; &nbsp; len = MyAllocArray(szDst, len + 1, ArrayOfStrings);&nbsp; <br>
+  &nbsp; &nbsp; printf("%s\n", szDst);&nbsp; <br>
+  &nbsp; }&nbsp; <br>
+  }&nbsp; <br>
+</div>
+    <h3 id="flystrnullof" class="w3-text-blue">FlyStrNullOf</h3>
+    <p>Returns "(NULL)", or string if sz is not NULL. Useful in printfs(). Example:</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyStrNullOf(const char *sz)<br>
+      <br>
+      @param   sz     ptr to a string, or NULL  <br>
+      @return  sz or "(NULL)"  <br>
+    </div>
+    <p><b>Notes</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  printf("bang = %s\n", FlyStrNullOf(strchr("Hello! World", '!')));<br>
+</div>
+    <h3 id="flystrlinechr" class="w3-text-blue">FlyStrLineChr</h3>
+    <p>Similar to strchr(), but only searches to end of line (that is, stops searching on \r \n or \0).</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char *FlyStrLineChr(const char *sz, char c)<br>
+      <br>
+      @param    sz    string to search  <br>
+      @param    c     character to look for  <br>
+      @return   ptr to c, or NULL if not found in line  <br>
+    </div>
+    <h3 id="flystrlinenext" class="w3-text-blue">FlyStrLineNext</h3>
+    <p>Return ptr to the beginning of the next line in the string.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char * FlyStrLineNext(const char *sz)<br>
+      <br>
+      @param    sz     destination for argument (may be NULL to just skip arg)  <br>
+      @return  pointer to next line  <br>
+    </div>
+    <h3 id="flystrlineprev" class="w3-text-blue">FlyStrLinePrev</h3>
+    <p>Return ptr to the beginning of the previous line in the file.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyStrLinePrev(const char *szFile, const char *sz)<br>
+      <br>
+      @param    szFile    file of lines  <br>
+      @param    sz        ptr to string in the file  <br>
+      @return  pointer to previous line  <br>
+    </div>
+    <h3 id="flystrlinepos" class="w3-text-blue">FlyStrLinePos</h3>
+    <p>Return the line/position of the pointer psz within szFile. Lines/cols are 1 based.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlyStrLinePos(const char *szFile, const char *sz, unsigned *pCol)<br>
+      <br>
+      @param  szFile    file of lines  <br>
+      @param  sz        ptr into string  <br>
+      @param  pCol      column (1-n)  <br>
+      @return line (1-n)  <br>
+    </div>
+    <h3 id="flystrlinebeg" class="w3-text-blue">FlyStrLineBeg</h3>
+    <p>Return ptr to the beginning of line, that is to the '\n'. If no \n, then points to szHaystack.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyStrLineBeg(const char *szFile, const char *sz)<br>
+      <br>
+      @param  szFile    file of lines  <br>
+      @param  sz        ptr into string  <br>
+      @return ptr to beginning of line or szHaystack  <br>
+    </div>
+    <h3 id="flystrlineend" class="w3-text-blue">FlyStrLineEnd</h3>
+    <p>Return ptr to the end of line or string, that is '\r', '\n' or '\0'.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyStrLineEnd(const char *sz)<br>
+      <br>
+      @param  sz  ptr to string.  <br>
+      @return ptr to end of line or string  <br>
+    </div>
+    <h3 id="flystrlineeof" class="w3-text-blue">FlyStrLineEof</h3>
+    <p>Return end of string</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char *FlyStrLineEof(const char *sz)<br>
+      <br>
+      @param  sz  ptr to string  <br>
+      @return ptr to end of file (string)  <br>
+    </div>
+    <h3 id="flystrlinecount" class="w3-text-blue">FlyStrLineCount</h3>
+    <p>Return # if lines from start of file to ptr sz.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrLineCount(const char *szFile, const char *sz)<br>
+      <br>
+      @param  szFile    ptr to file, '\0' terminated  <br>
+      @param  sz        ptr to string in file (if NULL then count lines in file)  <br>
+      @return count of lines  <br>
+    </div>
+    <h3 id="flystrlineskipblank" class="w3-text-blue">FlyStrLineSkipBlank</h3>
+    <p>Skip any blank lines at the start of the string. This is line oriented only.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyStrLineSkipBlank(const char *sz)<br>
+      <br>
+      @param  sz  ptr to asciiz string  <br>
+      @return ptr to beginning of a non-blank line or end of string  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Example: "\n\n    \n  Hello\n" => "  Hello\n"</p>
+    <h3 id="flystrlineindent" class="w3-text-blue">FlyStrLineIndent</h3>
+    <p>Return indent of this line. Treats tabs as 1 space.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrLineIndent(const char *sz, unsigned tabSize)<br>
+      <br>
+      @param  sz        ptr to string.  <br>
+      @param  tabSize   usually 2, 4 or 8  <br>
+      @return 0-n  <br>
+    </div>
+    <h3 id="flystrlineindenttab" class="w3-text-blue">FlyStrLineIndentTab</h3>
+    <p>Return indent of this line. Treats tabs as 1 space.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrLineIndentTab(const char *sz, unsigned tabSize)<br>
+      <br>
+      @param  sz        ptr to string.  <br>
+      @param  tabSize   usually 2,4 or 8  <br>
+      @return 0-n  <br>
+    </div>
+    <h3 id="flystrlinelen" class="w3-text-blue">FlyStrLineLen</h3>
+    <p>Return ptr to the end of line or string, that is '\r', '\n' or '\0'.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrLineLen(const char *sz)<br>
+      <br>
+      @param  sz  ptr to string.  <br>
+      @return ptr to end of line or string  <br>
+    </div>
+    <h3 id="flystrlinelenex" class="w3-text-blue">FlyStrLineLenEx</h3>
+    <p>Same as FlyStrLineLen(), but also contains the `\n` or `\r\n`.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrLineLenEx(const char *sz)<br>
+      <br>
+      @param  sz  ptr to string  <br>
+      @return ptr to end of line or string including the `\n` or `\r\n`  <br>
+    </div>
+    <h3 id="flystrlineisblank" class="w3-text-blue">FlyStrLineIsBlank</h3>
+    <p>Is this line blank? (nothing but whitespace)?</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyStrLineIsBlank(const char *sz)<br>
+      <br>
+      @param  sz  ptr to string  <br>
+      @return TRUE if line is blank, FALSE if not  <br>
+    </div>
+    <h3 id="flystrlineblankremove" class="w3-text-blue">FlyStrLineBlankRemove</h3>
+    <p>Removes blank lines from start/end of a multi-line string</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyStrLineBlankRemove(char *szLines)<br>
+      <br>
+      @param    szLines     ptr to lines of text  <br>
+      @return   none  <br>
+    </div>
+    <h3 id="flystrblankremove" class="w3-text-blue">FlyStrBlankRemove</h3>
+    <p>Removes blank characters from start/end of string</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyStrBlankRemove(char *sz)<br>
+      <br>
+      @param  sz  ptr to string  <br>
+      @return none  <br>
+    </div>
+    <h3 id="flystrargcpy" class="w3-text-blue">FlyStrArgCpy</h3>
+    <p>Copies argument from szSrc to szDst. Skips preceding and trailing whitespace on szSrc. Allows</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyStrArgCpy(char *szDst, size_t size, const char *szSrc)<br>
+      <br>
+      @param    szDst     destination for argument (may be NULL to just skip arg)  <br>
+      @param    szSrc     source string  <br>
+      @param    size      buffer sizeof szDst, must be at least 1 for NUL  <br>
+      @return  pointer to next arg in szSrc  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>szDst to be NULL (no copy) to just skip argument.</p>
+<p>Example:  "  1starg  2ndarg", would copy "1starg" and return ptr to "2ndarg"</p>
+    <h3 id="flystrargcmp" class="w3-text-blue">FlyStrArgCmp</h3>
+    <p>Just like strcmp(), but for args.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlyStrArgCmp(const char *sz1, const char *sz2)<br>
+      <br>
+      @param    sz1     a string or arg  <br>
+      @param    sz2     a string or arg  <br>
+      @return   0 if the same, 1 if s1 > s2, -1 if s1 < s2  <br>
+    </div>
+    <h3 id="flystrarglen" class="w3-text-blue">FlyStrArgLen</h3>
+    <p>Determines length of argument</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrArgLen(const char *sz)<br>
+      <br>
+      @param    szDst     destination for argument (may be NULL to just skip arg)  <br>
+      @param    szSrc     source string  <br>
+      @param    size      buffer sizeof szDst, must be at least 1 for NUL  <br>
+      @return   Length of argument or 0 if not on an argument.  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Example:  "  1starg  2ndarg", would copy "1starg" and return ptr to "2ndarg"</p>
+    <h3 id="flystrargnext" class="w3-text-blue">FlyStrArgNext</h3>
+    <p>Finds next argument in this line. Does NOT cross lines.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyStrArgNext(const char *sz)<br>
+      <br>
+      @param    sz        ptr to string  <br>
+      @return   ptr to next argument  <br>
+    </div>
+    <h3 id="flystrskipwhite" class="w3-text-blue">FlyStrSkipWhite</h3>
+    <p>Skip tabs or spaces. Used to skip to next argument. Doesn't move if not on whitespace.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char *FlyStrSkipWhite(const char *sz)<br>
+      <br>
+      @param    sz      asciiz string  <br>
+      @return   ptr to non-whitespace, may be at '\0'  <br>
+    </div>
+    <h3 id="flystrskipwhiteex" class="w3-text-blue">FlyStrSkipWhiteEx</h3>
+    <p>Skip whitespace, including CR/LF. Used to skip over empty lines to get to next non-whitespace.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char *FlyStrSkipWhiteEx(const char *sz)<br>
+      <br>
+      @param    sz      asciiz string  <br>
+      @return   ptr to non-whitespace, may be at '\0'  <br>
+    </div>
+    <h3 id="flystrskipchars" class="w3-text-blue">FlyStrSkipChars</h3>
+    <p>Skip all characters found in szChars.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyStrSkipChars(const char *sz, const char *szChars)<br>
+      <br>
+      @param    sz        asciiz string  <br>
+      @param    szChars   chars to skip  <br>
+      @return   ptr to 1st char not in szChars  <br>
+    </div>
+    <h3 id="flystrskiptoend" class="w3-text-blue">FlyStrSkipToEnd</h3>
+    <p>Skip token to next whitespace. If already on whitespace does nothing.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyStrSkipToEnd(const char *sz)<br>
+      <br>
+      @param    sz    ptr to  asciiz string  <br>
+      @return   ptr to whitepspace after token or '\0'  <br>
+    </div>
+    <p><b>Notes</b></p>
+<table class="w3-table-all" style="width:auto">
+<tr>
+  <th>This</th>
+  <th>Finds That</th>
+</tr>
+<tr>
+  <td>"First second"</td>
+  <td>"First second"</td>
+</tr>
+<tr>
+  <td>^</td>
+  <td>^</td>
+</tr>
+<tr>
+  <td>"First second"</td>
+  <td>"First second"</td>
+</tr>
+<tr>
+  <td>^</td>
+  <td>^</td>
+</tr>
+</table>
+    <h3 id="flystrskiptobeg" class="w3-text-blue">FlyStrSkipToBeg</h3>
+    <p>Search backward to beginning of token. stops at szMain. Example:</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyStrSkipToBeg(const char *sz, const char *szMain)<br>
+      <br>
+      @param    sz      ptr into szMain string  <br>
+      @param    szMain  The string to search  <br>
+      @return   ptr to beginning of token  <br>
+    </div>
+    <p><b>Notes</b></p>
+<table class="w3-table-all" style="width:auto">
+<tr>
+  <th>This</th>
+  <th>Finds That</th>
+</tr>
+<tr>
+  <td>"First second"</td>
+  <td>"First second"</td>
+</tr>
+<tr>
+  <td>^</td>
+  <td>^</td>
+</tr>
+<tr>
+  <td>"First second"</td>
+  <td>"First second"</td>
+</tr>
+<tr>
+  <td>^</td>
+  <td>^</td>
+</tr>
+<tr>
+  <td>"First second"</td>
+  <td>"First second"</td>
+</tr>
+<tr>
+  <td>^</td>
+  <td>^         (doesn't move)</td>
+</tr>
+</table>
+    <h3 id="flystricmp" class="w3-text-blue">FlyStrICmp</h3>
+    <p>StrICmp (case insensitive) is not reliably in the C library. Here it is.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlyStrICmp(const char *sz1, const char *sz2)<br>
+      <br>
+      @param    sz1      and asciiz string  <br>
+      @param    sz2      and asciiz string  <br>
+      @return   -1 if sz1 is less that sz2, 0 if same, 1 if sz1 is greater  <br>
+    </div>
+    <h3 id="flychariscname" class="w3-text-blue">FlyCharIsCName</h3>
+    <p>Is this a valid CName character</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyCharIsCName(char c)<br>
+      <br>
+      @param  c   character to checl  <br>
+      @return TRUE if is a valid CName character  <br>
+    </div>
+    <h3 id="flycharisdozenal" class="w3-text-blue">FlyCharIsDozenal</h3>
+    <p>Is this a valid dozenal character? (0-9,X,E)</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyCharIsDozenal(char c)<br>
+      <br>
+      @param  c   character to checl  <br>
+      @return TRUE if is a valid CName character  <br>
+    </div>
+    <h3 id="flycharprev" class="w3-text-blue">FlyCharPrev</h3>
+    <p>Return previous character. Why can't C do this natively? e.g. if(psz[-1] == ' ')</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char FlyCharPrev(const char *sz)<br>
+      <br>
+      @param  sz   ptr to a string where sz is NOT the 1st char of the string  <br>
+      @return previous character  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Assumes sz is NOT at the 1st char of the string.</p>
+    <h3 id="flychariseol" class="w3-text-blue">FlyCharIsEol</h3>
+    <p>Is this an end of line character? (that is \r or \n)</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyCharIsEol(char c)<br>
+      <br>
+      @param  c   character to checl  <br>
+      @return TRUE if it is end of line  <br>
+    </div>
+    <h3 id="flystrchrcount" class="w3-text-blue">FlyStrChrCount</h3>
+    <p>Return count of a specific character at sz.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlyStrChrCount(const char *sz, char c)<br>
+      <br>
+      @param  c   character (0 - 0xff)  <br>
+      @return # of characters at sz (0 - n)  <br>
+    </div>
+    <h3 id="flystrchrcountrev" class="w3-text-blue">FlyStrChrCountRev</h3>
+    <p>Return # of characters at end of string. sz must point to the character AFTER the character you</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlyStrChrCountRev(const char *szStart, const char *psz, char c)<br>
+      <br>
+      @param  c   character (0 - 0xff)  <br>
+      @return # of characters at sz (0 - n)  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>want to search for.</p>
+    <h3 id="flystrisspace" class="w3-text-blue">FlyStrIsSpace</h3>
+    <p>Return TRUE if this character is tab or space</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyStrIsSpace(char c)<br>
+      <br>
+      @param  c      character (0x00-0xff)  <br>
+      @return TRUE if this character is tab or space, FALSE if not  <br>
+    </div>
+    <h3 id="flystriscase" class="w3-text-blue">FlyStrIsCase</h3>
+    <p>Return case of string: lowercase, UPPERCASE, camelCase, MixedCase, snake_case, CONSTANT_CASE</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flyStrCase_t FlyStrIsCase(const char *sz)<br>
+      <br>
+      @param  sz    pointer to a string, perhaps a CName string  <br>
+      @return case of string, e.g. IS_CAMEL_CASE, IS_MIXED_CASE  <br>
+    </div>
+    <h3 id="flystrtocase" class="w3-text-blue">FlyStrToCase</h3>
+    <p>Convert string to the new case:  lower, UPPER, camelCase, MixedCase, snake_case, CONSTANT_CASE</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrToCase(char *szNew, size_t size, const char *szOld, flyStrCase_t strCase)<br>
+      <br>
+      @param    szNew       pointer to char array to receive new string  <br>
+      @param    szOld       pointer to asciiz string to convert from  <br>
+      @param    maxLen      maxLen of dst string (may grow from old if snake_case)  <br>
+      @param    strCase     new case desired (e.g. IS_CAMEL_CASE)  <br>
+      @return   length of new string  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Note: Some cases don't convert well. For example, lowercase can't convert to camelCase, but can
+to UPPERCASE. Converting from MixedCase to lowercase is a one way street (can't convert back),
+as the string no longer indicates words within the string.</p>
+    <h3 id="flystrtolower" class="w3-text-blue">FlyStrToLower</h3>
+    <p>Convert string to lowercase. Doesn't affect underscores like FlyStrToCase().</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyStrToLower(char *sz)<br>
+      <br>
+      @param    sz    asciiz string  <br>
+      @return   none  <br>
+    </div>
+    <h3 id="flystrdatetime" class="w3-text-blue">FlyStrDateTime</h3>
+    <p>From the time parameter, get date/time in ISO 8601 string form. Example: "2019-12-18T14:58:01".</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyStrDateTime(time_t time)<br>
+      <br>
+      @param    time      current date/time in time_t format (see <time.h>)  <br>
+      @return   pointer to static date/time string built from time_t  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Local time only. Knows nothing about time zones. Returns separate static string from
+FlyStrDateTimeCur()</p>
+    <h3 id="flystrdatetimecur" class="w3-text-blue">FlyStrDateTimeCur</h3>
+    <p>Get the current date/time in ISO 8601 form "2019-10-23T08:15:30". Local time only. Knows</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyStrDateTimeCur(void)<br>
+      <br>
+      @return   pointer to static date/time string  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>nothing about time zones. Returns separate static string from FlyStrDateTime()</p>
+    <h3 id="flystrpathhome" class="w3-text-blue">FlyStrPathHome</h3>
+    <p>Returns the user home folder name (from environment $HOME). Basically the '~' in filenames.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyStrPathHome(void)<br>
+      <br>
+      @return   Returns ptr to home string (e.g. /Users/me)  <br>
+    </div>
+    <h3 id="flystrpathisfolder" class="w3-text-blue">FlyStrPathIsFolder</h3>
+    <p>Returns TRUE if string is a folder. e.g. ".", "..", or "/User/me/". This is a string search only</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyStrPathIsFolder(const char *szPath)<br>
+      <br>
+      @param    szPath    pointer to a file or dir path (relative or absolute).  <br>
+      @return   Returns TRUE if this is a folder  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>and does check if the path exists on disk. Does NOT check legal characters for OS. Does check
+that the string is &lt; PATH_MAX</p>
+    <h3 id="flystrlastslash" class="w3-text-blue">FlyStrLastSlash</h3>
+    <p>Finds the last slash in a full path, or returns NULL if there are none. Works with both Windows</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyStrLastSlash(const char *szPath)<br>
+      <br>
+      @param    szPath    pointer to a file or dir path (relative or absolute).  <br>
+      @return   Returns last slash/backslash or NULL if not found  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>and Linux style paths, .e.g "/file/path/name" or "C:\file\path\name"</p>
+    <h3 id="flystrprevslash" class="w3-text-blue">FlyStrPrevSlash</h3>
+    <p>Like strrchr(), but works with both Linux and Windows path separators.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char *FlyStrPrevSlash(const char *szPath, const char *psz)<br>
+      <br>
+      @param    szFull    ptr to a path string, e.g. "/Users/me/work/"  <br>
+      @param    psz       pointer to any part of szPath or NULL for end of string  <br>
+      @return   Returns previous slash, or NULL if not found  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Allows for walking through path parents from end of string. If psz is NULL, then searches from
+end of string.</p>
+    <h3 id="flystrlastchar" class="w3-text-blue">FlyStrLastChar</h3>
+    <p>Get the very last character of this string</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char FlyStrLastChar(const char *szStr)<br>
+      <br>
+      @param      szStr       Pointer to string  <br>
+      @return   Return NULL if character not found, or ptr to character if found.  <br>
+    </div>
+    <h3 id="flystrlastcharof" class="w3-text-blue">FlyStrLastCharOf</h3>
+    <p>Finds the last occurence of the character.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char *FlyStrLastCharOf(const char *szStr, char c)<br>
+      <br>
+      @param      szStr       Pointer to string  <br>
+      @param      c           character to search for  <br>
+      @return   Return NULL if character not found, or ptr to character if found.  <br>
+    </div>
+    <h3 id="flystrpathnameonly" class="w3-text-blue">FlyStrPathNameOnly</h3>
+    <p>Finds the filename part of a path. This is a string search only. Does not check for actual</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyStrPathNameOnly(const char *szPath)<br>
+      <br>
+      @param    szPath    pointer to a file or dir path (relative or absolute).  <br>
+      @return   Returns ptr to name part, or "" if a folder   <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>folders on disk.</p>
+<p>Examples:</p>
+<table class="w3-table-all" style="width:auto">
+<tr>
+  <th>This</th>
+  <th>Finds That</th>
+</tr>
+<tr>
+  <td>~/Work/myfile.c</td>
+  <td>myfile.c</td>
+</tr>
+<tr>
+  <td>C:\work\things\hello.py</td>
+  <td>hello.py</td>
+</tr>
+<tr>
+  <td>myfile.c</td>
+  <td>myfile.c</td>
+</tr>
+<tr>
+  <td>/dir/only/</td>
+  <td>"" (empty string)</td>
+</tr>
+<tr>
+  <td>.</td>
+  <td>"" (empty string)</td>
+</tr>
+<tr>
+  <td>..</td>
+  <td>"" (empty string)</td>
+</tr>
+</table>
+    <h3 id="flystrpathhasext" class="w3-text-blue">FlyStrPathHasExt</h3>
+    <p>Does this filename have only of the given file extensions? Assumes NO if there is no file</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyStrPathHasExt(const char *szPath, const char *szExts)<br>
+      <br>
+      @param    szPath    pointer to a filename (relative or absolute)  <br>
+      @param    szExts    a list of . separated extensions, e.g. ".c.cpp.c++"  <br>
+      @return   Returns ptr to found extention or NULL if not found  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>extention on szPath. Case sensitive.</p>
+    <h3 id="flystrpathonly" class="w3-text-blue">FlyStrPathOnly</h3>
+    <p>Modifies the path string to be the path only part. Always ends in '/' when done.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyStrPathOnly(char *szPath)<br>
+      <br>
+      @param    szPath    pointer to a path string  <br>
+      @return   None  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>This is a string manipulation only, no checking for folders on disk happens.</p>
+<p>The resulting string is now suitable for FlyStrPathAppend(), and passes FlyStrPathIsFolder().</p>
+<table class="w3-table-all" style="width:auto">
+<tr>
+  <th>This becomes</th>
+  <th>That</th>
+</tr>
+<tr>
+  <td>~/Work/myfile.c</td>
+  <td>~/Work/</td>
+</tr>
+<tr>
+  <td>C:\work\things\hello.py</td>
+  <td>C:\work\things\
+/dir/only/</td>
+</tr>
+<tr>
+  <td>/dir/only/</td>
+  <td>/dir/only/</td>
+</tr>
+<tr>
+  <td>..</td>
+  <td>../</td>
+</tr>
+<tr>
+  <td>.</td>
+  <td>./</td>
+</tr>
+<tr>
+  <td>myfile.c</td>
+  <td>./</td>
+</tr>
+</table>
+    <h3 id="flystrpathparent" class="w3-text-blue">FlyStrPathParent</h3>
+    <p>Modify szPath to the parent of the current szPath if possible. This is a string manipulation</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyStrPathParent(char *szPath)<br>
+      <br>
+      @param    szPath    pointer to asciiz string  <br>
+      @return   TRUE if a parent folder, FALSE if no more parents  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>only. It does not convert things like "~/" or "..". Returns the parent folder. Always ends in a
+slash. Does the work in-place: that is, modifies szPath if there is a parent folder, otherwise,
+leaves szPath unchanged.</p>
+<table class="w3-table-all" style="width:auto">
+<tr>
+  <th>This</th>
+  <th>Returns</th>
+</tr>
+<tr>
+  <td>/Users/me/work/</td>
+  <td>/Users/me/ and TRUE</td>
+</tr>
+<tr>
+  <td>/Users/me/file.c</td>
+  <td>/Users/me/ and TRUE</td>
+</tr>
+<tr>
+  <td>file.c</td>
+  <td>file.c and FALSE</td>
+</tr>
+<tr>
+  <td>~/</td>
+  <td>~/ and FALSE</td>
+</tr>
+<tr>
+  <td>/</td>
+  <td>/ and FALSE</td>
+</tr>
+</table>
+    <h3 id="flystrisfolder" class="w3-text-blue">FlyStrIsFolder</h3>
+    <p>String comparison only. Assumes it's a folder if it ends in a slash or is "." or ".."</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyStrIsFolder(const char *szPath)<br>
+      <br>
+      @param    szPath    pionter to asciiz string which contains a file/folder path  <br>
+      @return   TRUE if this is a folder  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Examples of folders:            ".", "..", "/Users/drewg/Documents/"
+Example that is not a folder:   "/Users/drewg/myfile.txt"</p>
+    <h3 id="flystrpathext" class="w3-text-blue">FlyStrPathExt</h3>
+    <p>Finds the file extension given a asciiz filename, or NULL if no extension. Examples:</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char *FlyStrPathExt(const char *szPath)<br>
+      <br>
+      @param    szFilename    pointer to filename string  <br>
+      @return   Returns pointer to the file extension, or NULL if no extension  <br>
+    </div>
+    <p><b>Notes</b></p>
+<table class="w3-table-all" style="width:auto">
+<tr>
+  <th>This</th>
+  <th>Finds That</th>
+</tr>
+<tr>
+  <td>/Users/me/file.c</td>
+  <td>.c</td>
+</tr>
+<tr>
+  <td>hello.py</td>
+  <td>.py</td>
+</tr>
+<tr>
+  <td>~/main.rs</td>
+  <td>.rs</td>
+</tr>
+<tr>
+  <td>file.what.hpp</td>
+  <td>.hpp</td>
+</tr>
+<tr>
+  <td>.hidden.txt</td>
+  <td>.txt</td>
+</tr>
+<tr>
+  <td>.hidden</td>
+  <td>NULL</td>
+</tr>
+<tr>
+  <td>.</td>
+  <td>NULL</td>
+</tr>
+<tr>
+  <td>..</td>
+  <td>NULL</td>
+</tr>
+<tr>
+  <td>makefile</td>
+  <td>NULL</td>
+</tr>
+<tr>
+  <td>/Users/folder/</td>
+  <td>NULL</td>
+</tr>
+</table>
+    <h3 id="flystrpathchangeext" class="w3-text-blue">FlyStrPathChangeExt</h3>
+    <p>Change the file extention to the new one, e.g. change file.md to file.html</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyStrPathChangeExt(char *szPath, const char *szExt)<br>
+      <br>
+      @param    szPath  ptr to file path  <br>
+      @param    szExt   ptr to new file extension  <br>
+      @return   Returns pointer to the file extension, or NULL if no extension  <br>
+    </div>
+    <h3 id="flystrpathlang" class="w3-text-blue">FlyStrPathLang</h3>
+    <p>Returns the language name based on filename. Knows about the following common languages:</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char *FlyStrPathLang(const char *szPath)<br>
+      <br>
+      @param    szPath    pointer to filename string  <br>
+      @return   Returns pointer language name, or NULL if not a known language  <br>
+    </div>
+    <p><b>Notes</b></p>
+<table class="w3-table-all" style="width:auto">
+<tr>
+  <th>This</th>
+  <th>Returns That</th>
+</tr>
+<tr>
+  <td>.c</td>
+  <td>c</td>
+</tr>
+<tr>
+  <td>.c++</td>
+  <td>C++</td>
+</tr>
+<tr>
+  <td>.cc</td>
+  <td>C++</td>
+</tr>
+<tr>
+  <td>.cpp</td>
+  <td>C++</td>
+</tr>
+<tr>
+  <td>.cxx</td>
+  <td>C++</td>
+</tr>
+<tr>
+  <td>.cs</td>
+  <td>C#</td>
+</tr>
+<tr>
+  <td>.go</td>
+  <td>Go</td>
+</tr>
+<tr>
+  <td>.java</td>
+  <td>Java</td>
+</tr>
+<tr>
+  <td>.json</td>
+  <td>JSON</td>
+</tr>
+<tr>
+  <td>.js</td>
+  <td>Javascript</td>
+</tr>
+<tr>
+  <td>.py</td>
+  <td>Python</td>
+</tr>
+<tr>
+  <td>.rb</td>
+  <td>Ruby</td>
+</tr>
+<tr>
+  <td>.rs</td>
+  <td>Rust</td>
+</tr>
+<tr>
+  <td>.swift</td>
+  <td>Swift</td>
+</tr>
+<tr>
+  <td>.ts</td>
+  <td>TypeScript</td>
+</tr>
+<tr>
+  <td>~/folder/</td>
+  <td>NULL</td>
+</tr>
+<tr>
+  <td>makefile</td>
+  <td>NULL</td>
+</tr>
+</table>
+    <h3 id="flystrpathhomeexpand" class="w3-text-blue">FlyStrPathHomeExpand</h3>
+    <p>Expands the "~/" into the actual home folder (from environment $HOME) in place.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyStrPathHomeExpand(char *szPath, size_t size)<br>
+      <br>
+      @param    szPath    pointer to string which may be expanded  <br>
+      @param    size      sizeof(szPath), e.g. PATH_MAX  <br>
+      @return   TRUE if worked FALSE if size too large  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>If the size of szPath is too small, then it can't expand things, so it returns FALSE. A safe size
+for all paths is PATH_MAX.</p>
+<p>Examples:</p>
+<table class="w3-table-all" style="width:auto">
+<tr>
+  <th>This</th>
+  <th>Expands to That</th>
+</tr>
+<tr>
+  <td>~/Work/myfile.c</td>
+  <td>/Users/me/Work/myfile.c</td>
+</tr>
+<tr>
+  <td>/Users/me/file.c</td>
+  <td>/Users/me/file.c         (unchanged)</td>
+</tr>
+<tr>
+  <td>~myfile.c</td>
+  <td>~myfile.c                (unchanged)</td>
+</tr>
+</table>
+    <h3 id="flystrfit" class="w3-text-blue">FlyStrFit</h3>
+    <p>Copy a string into a potentially smaller space. Does this by prepending "..." if needed and</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyStrFit(char *szDst, size_t width, const char *szSrc)<br>
+      <br>
+      @param    szDst     pointer to string to contain desired width  <br>
+      @param    width     max width (size - 1) of szDst  <br>
+      @param    szSrc     pointer to some string  <br>
+      @return   ptr to szDst  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>appending the end of szSrc that will fit. Useful to display to fixed sized columns.</p>
+<p>Examples with string "/Users/drewg/folder/file.c:"</p>
+<table class="w3-table-all" style="width:auto">
+<tr>
+  <th>szSrc</th>
+  <th>width</th>
+  <th>szDst (output)</th>
+</tr>
+<tr>
+  <td>/Users/me/folder/file.c</td>
+  <td>50</td>
+  <td>/Users/me/folder/file.c</td>
+</tr>
+<tr>
+  <td>/Users/me/folder/file.c</td>
+  <td>12</td>
+  <td>...er/file.c</td>
+</tr>
+<tr>
+  <td>/Users/me/folder/file.c</td>
+  <td>3</td>
+  <td>...</td>
+</tr>
+</table>
+    <h3 id="flystrpathappend" class="w3-text-blue">FlyStrPathAppend</h3>
+    <p>Append the filename to the path in place. String manipulation only (does not check existing</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyStrPathAppend(char *szPath, size_t size, const char *szName)<br>
+      <br>
+      @param    szPath    asciiz pointer to path to be modified  <br>
+      @param    size      sizeof(szPath)  <br>
+      @param    szName    asciiz pointer to filename string to be appended  <br>
+      @return   FALSE if existing path + name too long for size  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>folders). If cannot append because size of szPath is too small, then leaves szPath unchanged and
+returns FALSE.</p>
+<table class="w3-table-all" style="width:auto">
+<tr>
+  <th>szPath[in]</th>
+  <th>szName</th>
+  <th>szPath[out]</th>
+</tr>
+<tr>
+  <td>"~"</td>
+  <td>"file.c"</td>
+  <td>"~/file.c"</td>
+</tr>
+<tr>
+  <td>"/Users/me"</td>
+  <td>"foo"</td>
+  <td>"/Users/me/foo"</td>
+</tr>
+<tr>
+  <td>"/Users/me/"</td>
+  <td>"bar"</td>
+  <td>"/Users/me/bar"</td>
+</tr>
+<tr>
+  <td>""</td>
+  <td>"baz"</td>
+  <td>"baz"</td>
+</tr>
+<tr>
+  <td>"/Users/me"</td>
+  <td>"longname"</td>
+  <td>FALSE (szPath unchanged)</td>
+</tr>
+</table>
+    <h3 id="memisfilled" class="w3-text-blue">memisfilled</h3>
+    <p>is the memory filled with the byte?</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t memisfilled(const void *s, int c, size_t n)<br>
+      <br>
+      @param    s         pointer to array  <br>
+      @param    c         byte (0-255)  <br>
+      @param    n         length of array  <br>
+      @return   TRUE if filled (or n==0), FALSE if not.  <br>
+    </div>
+    <h3 id="flymemrchr" class="w3-text-blue">FlyMemRChr</h3>
+    <p>Search backward in array for the character as some C environments don't have memrchr().</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void * FlyMemRChr(const void *s, int c, size_t n)<br>
+      <br>
+      @param    s         pointer to array  <br>
+      @param    c         byte (0-255)  <br>
+      @param    n         length of array  <br>
+      @return   ptr to c if found, NULL if not  <br>
+    </div>
+    <h3 id="flymemicmp" class="w3-text-blue">FlyMemICmp</h3>
+    <p>Compare 2 strings, case insensitive, as some C environments don't have memicmp().</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlyMemICmp(const void *pThis, const void *pThat, size_t len)<br>
+      <br>
+      @param    pThis      pointer to data  <br>
+      @param    pThat      pointer to data  <br>
+      @param    len        length of data  <br>
+      @return   0 if strings compare the same, -1 if pThis < pThat, 1 if pThis > pThat  <br>
+    </div>
+    <h3 id="flymemswap" class="w3-text-blue">FlyMemSwap</h3>
+    <p>A swap function for any sized bits of memory</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyMemSwap(void *pThis, void *pThat, size_t size)<br>
+      <br>
+      @param  pThis    ptr to array of items  <br>
+      @param  pThat     number of elements in the array  <br>
+      @param  elemSize  size of each element  <br>
+      @return none  <br>
+    </div>
+    <h3 id="flymemdiff" class="w3-text-blue">FlyMemDiff</h3>
+    <p>Return offset of difference, or SIZE_MAX if no difference</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyMemDiff(const void *pThis, const void *pThat, size_t size)<br>
+      <br>
+      @param  pThis    ptr to array of items  <br>
+      @param  pThat     number of elements in the array  <br>
+      @param  elemSize  size of each element  <br>
+      @return offset of difference or FLYMEM_NO_DIFF if no difference  <br>
+    </div>
+    <h3 id="flystrichr" class="w3-text-blue">FlyStrIChr</h3>
+    <p>Search string for character, case insensitive.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char * FlyStrIChr(const char *sz, int c)<br>
+      <br>
+      @param    pThis      pointer to data  <br>
+      @param    pThat      pointer to data  <br>
+      @param    len        length of data  <br>
+      @return   0 if strings compare the same, -1 if pThis < pThat, 1 if pThis > pThat  <br>
+    </div>
+    <h3 id="flystrcat" class="w3-text-blue">FlyStrCat</h3>
+    <p>Append the szSrc string to szDst. Will not exceed size of szDst. Always '\0' terminates.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrCat(char *szDst, size_t size, const char *szSrc, size_t srcLen)<br>
+      <br>
+      @param  szDst     destination asciiz string, or NULL to just get size  <br>
+      @param  size      size of destination string  <br>
+      @param  szSrc     source string  <br>
+      @param  srcLen    length of src string  <br>
+      @return # of bytes copied (or would have been copied if szDst == NULL)  <br>
+    </div>
+    <h3 id="flystrcatfill" class="w3-text-blue">FlyStrCatFill</h3>
+    <p>Fill at end of string. Ensures that resulting string is '\0' terminated.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrCatFill(char *szDst, size_t size, char c, size_t fillLen)<br>
+      <br>
+      @param  szDst     destination asciiz string, or NULL to just get size  <br>
+      @param  size      size of destination string  <br>
+      @param  c         character to fill  <br>
+      @param  fillLen   # of characters to fill  <br>
+      @return # of bytes copied (or would have been copied if szDst == NULL)  <br>
+    </div>
+    <h3 id="flystrins" class="w3-text-blue">FlyStrIns</h3>
+    <p>Insert a substring. Resulting string is always '\0' terminated. May truncate right size of</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrIns(char *szDst, size_t offset, size_t sizeDst, const char *szSrc)<br>
+      <br>
+      @param    szDst     pointer to destination string (szDst MUST be n+1 in size)  <br>
+      @param    offset    0-n  <br>
+      @param    sizeDst   size of destination string  <br>
+      @param    szSrc     pointer to source string  <br>
+      @return   length pasted  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>szDst string. May copy only some of szSrc string, if too long.</p>
+<p>Example: szDst="ac", offset=1, sizeDst=5, szSrc="b", reesults in szDst="abc", return 1</p>
+    <h3 id="flystrnchr" class="w3-text-blue">FlyStrNChr</h3>
+    <p>Find the character in the string, but only search len characters</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char * FlyStrNChr(const char *sz, size_t len, char c)<br>
+      <br>
+      @param    sz    string to search  <br>
+      @param    len   max length of string to search  <br>
+      @param    c     character to search for  <br>
+      @return   ptr to found char or NULL  <br>
+    </div>
+    <h3 id="flystrnchrmatch" class="w3-text-blue">FlyStrNChrMatch</h3>
+    <p>Match any one of the characters in szMatch.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char *FlyStrNChrMatch(const char *sz, const char *szEnd, const char *szMatch)<br>
+      <br>
+      @param    sz        string to search  <br>
+      @param    szEnd     NULL   <br>
+      @param    szMatch   a set of characters to look for  <br>
+      @return   ptr to c, or NULL if not found in line  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Example: <code class="w3-codespan">FlyStrNChrMatch(szLine, NULL, "[{\r\n")</code> will find the 1st of <code class="w3-codespan">{</code>, <code class="w3-codespan">[</code> or end of line.</p>
+    <h3 id="flystrwidetoutf8" class="w3-text-blue">FlyStrWideToUtf8</h3>
+    <p>Converts 16-bit wide (unicode) character to UTF-8 string. Resulting string is guaranteed to be 4</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlyStrWideToUtf8(uint8_t *szDst, uint16_t wc)<br>
+      <br>
+      @param    szDst   ptr to destination string for wide character  <br>
+      @param    wc      wide (unicode) character  <br>
+      @return   pointer to utf asciiz string for wide-character (html entity) c.  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>bytes or less. Includes NUL at end of string.</p>
+<p>Example, 0x2020 (dagger) is "/xE2/x80/xA0".</p>
+<div class="w3-code w3-light-grey notranslate">
+  00000000 -- 0000007F:&nbsp; &nbsp;0xxxxxxx<br>
+  00000080 -- 000007FF:&nbsp; &nbsp;110xxxxx 10xxxxxx<br>
+  00000800 -- 0000FFFF:&nbsp; &nbsp;1110xxxx 10xxxxxx 10xxxxxx<br>
+</div>
+    <h3 id="flymemremoveextraspaces" class="w3-text-blue">FlyMemRemoveExtraSpaces</h3>
+    <p>Transforms string segment to single line paragraphs. Removes any extra spaces.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyMemRemoveExtraSpaces(char *pData, size_t len)<br>
+      <br>
+      @param    pData   an array of nedChars that will be modified (may be shorter, never longer)  <br>
+      @param    len     length to string segment  <br>
+      @return   new length (same or shorter, could be 0)  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>input:  " a  string\nof things\n\n  lifts   a\n   wing "
+output: "a string of things\nlifts a wing"</p>
+<p>input:  "string here  \n\n\n   "
+output: "string here\n"</p>
+    <h3 id="flymemfindwrap" class="w3-text-blue">FlyMemFindWrap</h3>
+    <p>Determine where to wrap a paragraph into a line</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyMemFindWrap(const char *pLine, size_t len, size_t wrapWidth)<br>
+      <br>
+      @param    pLine       pointer paragraph  <br>
+      @param    len         length of pline  <br>
+      @param    wrapWidth   length to wrap (1-n)  <br>
+      @return   position at where to wrap  <br>
+    </div>
+    <p><b>Notes</b></p>
+<ol>
+<li>Always at least 1 word</li>
+<li>Stops at \n</li>
+<li>Stops at space following word</li>
+<li>Stops at len</li>
+</ol>
+    <h3 id="flystrwherediff" class="w3-text-blue">FlyStrWhereDiff</h3>
+    <p>Find difference in 2 strings. Points out position where they differ</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrWhereDiff(const char *szThis, const char *szThat, size_t n)<br>
+      <br>
+      @param  szThis    pointer to string  <br>
+      @param  szThat    pointer to 2nd string  <br>
+      @param  n         length to check  <br>
+      @return position where there is difference, or n if no difference  <br>
+    </div>
+    <h3 id="flystrdump" class="w3-text-blue">FlyStrDump</h3>
+    <p>Dump (print) some data to the screen in classic dump format.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyStrDump(const void *pData, size_t len)<br>
+      <br>
+      @param  pData     ptr to data  <br>
+      @param  len       length of data  <br>
+      @return none  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Slight difference from "hexdump -C": bytes >= 0xa0 are displayed as '.' and does not try to
+display UTF-8 characters.</p>
+<p>Example output:</p>
+<p>  00000000  01 02 00 a0 00 5f 70 72  69 6e 74 66 00 00 9e 00  |....._printf....|
+  00000010  12                                                |.|</p>
+    <h3 id="flystrdumpex" class="w3-text-blue">FlyStrDumpEx</h3>
+    <p>Dump (print) data with any line length to screen, as it dumps each line to szLine.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyStrDumpEx(const void *pData, size_t len, char *szLine, unsigned cols, long addr)<br>
+      <br>
+      @param  pData   ptr to data  <br>
+      @param  len     length of data  <br>
+      @param  szLine  caller supplied line of size FlyStrDumpLineSize(cols)  <br>
+      @param  col     # of columns (1-n)  <br>
+      @param  addr    address for 1st line, displayed in hex  <br>
+      @return none  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Note: sizeof(szLine) must be at least FlyStrDumpLineSize() in size.</p>
+<p>Example output:</p>
+<p>  00008050  01 02 00 00 00 5f 70 72  69 6e 74 66 00 00 00 00  |....._printf....|
+  00008290  12                                                |.|</p>
+    <h3 id="flystrdumpline" class="w3-text-blue">FlyStrDumpLine</h3>
+    <p>Dump a single line to a string.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlyStrDumpLine(char *szLine, const void *pData, unsigned len, unsigned cols, long addr)<br>
+      <br>
+      @param  szLine    ptr to receive dump string (output)  <br>
+      @param  pData     pointer to data  <br>
+      @param  len       length of data in bytes (1 - cols)  <br>
+      @param  cols      # of columns in each line, determines spacing of |...|  <br>
+      @param  addr      address to display for that line (0 - n), displayed in hex  <br>
+      @return len of output string  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Note: sizeof(szLine) must be at least FlyStrDumpLineSize() in size.</p>
+<p>Example output:</p>
+<p>  00008050  01 02 00 00 00 5f 70 72  69 6e 74 66 00 00 00 00  |....._printf....|</p>
+    <h3 id="flystrarraycopy" class="w3-text-blue">FlyStrArrayCopy</h3>
+    <p>Allocate a copy of the array of strings on the heap. Input may be a hard-coded array of strings,</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char **FlyStrArrayCopy(const char **asz)<br>
+      <br>
+      @param  asz       a valid, NULL terminated array of strings  <br>
+      @return an allocated array of strings, which may have no strings, just the terminating NULL  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>local strings, etc.... Note: the array of strings can be "empty" by having the 1st element be
+NULL.</p>
+    <h3 id="flystrarrayfree" class="w3-text-blue">FlyStrArrayFree</h3>
+    <p>Free the strings created by FlyStrArrayMalloc()</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyStrArrayFree(const char **asz)<br>
+      <br>
+      @param  asz      a valid, NULL terminated array of strings  <br>
+      @return a memory location   <br>
+    </div>
+    <h3 id="flystrarraycmp" class="w3-text-blue">FlyStrArrayCmp</h3>
+    <p>Compare two string arrays. Doesn't care if they are hard-coded or allocated on heap. Stops of</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlyStrArrayCmp(const char **aszThis, const char **aszThat)<br>
+      <br>
+      @param  aszThis      a valid, NULL terminated array of strings  <br>
+      @param  aszThat      a valid, NULL terminated array of strings  <br>
+      @return -1 if this less than that, 0 if equal, 1 if greater than  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>1st string that is different.</p>
+    <h3 id="flystrarraymalloc" class="w3-text-blue">FlyStrArrayMalloc</h3>
+    <p>Allocate space for an array of strings with enough room for all the text, as specified by sizeOf.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char **FlyStrArrayMalloc(size_t numElem, size_t sizeOf)<br>
+      <br>
+      @param  numElem     number of string pointers that can be set by the higher layer  <br>
+      @param  sizeOf      total size of text, including '\0', that will be filled in  <br>
+      @return pointer to a NULL terminated array of strings  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Example:</p>
+<p>char    **asz;
+char     *psz;
+size_t    i;
+const    *aStrings[] = { "alpha", "beta", "gamma", NULL };</p>
+<p>asz = FlyStrArrayMalloc(FlyStrArrayNumElem(aStrings), FlyStrArraySizeOf(aStrings));
+if(asz)
+{
+  psz = FlyStrArrayText(asz);
+  for(i = 0; i &lt; NumElements(aStrings) - 1; ++i)
+  {
+    asz[i] = psz;
+    strcpy(asz[i], aStrings[i]);
+    psz += strlen(aStrings[i]) + 1;
+  }
+  FlyStrArrayPrint(asz);
+}</p>
+    <h3 id="flystrarraytext" class="w3-text-blue">FlyStrArrayText</h3>
+    <p>Get the text of the 1st element, aka asz[0]). If FlyStrArrayMalloc() was used, this is the</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char *FlyStrArrayText(const char **asz)<br>
+      <br>
+      @param  asz     a valid, NULL terminated array of strings  <br>
+      @return ptr to text of 1st item.   <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>area where to start filling in strings. Do not exceed sizeOf.</p>
+    <h3 id="flystrarraynumelem" class="w3-text-blue">FlyStrArrayNumElem</h3>
+    <p>Determine number of elemens in a NULL terminated string array. For example:</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrArrayNumElem(const char **asz)<br>
+      <br>
+      @param  asz     a valid, NULL terminated array of strings  <br>
+      @return number of strings in the NULL terminated string array.  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>const char *asz[] = { "alpha", "beta", "gamma", NULL };
+FlyStrArrayNumElem(asz) == 3</p>
+    <h3 id="flystrarraysizeof" class="w3-text-blue">FlyStrArraySizeOf</h3>
+    <p>Determine total sizeof(text) of all strings in a NULL terminated string array. For example:</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrArraySizeOf(const char **asz)<br>
+      <br>
+      @param  asz     a valid, NULL terminated array of strings  <br>
+      @return total text size of all strings, including '\0's  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>const char *asz[] = { "alpha", "beta", "gamma", NULL };
+FlyStrArraySizeOf(asz) == 17</p>
+    <h3 id="flystrarrayprint" class="w3-text-blue">FlyStrArrayPrint</h3>
+    <p>Print the NULL terminated array of strings in the form of:</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyStrArrayPrint(const char **asz)<br>
+      <br>
+      @param  asz     a valid, NULL terminated array of strings  <br>
+      @return none  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>0: string1
+1: string2
+2: string3</p>
+    <h3 id="flystrhdrfind" class="w3-text-blue">FlyStrHdrFind</h3>
+    <p>Find pointer to start of next block comment (file or function header). Returns NULL if not found.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyStrHdrFind(const char *sz, bool_t fIsDoc)<br>
+      <br>
+      @param  sz        Ptr to string that might contain code headers  <br>
+      @param  fIsDoc    Only find document headers (they have a ! after comment opening)  <br>
+      @return ptr to header or NULL if not found  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Works with most languages such as C, C++, Javascript, Python, Rust, Swift, etc...</p>
+<p>Doc headers are meant for flydoc or Doxygen. They generally include <code class="w3-codespan">!</code> after the  normal block
+comment opening. The exception is <code class="w3-codespan">///</code> which is used by RustDoc, but could also be used in
+C/C++ programs.</p>
+<p>Python Doc Strings <code class="w3-codespan">"""</code> are ignored unless followed by <code class="w3-codespan">!</code>, that is <code class="w3-codespan">"""!</code>. This is because doc
+strings can be used for long strings, not just class or function headers.</p>
+<p>For line comments to be headers, use <code class="w3-codespan">##</code> at least for the opening line. Any lines that start
+with '#' are considered part of the same header.</p>
+    <h3 id="flystrhdrisdoc" class="w3-text-blue">FlyStrHdrIsDoc</h3>
+    <p>Return TRUE if this is a doc header. Must be on a header found by FlyStrHdrFind().</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyStrHdrIsDoc(const char *szHdr)<br>
+      <br>
+      @param  szHdr     ptr to header found by FlyStrHdrFind()  <br>
+      @return TRUE if doc header  <br>
+    </div>
+    <h3 id="flystrhdrisline" class="w3-text-blue">FlyStrHdrIsLine</h3>
+    <p>Return TRUE if this is a line comment style header. Must be on a header found by FlyStrHdrFind().</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyStrHdrIsLine(const char *szHdr)<br>
+      <br>
+      @param  szHdr     ptr to header found by FlyStrHdrFind()  <br>
+      @return TRUE if doc header  <br>
+    </div>
+    <h3 id="flystrhdrispydoc" class="w3-text-blue">FlyStrHdrIsPyDoc</h3>
+    <p>Return TRUE if this is a PyDoc document comment</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyStrHdrIsPyDoc(const char *szHdr)<br>
+      <br>
+      @param  szHdr     ptr to header found by FlyStrHdrFind()  <br>
+      @return TRUE if doc header  <br>
+    </div>
+    <h3 id="flystrhdrlen" class="w3-text-blue">FlyStrHdrLen</h3>
+    <p>Determine length block comment.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrHdrLen(const char *szHdr)<br>
+      <br>
+      @param  szHdr    ptr to start of block comment (aka header)  <br>
+      @return length of header  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Works with most languages such as C, C++, Javascript, Python, Rust, Swift, etc...</p>
+    <h3 id="flystrhdrstrip" class="w3-text-blue">FlyStrHdrStrip</h3>
+    <p>Strips a header down to the content. This does the following:</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrHdrStrip(char *szDst, size_t size, const char *szHdr, const char *szLineBeg)<br>
+      <br>
+      @param  szDst         ptr to destination char array. Can be NULL if just getting size  <br>
+      @param  size          sizeof szDst (or maxSize if szDst == NULL)  <br>
+      @param  szHdr         ptr to header found by FlyStrHdrFind()  <br>
+      @param  szLineBeg     ptr to beginning of header line, in case header is indented  <br>
+      @return length of header contents, or 0 if not a header  <br>
+    </div>
+    <p><b>Notes</b></p>
+<ol>
+<li>On block comments, ignores 1st and last</li>
+<li>Determines indent of real content based on 1st non-blank line</li>
+<li>Strips consistent with indent, so content is flush left</li>
+<li>Empty lines (with nothing but spaces/tabs) are empty (with just \n)</li>
+<li>Converts tabs to spaces using indent for column</li>
+</ol>
+    <h3 id="flystralloc" class="w3-text-blue">FlyStrAlloc</h3>
+    <p>Make a copy of a string on the heap.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char * FlyStrAlloc(const char *sz)<br>
+      <br>
+      @param   sz     ptr to a string, which may or may not be NUL terminated  <br>
+      @return  ptr an asciiz string on the heap  <br>
+    </div>
+    <h3 id="flystrnalloc" class="w3-text-blue">FlyStrNAlloc</h3>
+    <p>Copies a substring to the heap. Resulting string '\0' terminated.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char * FlyStrNAlloc(const char *sz, size_t len)<br>
+      <br>
+      @param   sz     ptr to a string, which may or may not be NUL terminated  <br>
+      @param   len    length of substring to copy  <br>
+      @return  ptr an asciiz string on the heap  <br>
+    </div>
+    <h3 id="flystrallocappend" class="w3-text-blue">FlyStrAllocAppend</h3>
+    <p>Appends a substring to the allocated string. Returned ptr is always different that szAllocStr.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char * FlyStrAllocAppend(char *szAllocStr, const char *sz, size_t len)<br>
+      <br>
+      @param   szAllocStr   ptr to allocated string  <br>
+      @param   sz           ptr to a substring, which may or may not be '\0' terminated  <br>
+      @param   len          length of substring to append  <br>
+      @return  NULL if szAllocStr not on the heap, or heap is out of room, otherwise new ptr  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Note: uses realloc() under the hood.</p>
+    <h3 id="flystrfnprotolen" class="w3-text-blue">FlyStrFnProtoLen</h3>
+    <p>Determines if this line contains a function definition. Returns prototype length and fn CName.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrFnProtoLen(const char *szLine, const char **ppszCName)<br>
+      <br>
+      @param    szLine      ptr to beginning of a line or string  <br>
+      @param    ppszCName   ptr to a string ptr will receive ptr to the C  <br>
+      @return   Returns length of a prototype string, skipping any preceeding whitespace  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Note: the prototype might span multiple lines. Also returns CName of function in ppszCName.</p>
+<p>See also FlyStrCNameLen().</p>
+<p>This follows some very basic rules:</p>
+<ul>
+<li>C:          type        CName( ... ) {</li>
+<li>C++:        type        CName::CName( ... ) {</li>
+<li>C++ class:              CName( ... ) {</li>
+<li>Go:         func        CName( ... ) type {</li>
+<li>Java:       public type CName( ...) {</li>
+<li>Javascript: function    CName( ... ) {</li>
+<li>Python:     def         CName( ... ):</li>
+<li>Rust:       fn          CName( ... ) -> type {</li>
+<li>Rust:       pub fn      CName( ... ) -> type {</li>
+<li>Swift:      func        CName( ... ) -> type {</li>
+</ul>
+    <h3 id="flystrcnamelen" class="w3-text-blue">FlyStrCNameLen</h3>
+    <p>Returns length of CName, or 0 if not a CName</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrCNameLen(const char *sz)<br>
+      <br>
+      @param   sz     character to checkl  <br>
+      @return  Length of CName or 0 if not a CName  <br>
+    </div>
+    <p><b>Notes</b></p>
+<table class="w3-table-all" style="width:auto">
+<tr>
+  <th>This</th>
+  <th>Returns</th>
+</tr>
+<tr>
+  <td>my_c_func(</td>
+  <td>9</td>
+</tr>
+<tr>
+  <td>my_c_array[</td>
+  <td>10</td>
+</tr>
+<tr>
+  <td>_myfn99</td>
+  <td>7</td>
+</tr>
+<tr>
+  <td>uint32_t</td>
+  <td>8</td>
+</tr>
+<tr>
+  <td>99hello</td>
+  <td>0</td>
+</tr>
+<tr>
+  <td>Cars::model(</td>
+  <td>11</td>
+</tr>
+<tr>
+  <td>::1</td>
+  <td>0</td>
+</tr>
+<tr>
+  <td>a:b</td>
+  <td>0</td>
+</tr>
+<tr>
+  <td>fe80::57</td>
+  <td>0</td>
+</tr>
+<tr>
+  <td>%name</td>
+  <td>0</td>
+</tr>
+</table>
+    <h3 id="flystrzcpy" class="w3-text-blue">FlyStrZCpy</h3>
+    <p>Copy the szSrc string to szDst. Will not exceed size of szDst. Always '\0' terminates.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrZCpy(char *szDst, size_t size, const char *szSrc)<br>
+      <br>
+      @param  szDst     destination asciiz string, or NULL to just get size  <br>
+      @param  size      sizeof szDst (1-n)  <br>
+      @param  szSrc     source string  <br>
+      @return # of bytes copied (or would have been copied if szDst == NULL)  <br>
+    </div>
+    <h3 id="flystrzncpy" class="w3-text-blue">FlyStrZNCpy</h3>
+    <p>Copy the szSrc string to szDst. Will not exceed size of szDst. Always '\0' terminates.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrZNCpy(char *szDst, size_t size, const char *szSrc, size_t srcLen)<br>
+      <br>
+      @param  szDst     destination asciiz string, or NULL to just get size  <br>
+      @param  size      sizeof szDst (1-n)  <br>
+      @param  szSrc     source string  <br>
+      @param  srcLen    length of src string  <br>
+      @return # of bytes copied (or would have been copied if szDst == NULL)  <br>
+    </div>
+    <h3 id="flystrzcat" class="w3-text-blue">FlyStrZCat</h3>
+    <p>Append the szSrc string to szDst. Will not exceed size of szDst. Always '\0' terminates.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrZCat(char *szDst, size_t size, const char *szSrc)<br>
+      <br>
+      @param  szDst     destination asciiz string, or NULL to just get size  <br>
+      @param  size      size of destination string (1-n)  <br>
+      @param  szSrc     source string  <br>
+      @return # of bytes copied (or would have been copied if szDst == NULL)  <br>
+    </div>
+    <h3 id="flystrzncat" class="w3-text-blue">FlyStrZNCat</h3>
+    <p>Append the szSrc string to szDst. Will not exceed size of szDst. Always '\0' terminates.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrZNCat(char *szDst, size_t size, const char *szSrc, size_t srcLen)<br>
+      <br>
+      @param  szDst     destination asciiz string, or NULL to just get size  <br>
+      @param  size      sizeof szDst (1-n)  <br>
+      @param  szSrc     source string  <br>
+      @param  srcLen    length of src string  <br>
+      @return # of bytes copied (or would have been copied if szDst == NULL)  <br>
+    </div>
+    <h3 id="flystrzfill" class="w3-text-blue">FlyStrZFill</h3>
+    <p>Fill a string with a character, but still '\0' terminate the string. Will not exceed size.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrZFill(char *szDst, size_t size, char c, size_t fillLen)<br>
+      <br>
+      @param  szDst     destination asciiz string, or NULL to just get size  <br>
+      @param  size      sizeof szDst (1-n)  <br>
+      @param  c         character to fill  <br>
+      @param  fillLen   # of characters to fill  <br>
+      @return # of filled (or would have been filled if szDst == NULL)  <br>
+    </div>
+    <h3 id="flystrzcatfill" class="w3-text-blue">FlyStrZCatFill</h3>
+    <p>Fill end of string a character, but still '\0' terminate the string. Will not exceed size.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyStrZCatFill(char *szDst, size_t size, char c, size_t fillLen)<br>
+      <br>
+      @param  szDst     destination asciiz string, or NULL to just get size  <br>
+      @param  size      sizeof szDst (1-n)  <br>
+      @param  c         character to fill  <br>
+      @param  fillLen   # of characters to fill  <br>
+      @return # of filled (or would have been filled if szDst == NULL)  <br>
+    </div>
+    <h3 id="flystrcver" class="w3-text-blue">FlyStrCVer</h3>
+    <p>Get the version of C (e.g. C99, C11, C17)</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char *FlyStrCVer(void)<br>
+      <br>
+      @return ptr to static string with C version in it  <br>
+    </div>
+    <h3 id="flystrslug" class="w3-text-blue">FlyStrSlug</h3>
+    <p>Converts string in-place to a slug (URL friendly string).</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char * FlyStrSlug(char *sz)<br>
+      <br>
+      @param    sz string to convert to a slug  <br>
+      @return   sz  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Resulting string will be lowercase alnum, dashes and dots only. Examples:</p>
+<div class="w3-code w3-light-grey notranslate">
+  "&nbsp; I Love Waffles&nbsp; "&nbsp; &nbsp; &nbsp; -> "i-love-waffles"<br>
+  "my.echo My Shadow & Me"&nbsp; -> "my.echo-my-shadow-me"<br>
+</div>
+    <h3 id="flystrask" class="w3-text-blue">FlyStrAsk</h3>
+    <p>Ask a question. Uses fgets(), stdin and stdout.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      char * FlyStrAsk(const char *szQuestion, size_t size, char *szAnswer)<br>
+      <br>
+      @param    szQuestion    question to ask  <br>
+      @param    size          sizeof(szAnswer) 2-n  <br>
+      @param    szAnswer      ptr to string for answer  <br>
+      @return   szAnswer      <br>
+    </div>
+  </div>
+</div>
+</body>
+</html>
