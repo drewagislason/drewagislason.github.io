@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlyUtf8</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlyUtf8</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#flyutf8charcpy">FlyUtf8CharCpy</a><br>
+      <a href="#flyutf8charesc">FlyUtf8CharEsc</a><br>
+      <a href="#flyutf8charget">FlyUtf8CharGet</a><br>
+      <a href="#flyutf8charidx">FlyUtf8CharIdx</a><br>
+      <a href="#flyutf8charlen">FlyUtf8CharLen</a><br>
+      <a href="#flyutf8charnext">FlyUtf8CharNext</a><br>
+      <a href="#flyutf8charput">FlyUtf8CharPut</a><br>
+      <a href="#flyutf8len">FlyUtf8Len</a><br>
+      <a href="#flyutf8strlen">FlyUtf8StrLen</a><br>
+      <a href="#flyutf8strzcpy">FlyUtf8StrZCpy</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>A set of UTF-8 string utilities</h3>
+<p>FlyUtf8 is a C API for handling UTF-8 strings in a minimal way.</p>
+<p>Unicode strings are strings of bytes that are '\0' terminated like most C strings. You can use
+standard strcpy() or strncpy() to copy unicode strings. However, since each character in UTF-8
+is variable length, finding the nth character or copying n characters is more tricky.</p>
+<p>UTF-8 encoding is 1 to 4 bytes:</p>
+<div class="w3-code w3-light-grey notranslate">
+  00000000 -- 0000007F:&nbsp; &nbsp;0xxxxxxx (7 bits)<br>
+  00000080 -- 000007FF:&nbsp; &nbsp;110xxxxx 10xxxxxx (11 bits)<br>
+  00000800 -- 0000FFFF:&nbsp; &nbsp;1110xxxx 10xxxxxx 10xxxxxx (16 bits)<br>
+  00010000 -- 0010FFFF:&nbsp; &nbsp;11110xxx 10xxxxxx 10xxxxxx 10xxxxxx (21 bits)<br>
+</div>
+<p>See: <a href="https://en.wikipedia.org/wiki/UTF-8">https://en.wikipedia.org/wiki/UTF-8</a></p>
+    <p id="example-print-each-character-with-index-and-value-for-ascii-and-utf-8-strings"><b>Example: Print each character with index and value for Ascii and UTF-8 strings</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  #include "FlyUtf8.h"&nbsp; <br>
+  <br>
+  int main(void)&nbsp; <br>
+  {&nbsp; &nbsp;<br>
+  &nbsp; const char&nbsp; &nbsp; &nbsp;*szAsciiHello = "Hello World\n";&nbsp; <br>
+  &nbsp; const utf8_t&nbsp; &nbsp;*szUtf8Hello&nbsp; = "Héllø Wôrld\n";&nbsp; <br>
+  &nbsp; const utf8_t&nbsp; &nbsp;*pszUtf8;&nbsp; <br>
+  &nbsp; const utf8_t&nbsp; &nbsp; szUtf8Char[UTF8_MAX];&nbsp; <br>
+  &nbsp; unsigned&nbsp; &nbsp; &nbsp; &nbsp; nChars;&nbsp; <br>
+  &nbsp; unsigned&nbsp; &nbsp; &nbsp; &nbsp; i;&nbsp; <br>
+  &nbsp; uint32_t&nbsp; &nbsp; &nbsp; &nbsp; c32;&nbsp; <br>
+  <br>
+  &nbsp; // print each ASCII char with index&nbsp; <br>
+  &nbsp; nChars = strlen(szAsciiHello);&nbsp; <br>
+  &nbsp; for(i = 0; i &lt; nChars; ++i)&nbsp; <br>
+  &nbsp; &nbsp; printf("char %u: %c, value 0x%x\n", i, szAscii[i], (unsigned)szAscii[i]);&nbsp; <br>
+  <br>
+  &nbsp; // print each UTF-8 char with index&nbsp; <br>
+  &nbsp; nChars = FlyUtf8StrLen(szUtf8Hello);&nbsp; <br>
+  &nbsp; pszUtf8 = szUtf8Hello;&nbsp; <br>
+  &nbsp; for(i = 0; i &lt; nChars; ++i)&nbsp; <br>
+  &nbsp; {&nbsp; <br>
+  &nbsp; &nbsp; c32 = FlyUtf8CharGet(pszUtf8);&nbsp; <br>
+  &nbsp; &nbsp; pszUtf8 = FlyUtf8CharCpy(szUtf8Char, pszUtf8);&nbsp; <br>
+  &nbsp; &nbsp; FlyUtf8CharGet(szUtf8Char, pszUtf8&nbsp; <br>
+  &nbsp; &nbsp; printf("char %u: %s, value 0x%" PRIu32 "x\n", i, c32);&nbsp; <br>
+  &nbsp; }&nbsp; <br>
+  <br>
+  &nbsp; return 0;&nbsp; <br>
+  }&nbsp; <br>
+</div>
+    <h3 id="flyutf8charcpy" class="w3-text-blue">FlyUtf8CharCpy</h3>
+    <p>Copy a single (perhaps multi-byte) UTF-8 character from one string to another.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const utf8_t * FlyUtf8CharCpy(utf8_t *szDst, const utf8_t *szSrc)<br>
+      <br>
+      @param    szDst   ptr to buffer UTF8_MAX in size or NULL  <br>
+      @param    szSrc   ptr to a UTF-8 string  <br>
+      @return   ptr to szSrc + len of UTF-8 char (1-4 bytes)  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>The szDst char copied is always '\0' terminated.</p>
+    <h3 id="flyutf8charesc" class="w3-text-blue">FlyUtf8CharEsc</h3>
+    <p>Copies a single escape sequence from szSrc to a single UTF-8 char szDst</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const utf8_t * FlyUtf8CharEsc(utf8_t *szDst, const utf8_t *szSrc, unsigned *pDstLen)<br>
+      <br>
+      @param    szDst   ptr to buffer UTF8_MAX in size or NULL  <br>
+      @param    szSrc   ptr to escape character sequence  <br>
+      @param    pDstLen return value, destination length in bytes  <br>
+      @return   ptr to next character after escape sequence in szSrc  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Examples of escape sequences:</p>
+<table class="w3-table-all" style="width:auto">
+<tr>
+  <th>Escape Sequence</th>
+  <th>Becomes UTF-8 Bytes</th>
+  <th>dstLen</th>
+</tr>
+<tr>
+  <td>"\\n"</td>
+  <td>0a</td>
+  <td>1</td>
+</tr>
+<tr>
+  <td>"\\077" (octal)</td>
+  <td>3f</td>
+  <td>1</td>
+</tr>
+<tr>
+  <td>"\\xfe" (hex)</td>
+  <td>fe</td>
+  <td>1</td>
+</tr>
+<tr>
+  <td>"\\u21e7 (unicode)</td>
+  <td></td>
+  <td></td>
+</tr>
+</table>
+<p>szDst string is always '\0' terminated.</p>
+    <h3 id="flyutf8charget" class="w3-text-blue">FlyUtf8CharGet</h3>
+    <p>Gets a 1-4 byte UTF-8 character from the string and returns it as a 32-bit Unicode code point.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      uint32_t FlyUtf8CharGet(const utf8_t *szUtf8)<br>
+      <br>
+      @param    szDst   ptr to destination string for UTF-8  character  <br>
+      @param    c32     Unicode character (U + n)  <br>
+      @return   UTF8_INVALID or Unicode code point (e.g. 0x2020 for dagger)  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>UTF-8 Encoding is:</p>
+<div class="w3-code w3-light-grey notranslate">
+  00000000 -- 0000007F:&nbsp; &nbsp;0xxxxxxx (7 bits, ASCII)<br>
+  00000080 -- 000007FF:&nbsp; &nbsp;110xxxxx 10xxxxxx (11 bits)<br>
+  00000800 -- 0000FFFF:&nbsp; &nbsp;1110xxxx 10xxxxxx 10xxxxxx (16 bits)<br>
+  00010000 -- 0010FFFF:&nbsp; &nbsp;11110xxx 10xxxxxx 10xxxxxx 10xxxxxx (21 bits)<br>
+</div>
+<p>Anything above 0x10FFFF is invalid. If first byte is binary 10xxxxxx it is invalid. If subsequent
+bytes are not 10xxxxxx it is invalid.</p>
+    <h3 id="flyutf8charidx" class="w3-text-blue">FlyUtf8CharIdx</h3>
+    <p>Get ptr to character based on the index i in an array of characters.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const utf8_t * FlyUtf8CharIdx(const utf8_t *szUtf8, size_t i)<br>
+      <br>
+      @param    szUtf8    ptr to a string at least UTF8_MAX in size  <br>
+      @param    i         index   <br>
+      @return   ptr to szSrc + len of UTF-8 char (1-4 bytes)  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Does not stop on '\0' so it could be used both on normal C strings and arbitrary UTF-8 arrays.</p>
+    <h3 id="flyutf8charlen" class="w3-text-blue">FlyUtf8CharLen</h3>
+    <p>Determine the length of this potentially UTF-8 character sequence. Always 1-4 bytes.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlyUtf8CharLen(const utf8_t *szUtf8)<br>
+      <br>
+      @param    szUtf8   ptr to a UTF-8 string or character  <br>
+      @return   length of UTF-8 character (1-4 bytes)  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>If the UTF-8 string is invalid, length is always 1.</p>
+    <h3 id="flyutf8charnext" class="w3-text-blue">FlyUtf8CharNext</h3>
+    <p>Return next character (advance 1-4 bytes) in the UTF-8 string</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const utf8_t * FlyUtf8CharNext(const utf8_t *szUtf8)<br>
+      <br>
+      @param    szUtf8   ptr to a UTF-8 character  <br>
+      @return   size of UTF-8 character (1-4 bytes)  <br>
+    </div>
+    <h3 id="flyutf8charput" class="w3-text-blue">FlyUtf8CharPut</h3>
+    <p>Converts 32-bit Unicode code point to a 0-4 byte UTF-8 sequence. Always '\0' terminated.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlyUtf8CharPut(utf8_t *szDst, uint32_t codePoint)<br>
+      <br>
+      @param    szDst       ptr to destination string for wide character  <br>
+      @param    codePoint   Unicode code point (e.g. U+20AC)  <br>
+      @return   length of encoded unicode character (1-4 bytes).  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>If the codePoint is > UTF8_CODEPOINT_MAX (invalid), an empty string is returned, length 0.</p>
+<p>Example: copyright U+169 or 0xA9 is "\xC2\xA9" or binary 110 00010  10 101001</p>
+<p>Encoding is:</p>
+<div class="w3-code w3-light-grey notranslate">
+  00000000 -- 0000007F:&nbsp; &nbsp;0xxxxxxx (7 bits)<br>
+  00000080 -- 000007FF:&nbsp; &nbsp;110xxxxx 10xxxxxx (11 bits)<br>
+  00000800 -- 0000FFFF:&nbsp; &nbsp;1110xxxx 10xxxxxx 10xxxxxx (16 bits)<br>
+  00010000 -- 0010FFFF:&nbsp; &nbsp;11110xxx 10xxxxxx 10xxxxxx 10xxxxxx (21 bits)<br>
+</div>
+    <h3 id="flyutf8len" class="w3-text-blue">FlyUtf8Len</h3>
+    <p>Return length of this codepoint (Unicode character) in bytes if converted to UTF-8</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlyUtf8Len(uint32_t codePoint)<br>
+      <br>
+      @param    codePoint   U + # (e.g. 0x2020 is dagger)  <br>
+      @return   length of codepoint (1-4 bytes), or 0 > UTF8_CODEPOINT_MAX (invalid)  <br>
+    </div>
+    <h3 id="flyutf8strlen" class="w3-text-blue">FlyUtf8StrLen</h3>
+    <p>Return number of variable length UTF-8 characters in string.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyUtf8StrLen(const utf8_t *szUtf8)<br>
+      <br>
+      @param    szUtf8   ptr to a UTF-8 character  <br>
+      @return   number of UTF-8 characters in string  <br>
+    </div>
+    <h3 id="flyutf8strzcpy" class="w3-text-blue">FlyUtf8StrZCpy</h3>
+    <p>Copy a UTF-8 string from one memory location to another non-overlapping memory location.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      size_t FlyUtf8StrZCpy(utf8_t *szDst, const utf8_t *szSrc, size_t size)<br>
+      <br>
+      @param    szDst   ptr to a UTF-8 destination at least size  <br>
+      @param    szSrc   ptr to a UTF-8 character  <br>
+      @param    size    size of szDst string in bytes (not UTF-8 chars)  <br>
+      @return   number of variable length UTF-8 characters copied  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Similar to strncpy(), but always '\0' terminates the szDst string, unless size is 0, which does
+nothing. Also returns number of UTF-8 characters copied, rather than pointer to szDst.</p>
+<p>Input size is in bytes, not variable length UTF-8 characters.</p>
+<p>Only whole UTF-8 characters are copied. For example, if size is 3, the 4-byte earth character
+(F0 9F 8C 8E) would NOT be copied, but copyright (C2 A9) would be.</p>
+  </div>
+</div>
+</body>
+</html>

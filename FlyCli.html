@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlyCli</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlyCli</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#flycliparse">FlyCliParse</a><br>
+      <a href="#flycliparseex">FlyCliParseEx</a><br>
+      <a href="#flycliarg">FlyCliArg</a><br>
+      <a href="#flyclinumargs">FlyCliNumArgs</a><br>
+      <a href="#flyclidoubledash">FlyCliDoubleDash</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>- A C API for handling the command-line (argc, argv) in a consistent way.</h3>
+<p>This API tries to capture tha "main" way options and arguments are used for most Linux-style
+command-line programs.</p>
+<p>Features:</p>
+<ul>
+<li>Options --version and --help can be static strings or dynamic</li>
+<li>Options and arguments can be intermixed</li>
+<li>Options have the following types: string, int, bool</li>
+<li>Arguments are indexed 0-n (just like argc/argv) regardless of how many options are intermixed</li>
+<li>Supports -- to allow for options and arguments sent to a sub-program</li>
+<li>Works with any array of string ptrs, not just <code class="w3-codespan">int main(int argc, const char *argv[])</code></li>
+<li>Built-in error messages, or higher layer can use error codes to make its own messages</li>
+<li>Requires no memory allocation and little stack</li>
+</ul>
+<p>Options are <code class="w3-codespan">--options</code> or <code class="w3-codespan">-o</code>, whereas arguments are "strings". The convention is that one
+letter options need only one dash, e.g. <code class="w3-codespan">-v</code>, but longer options need 2 dashs, e.g. "--debug".</p>
+<p>One convention not supported is the combining of single letter options. For example, if you
+options <code class="w3-codespan">-v</code> and <code class="w3-codespan">-a</code>, you cannot specifiy <code class="w3-codespan">-va</code> or <code class="w3-codespan">-av</code>. Maybe in a future version.</p>
+<p>For an example of a common command-line program with lots of options, see the command <code class="w3-codespan">ls</code>:  <br>
+<a href="https://www.man7.org/linux/man-pages/man1/ls.1.html">https://www.man7.org/linux/man-pages/man1/ls.1.html</a></p>
+<p>Some examples of command lines and a program to parse them:</p>
+<div class="w3-code w3-light-grey notranslate">
+  $ exmple_cli --help<br>
+  $ exmple_cli --version<br>
+  $ exmple_cli arg1<br>
+  $ exmple_cli -v arg1 --name "Sam Spade" arg2 arg3<br>
+  $ exmple_cli -n=3 --str Repeat arg1 arg2<br>
+</div>
+    <p id="example-flycli-c-code-example-with-bool-int-string-options"><b>Example: FlyCli C code example With bool, int, string options</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  #include "FlyCli.h"&nbsp; <br>
+  <br>
+  int main(int argc, const char *argv[])&nbsp; <br>
+  {&nbsp; <br>
+  &nbsp; char&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;*pszName&nbsp; &nbsp;= "No Name";&nbsp; <br>
+  &nbsp; bool_t&nbsp; &nbsp; &nbsp; &nbsp; fVerbose&nbsp; = FALSE;&nbsp; <br>
+  &nbsp; int&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;repeat&nbsp; &nbsp; = 1;&nbsp; &nbsp; // number of times to repeat&nbsp; <br>
+  &nbsp; const flyCliOpt_t cliOpts[] =&nbsp; <br>
+  &nbsp; {&nbsp; <br>
+  &nbsp; &nbsp; { "--name", &pszName,&nbsp; FLYCLI_STRING },&nbsp; <br>
+  &nbsp; &nbsp; { "-n",&nbsp; &nbsp; &nbsp;&repeat,&nbsp; &nbsp;FLYCLI_INT },&nbsp; <br>
+  &nbsp; &nbsp; { "-v",&nbsp; &nbsp; &nbsp;&fVerbose, FLYCLI_BOOL },&nbsp; <br>
+  &nbsp; };&nbsp; <br>
+  &nbsp; const flyCli_t cli =&nbsp; <br>
+  &nbsp; {&nbsp; <br>
+  &nbsp; &nbsp; .pArgc&nbsp; &nbsp; &nbsp; = &argc,&nbsp; &nbsp; // Important! Notice the ampersand.&nbsp; <br>
+  &nbsp; &nbsp; .argv&nbsp; &nbsp; &nbsp; &nbsp;= argv,&nbsp; <br>
+  &nbsp; &nbsp; .nOpts&nbsp; &nbsp; &nbsp; = NumElements(cliOpts),&nbsp; <br>
+  &nbsp; &nbsp; .pOpts&nbsp; &nbsp; &nbsp; = cliOpts,&nbsp; <br>
+  &nbsp; &nbsp; .szVersion&nbsp; = "example_cli v1.0",&nbsp; <br>
+  &nbsp; &nbsp; .szHelp&nbsp; &nbsp; &nbsp;= "Usage = example_cli [-n=#] [--name \"Some Name\"] [-v]\n"&nbsp; <br>
+  &nbsp; };&nbsp; <br>
+  &nbsp; int&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;i, j;&nbsp; <br>
+  &nbsp; int&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;nArgs;&nbsp; <br>
+  &nbsp; flyCliErr_t&nbsp; &nbsp;err;&nbsp; <br>
+  <br>
+  &nbsp; // parse all options&nbsp; <br>
+  &nbsp; err = FlyCliParse(&cli, NULL);&nbsp; <br>
+  &nbsp; if(err)&nbsp; <br>
+  &nbsp; &nbsp; return 1;&nbsp; <br>
+  <br>
+  &nbsp; printf("Hello %s%s\n\n", fVerbose ? "(verbose) " : "", pszName);&nbsp; <br>
+  <br>
+  &nbsp; nArgs = FlyCliNumArgs(&cli);&nbsp; <br>
+  &nbsp; if(nArgs > 1)&nbsp; <br>
+  &nbsp; {&nbsp; <br>
+  &nbsp; &nbsp; for(i = 1; i &lt; nArgs; ++i)&nbsp; <br>
+  &nbsp; &nbsp; {&nbsp; <br>
+  &nbsp; &nbsp; &nbsp; printf("%d: ", i);&nbsp; <br>
+  &nbsp; &nbsp; &nbsp; for(j = 0; j &lt; repeat; ++j)&nbsp; <br>
+  &nbsp; &nbsp; &nbsp; &nbsp; printf("%s ", FlyCliArg(&cli, i));&nbsp; <br>
+  &nbsp; &nbsp; &nbsp; printf("\n");&nbsp; <br>
+  &nbsp; &nbsp; }&nbsp; <br>
+  &nbsp; }&nbsp; <br>
+  <br>
+  &nbsp; return 0;&nbsp; <br>
+  }&nbsp; <br>
+</div>
+    <h3 id="flycliparse" class="w3-text-blue">FlyCliParse</h3>
+    <p>Parse the command-line for all options.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flyCliErr_t FlyCliParse(const flyCli_t *pCli)<br>
+      <br>
+      @param    pCli    pointer to a filled-in flyCli_t structure  <br>
+      @return   FLYCLI_ERR_NONE(0) if no error, FLYCLI_ERR_something, e.g. FLYCLI_ERR_BAD_OPT  <br>
+    </div>
+    <h3 id="flycliparseex" class="w3-text-blue">FlyCliParseEx</h3>
+    <p>Parse the command-line for all options with return index if error.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flyCliErr_t FlyCliParseEx(const flyCli_t *pCli, int *pNumArgs, int *pIndex)<br>
+      <br>
+      @param    pCli      pointer to a filled-in flyCli_t structure  <br>
+      @param    pNumArgs  # of arguments  <br>
+      @param    pIndex  returned index into pCli->argv[] array if error code  <br>
+      @return   FLYCLI_ERR_NONE(0) if no error, FLYCLI_ERR_something, e.g. FLYCLI_ERR_BAD_OPT  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Used with pCli->fNoPrint=TRUE so higher layer can print error messages.</p>
+    <h3 id="flycliarg" class="w3-text-blue">FlyCliArg</h3>
+    <p>Return the arg by index, not counting options.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      const char * FlyCliArg(const flyCli_t *pCli, int index)<br>
+      <br>
+      @param    pCli    pointer to a filled-in flyCli_t structure  <br>
+      @param    index   index (0-n) into arguments  <br>
+      @return   ptr to argument string or NULL if invalid index  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>For Example: "my_prog arg1 -opt1 arg2", FlyCliArg(&amp;cli, 2) would return "arg2"</p>
+    <h3 id="flyclinumargs" class="w3-text-blue">FlyCliNumArgs</h3>
+    <p>Return the # of non option arguments</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlyCliNumArgs(const flyCli_t *pCli)<br>
+      <br>
+      @param    pCli    pointer to a filled-in flyCli_t structure  <br>
+      @return   1-n (number of arguments)  <br>
+    </div>
+    <h3 id="flyclidoubledash" class="w3-text-blue">FlyCliDoubleDash</h3>
+    <p>Return in index into the pCli->argv[] array for the double dash, or -1 if no "--".</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlyCliDoubleDash(const flyCli_t *pCli)<br>
+      <br>
+      @param    pCli    pointer to a filled-in flyCli_t structure  <br>
+      @return   index to double dash or -1 if no "--"  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>A double dash is the convention used to pass arguments to sub-programs:</p>
+<div class="w3-code w3-light-grey notranslate">
+  $ flymake run program -B -- arg_to_program --opt_to_program<br>
+</div>
+  </div>
+</div>
+</body>
+</html>

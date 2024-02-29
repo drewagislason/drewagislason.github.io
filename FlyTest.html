@@ -37,28 +37,38 @@
       <a href="#flytestgetanswer">FlyTestGetAnswer</a><br>
       <a href="#flytestgetyesno">FlyTestGetYesNo</a><br>
       <a href="#flytestcalclogtotals">FlyTestCalcLogTotals</a><br>
+      <a href="#flytesterrorprint">FlyTestErrorPrint</a><br>
     </p>
   </div>
   <div class="w3-container w3-cell w3-mobile">
-    <h3>A Test API for testing submodules in any C program</h3>
+    <h3>A C Test Framework/API for testing C functions and objects</h3>
 <p>This is a simple but powerful test framework for C programs. Allows any C module to be tested
 independant of the overall system, thereby reducing bugs in the final code.</p>
-<p>This is used extensively by all Firefly APIs.</p>
-<p>Produces a test suite for that can be used to verify code passes test suite even prior to it
-being checked into Git.</p>
 <p>Features:</p>
 <ol>
-<li>Manual and autoamted tests</li>
-<li>Customizable/searchable log output for quickly identifying bugs</li>
-<li>Test case, test sute framework</li>
-<li>Run "quick" tests or all tests</li>
-<li>Run specific tests based on filters</li>
-<li>Verbose flags allow module code to add test ouput, but be compiled out of code without the test framwork</li>
+<li>Easily run manual tests, automated tests or both</li>
+<li>Run "smoke" or quick tests only for rapid verification of new code for CI/CD</li>
+<li>Verbosity flags for better context/understanding of the bug</li>
+<li>Filter which tests are run by keyword</li>
+<li>Automatically creates formal test logs for records / searching</li>
+<li>Test case, test group, test suite framework</li>
+<li>TestPrintf() can aid debugging and is compiled out of production code</li>
+<li>Recordes time consumed by test cases and suites</li>
+<li>And more</li>
 </ol>
-<p>A compiled test program (e.g. test_mymodule) uses the following cmdline</p>
+<p>The test framework generally is built to test modules (that is, a C collection of functions or a
+C "object"). This is comprised of 1 or more test cases.</p>
 <div class="w3-code w3-light-grey notranslate">
   Usage = TestSuite [test_suite_args] [-a] [-f filter] [-m] [-v]<br>
 </div>
+<p>Nomenclature. See also <a href="https://www.istqb.org">https://www.istqb.org</a></p>
+<ul>
+<li>test case - the basic unit of test</li>
+<li>test suite - a set of test cases to test a module or the entire program</li>
+<li>unit-test - a test suite that tests functions/behavior not exposed via API</li>
+<li>smoke test - quick test cases used for CI/CD</li>
+<li>fuzz tests - throws bad input at functions to verify how they handle invalid inputs</li>
+</ul>
     <h3 id="flytestnew" class="w3-text-blue">FlyTestNew</h3>
     <p>Create a test suite from test cases</p>
     <p><a href="#top">Back to top</a></p>
@@ -234,6 +244,19 @@ being checked into Git.</p>
       @param    pFailed    pointer to receive failed count  <br>
       @param    pSkipped   pointer to receive skipped count  <br>
       @returns  TRUE if log file contains test results, FALSE if not  <br>
+    </div>
+    <h3 id="flytesterrorprint" class="w3-text-blue">FlyTestErrorPrint</h3>
+    <p>Default assert print function.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlyTestErrorPrint(const char *szExpr, const char *szFile, const char *szFunc, unsigned line)<br>
+      <br>
+      @param    szxExpr     assert expression or helpful message  <br>
+      @param    szFile      string version of the file  <br>
+      @param    szFunc      string function name  <br>
+      @param    line        line number  <br>
+      @return   1 (exit code for failed)  <br>
     </div>
   </div>
 </div>

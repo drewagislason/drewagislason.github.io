@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FlySemVer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell-middle w3-mobile w3-black">
+    <div class="w3-container w3-cell">
+      <p><a href="index.html"><img src="flydoclogo.png" class="w3-circle w3-grayscale-max" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell">
+      <h1>FlySemVer</h1>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>version 0.95.3</p>
+    <p>
+      <a href="#flysemvercmp">FlySemVerCmp</a><br>
+      <a href="#flysemverisvalid">FlySemVerIsValid</a><br>
+      <a href="#flysemverhigh">FlySemVerHigh</a><br>
+      <a href="#flysemvermatch">FlySemVerMatch</a><br>
+      <a href="#flysemvercpy">FlySemVerCpy</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+    <h3>- An API for processing Semantic Versioning</h3>
+<p>If you are not familiar with Semantic Versioning, see <a href="https://semver.org">https://semver.org</a>.</p>
+<p>See also Rust Lang <a href="https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html">https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html</a>.</p>
+<p>The basics, a Semantic Version is major.minor.patch, e.g. 1.5.19, where:</p>
+<ol>
+<li>MAJOR version when you make incompatible API changes</li>
+<li>MINOR version when you add functionality in a backward compatible manner</li>
+<li>PATCH version when you make backward compatible bug fixes</li>
+</ol>
+    <h3 id="flysemvercmp" class="w3-text-blue">FlySemVerCmp</h3>
+    <p>Compare two Semenatic Versions: szVer1 to szVer2. The version string "*" is equal to anything.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      int FlySemVerCmp(const char *szVer1, const char *szVer2)<br>
+      <br>
+      @param    szVer1    a version string, e.g. "1", "1.0.15", "*"  <br>
+      @param    szVer2    a version string, e.g. "1", "1.0.15", "*"  <br>
+      @return   < 0 (less than), 0 (equal), 1 (greater than)  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Examples:</p>
+<div class="w3-code w3-light-grey notranslate">
+  "2" > "1.1.15"<br>
+  "1.1.14" &lt; "1.1.15"<br>
+  "*" == "1.1.15"<br>
+  "1.1.15" == "*"<br>
+  "1.1" > "1"<br>
+</div>
+    <h3 id="flysemverisvalid" class="w3-text-blue">FlySemVerIsValid</h3>
+    <p>Is this range a valid range? (that is, begins with a digit and contains only numbers and digits)</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t  FlySemVerIsValid(const char *szVer)<br>
+      <br>
+      @param    szVer     a version string, e.g. "1", "1.0.15", "*"  <br>
+      @return   TRUE if szVer is valid, FALSE if NOT  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Stops checking at 3rd dot, so "1.2.3.alpha" is valid, but "1.beta" is not.</p>
+    <h3 id="flysemverhigh" class="w3-text-blue">FlySemVerHigh</h3>
+    <p>Get a "high" version string from this version range, suitable for comparison.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlySemVerHigh(char *szHigh, const char *szRange, unsigned size)<br>
+      <br>
+      @param    szHigh    returned string, of size - 1  <br>
+      @param    szRange   a version string, e.g. "1", "1.0.15", "*"  <br>
+      @param    size      size in bytes of szHigh string buffer  <br>
+      @return   none  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Examples:</p>
+<div class="w3-code w3-light-grey notranslate">
+  1.2.3 returns 2.0.0<br>
+  1.2&nbsp; &nbsp;returns 2.0.0<br>
+  1&nbsp; &nbsp; &nbsp;returns 2.0.0<br>
+  0.2.3 returns 0.3.0<br>
+  0.2&nbsp; &nbsp;returns 0.3.0<br>
+  0.0.3 returns 0.0.4<br>
+  0.0&nbsp; &nbsp;returns 0.1.0<br>
+  0&nbsp; &nbsp; &nbsp;returns 1.0.0<br>
+  *&nbsp; &nbsp; &nbsp;returns *<br>
+</div>
+    <h3 id="flysemvermatch" class="w3-text-blue">FlySemVerMatch</h3>
+    <p>Does szRange match szVer using the Rust rules related to Semantic Versioning?</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlySemVerMatch(const char *szRange, const char *szVer)<br>
+      <br>
+      @param    szRange   a version string, e.g. "1", "1.0.15", "*"  <br>
+      @param    szVer     a version string, e.g. "1", "1.0.15", "*"  <br>
+      @return   TRUE if szVer is in range, FALSE if not  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Examples:</p>
+<div class="w3-code w3-light-grey notranslate">
+  1.2.3 matches >=1.2.3, &lt;2.0.0<br>
+  1.2&nbsp; &nbsp;matches >=1.2.0, &lt;2.0.0<br>
+  1&nbsp; &nbsp; &nbsp;matches >=1.0.0, &lt;2.0.0<br>
+  0.2.3 matches >=0.2.3, &lt;0.3.0<br>
+  0.2&nbsp; &nbsp;matches >=0.2.0, &lt;0.3.0<br>
+  0.0.3 matches >=0.0.3, &lt;0.0.4<br>
+  0.0&nbsp; &nbsp;matches >=0.0.0, &lt;0.1.0<br>
+  0&nbsp; &nbsp; &nbsp;matches >=0.0.0, &lt;1.0.0<br>
+  *&nbsp; &nbsp; &nbsp;matches anything<br>
+</div>
+    <h3 id="flysemvercpy" class="w3-text-blue">FlySemVerCpy</h3>
+    <p>Copy the Sem Ver string. 1st character must be a number, or return length is 0.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      unsigned FlySemVerCpy(char *szDst, const char *szSemVer, unsigned size)<br>
+      <br>
+      @param    szDst     destination string buffer or NULL to just get length.  <br>
+      @param    szSemVer  ptr to 1st character of a semver string  <br>
+      @param    size      size of szDst buffer in bytes  <br>
+      @return   length of semver string or 0 if not a valid semver string  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Some Examples:</p>
+<p>  "*" returns len 1
+  "1" returns len 1
+  "1.2.3" returns length 5
+  "124.456.789.alpha" returns len 17
+  "1.2 and more text" returns len 3
+  "v1.2" returns len 0</p>
+  </div>
+</div>
+</body>
+</html>

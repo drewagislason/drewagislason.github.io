@@ -28,9 +28,11 @@
       <a href="#flylistinsbefore">FlyListInsBefore</a><br>
       <a href="#flylistisinlist">FlyListIsInList</a><br>
       <a href="#flylistprepend">FlyListPrepend</a><br>
+      <a href="#flylistprev">FlyListPrev</a><br>
       <a href="#flylistremove">FlyListRemove</a><br>
       <a href="#flylistlen">FlyListLen</a><br>
       <a href="#flylistprependex">FlyListPrependEx</a><br>
+      <a href="#flylistprevex">FlyListPrevEx</a><br>
       <a href="#flylistappendex">FlyListAppendEx</a><br>
       <a href="#listaddsorted">ListAddSorted</a><br>
       <a href="#flylistaddsortedex">FlyListAddSortedEx</a><br>
@@ -43,19 +45,19 @@
     <h3>generic linked list handling.</h3>
 <p>Features:</p>
 <ul>
-<li>Works on generic lists (same functions work with different linked list structures)</li>
-<li>Works with arrays of structures or allocated structures</li>
-<li>Doesn't move the structures, only updates links</li>
 <li>Works with single linked lists, double linked lists (bidirectional)</li>
-<li>Works with circular (wrap-around) and linear lists</li>
-<li>Works with FlySortList() (see FlySort.h)</li>
+<li>Works with linear and circular (wrap-around) lists</li>
+<li>Lists of any structure</li>
+<li>Does not allocate any memory</li>
+<li>Does not move structures, only updates links</li>
+<li>Works with FlySort.h, FlySortList()</li>
 </ul>
 <p>Rules:</p>
 <ol>
-<li>Links MUST be at the top of the stucture.</li>
-<li>Only double lists need pPrev. pNext comes before pPrev if double-linked list.</li>
-<li>Use the same fIsCircular and fIsDouble parameters for ALL calls to the same list.</li>
-<li>The same item (ptr) MUST NEVER be in the same list twice, or the behavior is undefined.</li>
+<li>Links MUST be at the top of the stucture (make sure optimizing does not move them)</li>
+<li>Only double lists need pPrev. pNext comes before pPrev if double-linked list</li>
+<li>Use the same fIsCircular and fIsDouble parameters for ALL calls to the same list</li>
+<li>The same item (ptr) MUST NEVER be in the same list twice, or the behavior is undefined</li>
 </ol>
 <div class="w3-code w3-light-grey notranslate">
   #include "FlyList.h"<br>
@@ -210,7 +212,7 @@
       bool_t FlyListIsInList(void *pList, void *pItem)<br>
       <br>
       @param  pList         ptr to head or NULL for new list  <br>
-      @param  pItem         ptr to allocated, static structure with *pNext as first field  <br>
+      @param  pItem         ptr to an allocated, local or static structure with *pNext as first field  <br>
       @param  fIsCircular   list is circular (wraps)  <br>
       @param  fIsDouble     list has both pNext and pPrev (bidirectional)  <br>
       @param  pThis         item in list  <br>
@@ -226,8 +228,19 @@
       void * FlyListPrepend(void *pList, void *pItem)<br>
       <br>
       @param  pList     ptr to head or NULL for new list  <br>
-      @param  pItem     ptr to allocated, static structure with *pNext as first field  <br>
+      @param  pItem     ptr to an allocated, local or static structure with *pNext as first field  <br>
       @return ptr to new head (pItem)  <br>
+    </div>
+    <h3 id="flylistprev" class="w3-text-blue">FlyListPrev</h3>
+    <p>Get the previous item, or NULL if no more previous items. Always stops at head of list.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void * FlyListPrev(void *pList, void *pItem)<br>
+      <br>
+      @param  pList     ptr to head  <br>
+      @param  pItem     ptr to an allocated, local or static structure with *pNext as first field  <br>
+      @return ptr to previous item in list  <br>
     </div>
     <h3 id="flylistremove" class="w3-text-blue">FlyListRemove</h3>
     <p>Remove the item from the list. All links are fixed up.</p>
@@ -237,7 +250,7 @@
       void * FlyListRemove(void *pList, void *pItem)<br>
       <br>
       @param  pList     ptr to head or NULL for new list  <br>
-      @param  pItem     ptr to allocated, static structure with *pNext as first field  <br>
+      @param  pItem     ptr to an allocated, local or static structure with *pNext as first field  <br>
       @param  pfnCmp    compare function  <br>
       @return ptr to (possibly new) head  <br>
     </div>
@@ -263,6 +276,19 @@
       @param  fIsCircular   list is circular (wraps)  <br>
       @param  fIsDouble     list has both pNext and pPrev (bidirectional)  <br>
       @return ptr to new head (pItem)  <br>
+    </div>
+    <h3 id="flylistprevex" class="w3-text-blue">FlyListPrevEx</h3>
+    <p>Get the previous item, or NULL if no more previous items. Always stops at head of list.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void * FlyListPrevEx(void *pList, void *pItem, bool_t fIsCircular, bool_t fIsDouble)<br>
+      <br>
+      @param  pList     ptr to head  <br>
+      @param  pItem     ptr to an allocated, local or static structure with *pNext as first field  <br>
+      @param  fIsCircular   list is circular (wraps)  <br>
+      @param  fIsDouble     list has both pNext and pPrev (bidirectional)  <br>
+      @return ptr to previous item in list  <br>
     </div>
     <h3 id="flylistappendex" class="w3-text-blue">FlyListAppendEx</h3>
     <p>Append the item to the list. Returns the head.</p>

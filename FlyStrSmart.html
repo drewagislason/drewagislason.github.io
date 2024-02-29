@@ -21,14 +21,20 @@
     <p>version 0.95.3</p>
     <p>
       <a href="#flystrsmartalloc">FlyStrSmartAlloc</a><br>
+      <a href="#flystrsmartinit">FlyStrSmartInit</a><br>
+      <a href="#flystrsmartinitex">FlyStrSmartInitEx</a><br>
+      <a href="#flystrsmartclear">FlyStrSmartClear</a><br>
       <a href="#flystrsmartcat">FlyStrSmartCat</a><br>
       <a href="#flystrsmartcpy">FlyStrSmartCpy</a><br>
+      <a href="#flystrsmartdup">FlyStrSmartDup</a><br>
       <a href="#flystrsmartfit">FlyStrSmartFit</a><br>
+      <a href="#flystrsmartuninit">FlyStrSmartUnInit</a><br>
       <a href="#flystrsmartfree">FlyStrSmartFree</a><br>
       <a href="#flystrsmartncat">FlyStrSmartNCat</a><br>
       <a href="#flystrsmartncpy">FlyStrSmartNCpy</a><br>
       <a href="#flystrsmartneed">FlyStrSmartNeed</a><br>
       <a href="#flystrsmartnew">FlyStrSmartNew</a><br>
+      <a href="#flystrsmartnewex">FlyStrSmartNewEx</a><br>
       <a href="#flystrsmartslice">FlyStrSmartSlice</a><br>
       <a href="#flystrsmartsprintf">FlyStrSmartSprintf</a><br>
       <a href="#flystrsmartresize">FlyStrSmartResize</a><br>
@@ -36,17 +42,16 @@
   </div>
   <div class="w3-container w3-cell w3-mobile">
     <h3>Smart strings cannot overflow and are always 0 terminated.</h3>
-<p>Many programming languages protect the programmer from buffer overruns, use after free and ease
-of slicing or combining strings. This is an attempt to do that in C.</p>
+<p>This is a heap-based (malloc) dynamic string library that mimics most of the standard string
+functions, but prevents having to worry about thinkgs like string size, or whether the resulting
+string is '\0' terminated.</p>
 <p>Features:</p>
 <ul>
-<li>String copy, cat and sprintf functions that allocate automatically</li>
+<li>Supports smart versions of standard string functions, e.g. FlyStrSmartCat() is smart version of strcat()</li>
 <li>String is guaranteed '\0' terminated</li>
-<li>Fast: direct string access</li>
-<li>Minimizes reallocs and memory fragmentation</li>
-<li>Detects memory overruns</li>
+<li>String will not overflow. Simply don't worry about size.</li>
+<li>Can interact with any normal string function via direct string access through pSmart->sz and pSmart->size</li>
 <li>Includes slicing similar to Python strings</li>
-<li>Use pStr->sz to access string and pStr->size to determine string buffer size</li>
 </ul>
     <p id="example-basic-smart-string-use"><b>Example: Basic Smart String Use</b></p>
 <div class="w3-code w3-light-grey notranslate">
@@ -57,7 +62,7 @@ of slicing or combining strings. This is an attempt to do that in C.</p>
   &nbsp; flyStrSmart_t *pStr;&nbsp; <br>
   &nbsp; flyStrSmart_t *pStr2;&nbsp; <br>
   <br>
-  &nbsp; pStr = FlyStrSmartNew("Hello", 0);&nbsp; <br>
+  &nbsp; pStr = FlyStrSmartNew("Hello");&nbsp; <br>
   &nbsp; FlyStrSmartCat(pStr, " World!");&nbsp; <br>
   &nbsp; printf("%s\n", pStr->sz);&nbsp; <br>
   <br>
@@ -73,9 +78,15 @@ of slicing or combining strings. This is an attempt to do that in C.</p>
 </div>
 <p>One of the key features is slicing. This allows the programmer to get left, right or middle
 portions of the string into a new smart string easily.</p>
-<p>Most of the functions are pretty self-explanitory.</p>
+<p>Note: the flyStrSmart_t structure is guaranteed to have pSmart->sz and pSmart->size. There may be
+other fields.</p>
+<p>Supports smart string equivalents of: strcasecmp, strcat, strchr, strcmp, strcpy,
+strcspn, strdup, strlen, strncat, strncmp, strncpy, strncasecmp, strpbrk, strrchr,
+strsep, strspn, strstr, strtok, strxfrm, index, rindex</p>
+<p>For example, the smart version of strcpy() is FlyStrSmartCpy() and strcasecmp() is
+FlyStrSmartCaseCmp().</p>
     <h3 id="flystrsmartalloc" class="w3-text-blue">FlyStrSmartAlloc</h3>
-    <p>Allocate (create) a smart string. Yes, the name is very funny, Smart Alec.</p>
+    <p>Allocate (create) an empty smart string of a given size. Yes, the name is very funny, Smart Alec.</p>
     <p><a href="#top">Back to top</a></p>
     <p><b>Prototype</b></p>
     <div class="w3-code w3-monospace notranslate">
@@ -86,6 +97,56 @@ portions of the string into a new smart string easily.</p>
     </div>
     <p><b>Notes</b></p>
 <p>If size == 0, it is changed to 1 as a smart string is ALWAYS '\0' terminated.</p>
+    <h3 id="flystrsmartinit" class="w3-text-blue">FlyStrSmartInit</h3>
+    <p>Initialize smart string. Don't use if using FlyStrSmartNew() or FlyStrSmartAlloc().</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyStrSmartInit(flyStrSmart_t *pStr)<br>
+      <br>
+      @param    pStr    ptr to smart string  <br>
+      @return   none  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Essentially, memset() the struct to 0x00s. Useful if making a local variable.</p>
+    <p id="example-flystrsmartinit-example"><b>Example: FlyStrSmartInit Example</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  flyStrSmart_t&nbsp; &nbsp;myStr;&nbsp; <br>
+  <br>
+  FlyStrSmartInit(&myStr);&nbsp; <br>
+  FlyStrSmartCpy(&myStr, "Hello World");&nbsp; <br>
+</div>
+    <h3 id="flystrsmartinitex" class="w3-text-blue">FlyStrSmartInitEx</h3>
+    <p>Initialize smart string with a given size.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyStrSmartInitEx(flyStrSmart_t *pStr, size_t size)<br>
+      <br>
+      @param    pStr    ptr to smart string  <br>
+      @param    size    size to initialize smart string  <br>
+      @return   TRUE if worked, FALSE if not enough memory  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Essentially, memset() the struct to 0x00s. Useful if making a local variable.</p>
+    <p id="example-flystrsmartinitex-example"><b>Example: FlyStrSmartInitEx Example</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  flyStrSmart_t&nbsp; &nbsp; &nbsp; &nbsp;myStr;&nbsp; <br>
+  static const char&nbsp; &nbsp;szHello[] = "Hello World";&nbsp; <br>
+  <br>
+  if(FlyStrSmartInitEx(&myStr, sizeof(szHello)))&nbsp; <br>
+  &nbsp; strcpy(myStr->sz, szHello);&nbsp; <br>
+</div>
+    <h3 id="flystrsmartclear" class="w3-text-blue">FlyStrSmartClear</h3>
+    <p>Clear the string. Does not affect size of smart str.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void FlyStrSmartClear(flyStrSmart_t *pStr)<br>
+      <br>
+      @param    pStr    ptr to smart string  <br>
+      @return   none  <br>
+    </div>
     <h3 id="flystrsmartcat" class="w3-text-blue">FlyStrSmartCat</h3>
     <p>Concatenate the string to end of smart string. Resizes mem if needed.</p>
     <p><a href="#top">Back to top</a></p>
@@ -95,7 +156,7 @@ portions of the string into a new smart string easily.</p>
       <br>
       @param    pStr    ptr to smart string  <br>
       @param    sz      string to concatinate to smart string  <br>
-      @return ptr where sz was copied into smart string or NULL if memory couldn't be allocatd  <br>
+      @return ptr where sz was copied into smart string or NULL if memory couldn't be allocated  <br>
     </div>
     <p><b>Notes</b></p>
 <p>If memory couldn't be allocated, smart string is left unchanged.</p>
@@ -112,6 +173,16 @@ portions of the string into a new smart string easily.</p>
     </div>
     <p><b>Notes</b></p>
 <p>If memory couldn't be allocated, smart string is left unchanged.</p>
+    <h3 id="flystrsmartdup" class="w3-text-blue">FlyStrSmartDup</h3>
+    <p>Duplicate the start string.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flyStrSmart_t * FlyStrSmartDup(flyStrSmart_t *pStr)<br>
+      <br>
+      @param    pStr    ptr to smart string  <br>
+      @return   new smart string filled with same string  <br>
+    </div>
     <h3 id="flystrsmartfit" class="w3-text-blue">FlyStrSmartFit</h3>
     <p>Shrinks mem if needed. Use FlyStrSmartStr() to access string.</p>
     <p><a href="#top">Back to top</a></p>
@@ -122,15 +193,25 @@ portions of the string into a new smart string easily.</p>
       @param    size    size of string to allocate (may be 0)  <br>
       @return ptr to static string with C version in it  <br>
     </div>
-    <h3 id="flystrsmartfree" class="w3-text-blue">FlyStrSmartFree</h3>
+    <h3 id="flystrsmartuninit" class="w3-text-blue">FlyStrSmartUnInit</h3>
     <p>Free the smart string</p>
     <p><a href="#top">Back to top</a></p>
     <p><b>Prototype</b></p>
     <div class="w3-code w3-monospace notranslate">
-      void FlyStrSmartFree(flyStrSmart_t *pStr)<br>
+      void FlyStrSmartUnInit(flyStrSmart_t *pStr)<br>
       <br>
-      @param    size    size of string to allocate (may be 0)  <br>
-      @return ptr to static string with C version in it  <br>
+      @param    pStr    ptr to smart string  <br>
+      @return NULL  <br>
+    </div>
+    <h3 id="flystrsmartfree" class="w3-text-blue">FlyStrSmartFree</h3>
+    <p>Free the smart string allocated with </p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      void * FlyStrSmartFree(flyStrSmart_t *pStr)<br>
+      <br>
+      @param    pStr    ptr to smart string  <br>
+      @return NULL  <br>
     </div>
     <h3 id="flystrsmartncat" class="w3-text-blue">FlyStrSmartNCat</h3>
     <p>Concatinate length of string to smart string. Resizes memory of needed.</p>
@@ -177,12 +258,31 @@ portions of the string into a new smart string easily.</p>
     <p><a href="#top">Back to top</a></p>
     <p><b>Prototype</b></p>
     <div class="w3-code w3-monospace notranslate">
-      flyStrSmart_t * FlyStrSmartNew(const char *sz, size_t len)<br>
+      flyStrSmart_t * FlyStrSmartNew(const char *sz)<br>
       <br>
-      @param    sz      string to copy to smart string  <br>
-      @param    len     length of string to use, or 0 for whole string  <br>
+      @param    sz      string to copy to smart stringm or NULL  <br>
       @return ptr to new smart string  <br>
     </div>
+    <h3 id="flystrsmartnewex" class="w3-text-blue">FlyStrSmartNewEx</h3>
+    <p>Create a new smart string from a normal asciiz C string with size.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      flyStrSmart_t * FlyStrSmartNewEx(const char *sz, size_t size)<br>
+      <br>
+      @param    sz      string to copy to smart string, or NULL  <br>
+      @param    size    size of smart string or 0 for default  <br>
+      @return ptr to new smart string  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>Example that makes a smart string out of a substring:</p>
+<div class="w3-code w3-light-grey notranslate">
+  flyStrSmart_t&nbsp; *pSmart;<br>
+  const char&nbsp; &nbsp; &nbsp; szSearch[] = "Good";<br>
+  <br>
+  pSmart = FlyStrSmartNewEx(strstr("Every Good Boy", szSearch), sizeof(szSearch));<br>
+  printf("found %s\n", pSmart->sz);<br>
+</div>
     <h3 id="flystrsmartslice" class="w3-text-blue">FlyStrSmartSlice</h3>
     <p>Creates a new smart string from a slice of another smart string.</p>
     <p><a href="#top">Back to top</a></p>
@@ -265,7 +365,7 @@ length must be &lt; INT_MAX.</p>
       @return strlen of formatted string, or 0 if failed (no memory).  <br>
     </div>
     <h3 id="flystrsmartresize" class="w3-text-blue">FlyStrSmartResize</h3>
-    <p>Resize the smart string to a specific size.</p>
+    <p>Ensure smart string is at least "size" bytes. Never shrinks memory held by smart string.</p>
     <p><a href="#top">Back to top</a></p>
     <p><b>Prototype</b></p>
     <div class="w3-code w3-monospace notranslate">
@@ -276,9 +376,10 @@ length must be &lt; INT_MAX.</p>
       @return ptr to reallocated string, or NULL if it couldn't be allocated  <br>
     </div>
     <p><b>Notes</b></p>
-<p>If size is larger, then the bytes past end of old buffer are set to 0. If size is less, the
-string may be truncated, but will remain '\0' terminated.</p>
-<p>If memory couldn't be allocated, smart string is left unchanged.</p>
+<p>Grows memory if needed. If memory couldn't be allocated, smart string is left unchanged and return
+is FALSE.</p>
+<p>Like C realloc(), will free the string if size is 0, But why do that? Use FlyStrSmartFree()
+instead.</p>
   </div>
 </div>
 </body>

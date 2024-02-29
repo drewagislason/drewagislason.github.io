@@ -50,12 +50,11 @@
       <a href="#ruby-documentation-example">Ruby Documentation Example</a><br>
       <a href="#rust-documentation-example">Rust Documentation Example</a><br>
       <a href="#swift-documentation-example">Swift Documentation Example</a><br>
-      <a href="#github-and-gitlab">GitHub and GitLab</a><br>
     </p>
   </div>
   <div class="w3-container w3-cell w3-mobile">
     <h3>flydoc User Manual</h3>
-<p>Version 1.0, Nov 5, 2022</p>
+<p>Version 1.0, Feb 29, 2024</p>
 <p>flydoc is a cmdline tool which creates developer documentation from commented source code.</p>
 <p>Like markdown, flydoc is minimalist. It creates static web pages that can then be hosted anywhere,
 or markdown files that can be turned into .pdfs.</p>
@@ -67,8 +66,8 @@ with a bit more source documenting.</p>
 output is either a single markdown file or a folder of .html files. The markdown files can easily
 be turned into .pdfs using tools like Mou, MacDown or Typora. The HTML uses W3.CSS for styling.</p>
 <p>flydoc is mobile first, that is it looks great in the browser of a smart phone, tablet or desktop.</p>
-<p>For an example of flydoc output, see <a href="https://drewagislason.github.io/index.html">https://drewagislason.github.io/index.html</a>  <br></p>
-<p>For a markdown tutorial, see <a href="https://www.markdownguide.org/basic-syntax/">https://www.markdownguide.org/basic-syntax/</a>  <br>
+<p>For an example of flydoc output, see <a href="https://drewagislason.github.io/index.html">https://drewagislason.github.io/index.html</a>  <br>
+For a markdown tutorial, see <a href="https://www.markdownguide.org/basic-syntax/">https://www.markdownguide.org/basic-syntax/</a>  <br>
 For an online markdown converter, see <a href="https://markdowntohtml.com">https://markdowntohtml.com</a>  <br>
 For markdown editors, see: <a href="https://www.makeuseof.com/best-markdown-editors-windows/">https://www.makeuseof.com/best-markdown-editors-windows/</a>  <br>
 For a W3.css tutorial, see <a href="https://www.w3schools.com/w3css/default.asp">https://www.w3schools.com/w3css/default.asp</a>  <br>
@@ -81,7 +80,7 @@ For popular coding languages, see: <a href="https://madnight.github.io/githut/#/
 <li>Mobile first HTML: looks great on a phone, tablet or desktop</li>
 <li>Works with any coding language</li>
 <li>Converts standard markdown files to HTML</li>
-<li>Control what is documented and what is not (public vs hidden APIs)</li>
+<li>Control what is documented and what is not (public vs private APIs)</li>
 <li>Adjust colors, logo for project/company specific look</li>
 <li>Outputs statistics (# of modules, classes, functions, examples documented)</li>
 <li>Warnings are in standard <code class="w3-codespan">file:line:col: warning: text</code> format for easy parsing</li>
@@ -868,30 +867,6 @@ using markdownn inside the comment format, rustdoc and flydoc aren't compatible.
   func main() {<br>
   &nbsp; &nbsp; print("Swift example: area = ", SwiftArea(h:5, w:4))<br>
   }<br>
-</div>
-<h2 id="github-and-gitlab">GitHub and GitLab</h2>
-<p>If you aren't using Git for version control, I highly recommended it. <a href="GitHub.com">GitHub.com</a> and <a href="GitLab.com">GitLab.com</a>
-are two places in the cloud to version control your source code.</p>
-<p>See: <a href="https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control">https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control</a></p>
-<p>Both GitHub and GitLab let you publish static HTML pages (e.g. flydoc pages) using a repository,
-which makes it easy to publish flydoc HTML output and provide a public or private link for your
-project's documentation.</p>
-<p>See: <a href="https://pages.github.com">https://pages.github.com</a>  <br>
--or- <a href="https://docs.gitlab.com/ee/user/project/pages/">https://docs.gitlab.com/ee/user/project/pages/</a>  <br></p>
-<p>Note: you can also refer to raw files on both GitHub and GitLab, for example, to point to a logo
-from another project. The style below uses {user} and {project} and {branch} for your
-GitHub/GitLab user and project name and the git branch.</p>
-<p>GitHub Style:</p>
-<div class="w3-code w3-light-grey notranslate">
-  &lt;img src="https://raw.githubusercontent.com/{user}/{project}/{branch}/file.png"><br>
-</div>
-<p>GitLab Style:</p>
-<div class="w3-code w3-light-grey notranslate">
-  &lt;img src="https://gitlab.com/{user}/{project}/-/raw/{branch}/docs/NedMainScreen.png"><br>
-</div>
-<p>or in markdown:</p>
-<div class="w3-code w3-light-grey notranslate">
-  ![Folder Structure](https://raw.githubusercontent.com/drewagislason/public1/main/file.png)<br>
 </div>
   </div>
 </div>

@@ -20,103 +20,331 @@
   <div class="w3-container w3-cell w3-mobile w3-blue">
     <p>version 0.95.3</p>
     <p>
-      <a href="#tomlargnext">TomlArgNext</a><br>
-      <a href="#flytomlparse">FlyTomlParse</a><br>
-      <a href="#flytomlparsearray">FlyTomlParseArray</a><br>
-      <a href="#flytomlsectionkeys">FlyTomlSectionKeys</a><br>
-      <a href="#flytomlstrlen">FlyTomlStrLen</a><br>
-      <a href="#flytomlstrbeg">FlyTomlStrBeg</a><br>
+      <a href="#flytomlkeypathfind">FlyTomlKeyPathFind</a><br>
+      <a href="#flytomltablefind">FlyTomlTableFind</a><br>
+      <a href="#flytomlarrayiter">FlyTomlArrayIter</a><br>
+      <a href="#flytomlkeyiter">FlyTomlKeyIter</a><br>
+      <a href="#flytomltableiter">FlyTomlTableIter</a><br>
+      <a href="#flytomlptr">FlyTomlPtr</a><br>
+      <a href="#flytomlatobool">FlyTomlAtoBool</a><br>
+      <a href="#flytomlatol">FlyTomlAtol</a><br>
+      <a href="#flytomlatodate">FlyTomlAtoDate</a><br>
+      <a href="#flytomlatof">FlyTomlAtof</a><br>
     </p>
   </div>
   <div class="w3-container w3-cell w3-mobile">
-    <h3>An API for processing .toml files.</h3>
-<p>The .toml file format was invented for the Rust programming language <a href="https://doc.rust-lang.org">https://doc.rust-lang.org</a>.</p>
-<p>This API parses a .toml file or string. This API is simple, small and doesn't allocate any
-memory. An example .toml file follows:</p>
+    <h3>- A simple C/C++ API for processing .toml files.</h3>
+<p>The goal of this API is to parse .toml files with minimal code and stack, suitable for embedded
+systems.</p>
+<p>See the TOML specification: <a href="https://toml.io/en/">https://toml.io/en/</a>  <br>
+For other implementations, see: <a href="https://github.com/toml-lang/toml/wiki">https://github.com/toml-lang/toml/wiki</a>  <br></p>
+<p>Features:</p>
+<ol>
+<li>Compliant with TOML v1.0.0, see <a href="https://toml.io/en/">https://toml.io/en/</a></li>
+<li>Usable in multi-threaded environments</li>
+<li>Embeddable
+  <ul>
+  <li>Minimal stack usage</li>
+  <li>No heap memory allocation</li>
+  <li>No file I/O</li>
+  <li>Minimal code size</li>
+  <li>Optional features to reduce code size (FLYTOML_CFG_FLOAT, FLYTOML_CFG_DATE, TOML_CFG_KEY_MAX)</li>
+  </ul>
+</li>
+<li>Parse by iteration or search by keypath if tables/keys are known</li>
+</ol>
+<p>Caveats (for now):</p>
+<ol>
+<li>Numbers don't support infinity or nan, as there is no portable C way to do this</li>
+<li>No support for double bracketed array of tables [[table]]</li>
+<li>For reading/parsing TOML only, no functions for creating TOML</li>
+<li>To avoid malloc() or large stack usage, keys longer than FLYTOML_CFG_KEY_MAX will be truncated</li>
+</ol>
+<p>A sample .toml file is below:</p>
 <div class="w3-code w3-light-grey notranslate">
   # sample toml file<br>
-  [package]<br>
-  name = "moocow"<br>
-  version = "0.1.0"<br>
-  authors = ["My Name &lt;me@mysite.com>"]<br>
   <br>
-  [dependencies]<br>
-  rand = "0.5.5"<br>
-  adder = { path="../adder" }<br>
-  flylib = { git="https://github.com/drewgislason/flylib", branch="main", version="0.9" }<br>
+  my_key = "in unnamed table"<br>
+  <br>
+  [simple_types]<br>
+  bool = true<br>
+  string = "my string"<br>
+  `string.literal` = 'C:\Work\folder\'<br>
+  int = 42<br>
+  long.int = 123_456_789<br>
+  pi = 3.14159<br>
+  date = 1979-05-27T07:32:00Z<br>
+  time = 07:32:00<br>
+  <br>
+  # arrays aka ordered list, either of same types or multiple types<br>
+  [arrays]<br>
+  strings&nbsp; = ['a "quote"', "/u00dcnicode\nstring" ]<br>
+  integers = [+99, 42, 0, -17, 123_456, 0xDEADBEEF, 0xdeadbeef, 0xdead_beef, 0o01234567, 0o755, 0b1101_0110]<br>
+  bools&nbsp; &nbsp; = [true,false]<br>
+  floats&nbsp; &nbsp;= [+1.0, 3.1415, -0.01, 5e+22, 1e06, -2E-2, 6.626e-34, 224_617.445_991_228]<br>
+  mixed&nbsp; &nbsp; = [true, 42, "string"]<br>
+  <br>
+  # multi-line strings<br>
+  [strings]<br>
+  mutli-line = """<br>
+  &nbsp; roses are red <br>
+  &nbsp; violets are blue"""<br>
+  lines&nbsp; = '''<br>
+  The first newline is<br>
+  trimmed in raw strings.<br>
+  &nbsp; &nbsp;All other whitespace<br>
+  &nbsp; &nbsp;is preserved.<br>
+  '''<br>
+  <br>
+  # inline table (aka key/value dictionaries or hash table)<br>
+  [table]<br>
+  inline_table = { key0="string", key1=false, key2=99, array=[0,1,2,3] }<br>
 </div>
-<p>toml has <code class="w3-codespan">[sections]</code> and <code class="w3-codespan">key=value</code> pairs, where the value is "string", true, false, number. If
-a string contains a quote, escape it, as shown here:</p>
+<p>Error handling is generally just "not found" or ignored. For example key/value <code class="w3-codespan">number = 9s35</code>
+would result in the number 9.</p>
+    <h3 id="flytomlkeypathfind" class="w3-text-blue">FlyTomlKeyPathFind</h3>
+    <p>Find a value in the TOML file based on a case-sensitive key path. Keys are in TOML form.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyTomlKeyPathFind(const char *szTomlFile, const char *szKeyPath, tomlKey_t *pKey)<br>
+      <br>
+      @param  szToml      a TOML file ('\0' terminated string of entire TOML file)  <br>
+      @param  szKeyPath   keypath to TOML value, separated by colons ':'  <br>
+      @param  pKey        returned key/value/type if found, undefined if not  <br>
+      @return TRUE if found, FALSE if not  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>To look for keys before named tables, use ":key" implying the empty table name. That is, there
+MUST be at least 1 colon in the path string or it will not be found.</p>
+<p>Below is an example TOML file and some examples of key paths to find various values.</p>
 <div class="w3-code w3-light-grey notranslate">
-  mystring = "string \"contains\" quotes"&nbsp; <br>
+  # a TOML file<br>
+  no_table_key = "chair"<br>
+  inline1 = { a = 0x61, b = 0x62 }<br>
+  <br>
+  [table1]<br>
+  key = 42<br>
+  hello = "world"<br>
+  array = ["zero", "one", "two", "three"]<br>
+  <br>
+  [table2]<br>
+  "math" = { pi = 3.14159, e = 2.71828 }<br>
 </div>
-    <h3 id="tomlargnext" class="w3-text-blue">TomlArgNext</h3>
-    <p>Specifically for key=value pair, will stop on the equal.</p>
+<table class="w3-table-all" style="width:auto">
+<tr>
+  <th>keypath</th>
+  <th>value found</th>
+</tr>
+<tr>
+  <td>:no_table_key</td>
+  <td>"chair" (TOML_STRING)</td>
+</tr>
+<tr>
+  <td>:inline1</td>
+  <td>{ a = 0x61, b = 0x62 } (TOML_INLINE_TABLE)</td>
+</tr>
+<tr>
+  <td>:inline1:b</td>
+  <td>0x62 (TOML_INTEGER)</td>
+</tr>
+<tr>
+  <td>table1:hello</td>
+  <td>"world" (TOML_STRING)</td>
+</tr>
+<tr>
+  <td>table1:array</td>
+  <td>["zero", "one", "two", "three"] (TOML_ARRAY)</td>
+</tr>
+<tr>
+  <td>table1:array:3</td>
+  <td>"three" (TOML_STRING)</td>
+</tr>
+<tr>
+  <td>table2:math:pi</td>
+  <td>3.14159 (TOML_FLOAT)</td>
+</tr>
+<tr>
+  <td>table2:math:e</td>
+  <td>2.71828 (TOML_FLOAT)</td>
+</tr>
+</table>
+<p>Note: this function assumes no table names contain a colon ':' character in them.</p>
+    <h3 id="flytomltablefind" class="w3-text-blue">FlyTomlTableFind</h3>
+    <p>Find a [table] in the TOML file by case sensitive name.</p>
     <p><a href="#top">Back to top</a></p>
     <p><b>Prototype</b></p>
     <div class="w3-code w3-monospace notranslate">
-      static const char * TomlArgNext(const char *sz)<br>
+      const char *  FlyTomlTableFind(const char *szTomlFile, const char *szTableName)<br>
       <br>
-      @param  sz      ptr to a key=value line  <br>
-      @return ptr to next arg  <br>
+      @param  szTomlFile    a '\0' terminated TOML file in UTF-8 string form  <br>
+      @param  szTableName   table to find, use "" for root table  <br>
+      @return ptr to header or NULL if not found  <br>
     </div>
-    <h3 id="flytomlparse" class="w3-text-blue">FlyTomlParse</h3>
-    <p>Parse a toml string for a key/value pair.</p>
+    <p><b>Notes</b></p>
+<p>Specify table without brackets, that is "table1" not "[table1]".</p>
+<p>TOML table name rules apply, so "table2   .  subtable" and "table2.\"subtable\"" are equivalent.
+See <a href="https://toml.io/en/v1.0.0#table">https://toml.io/en/v1.0.0#table</a></p>
+<p>As an example, the following TOML file has 3 tables, root or "", "table1" and "table2.subtable".</p>
+<div class="w3-code w3-light-grey notranslate">
+  # a TOML file with root table<br>
+  root_table_key = "value"<br>
+  <br>
+  [table1]<br>
+  table1_key = true<br>
+  <br>
+  [table2.subtable]<br>
+  subtable_key = 42<br>
+</div>
+    <h3 id="flytomlarrayiter" class="w3-text-blue">FlyTomlArrayIter</h3>
+    <p>Get the next value from an array. Returns ptr to next value in array or NULL if last item.</p>
     <p><a href="#top">Back to top</a></p>
     <p><b>Prototype</b></p>
     <div class="w3-code w3-monospace notranslate">
-      const char * FlyTomlParse(const char *szToml, const char *szKeyPath, tomlType_t *pType)<br>
+      const char * FlyTomlArrayIter(const char *szTomlArray, tomlValue_t *pValue)<br>
       <br>
-      @param  szToml      a toml string  <br>
-      @param  szKeyPath   path to toml value, e.g. "package:name" or "dependencies:flylib:version"  <br>
-      @param  pType       ptr to receive type of toml value  <br>
-      @return ptr to value in the key = value pair, or NULL if not found  <br>
+      @param  szTomlArray   ptr to a TOML array  <br>
+      @param  pValue        ptr to receive pValue and type (e.g. "value" and TOML_STRING)  <br>
+      @return ptr to next value or NULL  if no more values  <br>
     </div>
-    <h3 id="flytomlparsearray" class="w3-text-blue">FlyTomlParseArray</h3>
-    <p>Parse a toml array for a key/value pairs. This array must be the value returned by FlyTomlParse().</p>
+    <p><b>Notes</b></p>
+<p>For exmaple, in the array below, the ptr returned would be on "string". The <code class="w3-codespan">*pValue</code> returned
+be the value 1 of type TOML_INTEGER.</p>
+<div class="w3-code w3-light-grey notranslate">
+  [1, "string", 42, true, 99]<br>
+</div>
+    <h3 id="flytomlkeyiter" class="w3-text-blue">FlyTomlKeyIter</h3>
+    <p>Get the first/next key-value pair from a TOML `[table]` or `{ inline="table" }`.</p>
     <p><a href="#top">Back to top</a></p>
     <p><b>Prototype</b></p>
     <div class="w3-code w3-monospace notranslate">
-      const char * FlyTomlParseArray(const char *szTomlArray, tomlType_t *pType, unsigned index)<br>
+      const char *FlyTomlKeyIter(const char *szTomlTable, tomlKey_t *pKey)<br>
       <br>
-      @param  szTomlArray   returned by FlyTomlParse()  <br>
-      @param  pType         ptr to receive type of toml value  <br>
-      @param  index         index  <br>
-      @return ptr to value in the key = value pair, or NULL if not found  <br>
+      @param  szTomlTable   ptr to TOML `[table]`, `{ inline = "table" }` for   <br>
+      @param  pKey          ptr to receive key/value pair  <br>
+      @return ptr to next key or NULL if no more keys  <br>
     </div>
-    <h3 id="flytomlsectionkeys" class="w3-text-blue">FlyTomlSectionKeys</h3>
-    <p>Get the keys in this section. Ignores invalid key = value pairs.</p>
+    <p><b>Notes</b></p>
+<p>Pass in a pointer (in parameter <code class="w3-codespan">szTomlTable</code>) to a TOML header <code class="w3-codespan">[table]</code> or <code class="w3-codespan">{ inline="table" }</code>
+to get the 1st key in the table. In the case of the unnamed root table, pass in the TOML file.</p>
+<p>The returned value is the "next" key, or NULL if no more keys.</p>
+<p>Example use is below:</p>
+<div class="w3-code w3-light-grey notranslate">
+  const char&nbsp; &nbsp;*pszTable;<br>
+  const char&nbsp; &nbsp;*pszKey;<br>
+  tomlKey_t&nbsp; &nbsp; &nbsp;key;<br>
+  <br>
+  pszTable = FlyTomlTableIter(szTomlFile, NULL);<br>
+  pszKey = FlyTomlKeyIter(FlyTomlTableIsRoot(pszTable) ? szTomlFile : pszTable, &key);<br>
+  while(pszKey)<br>
+  {<br>
+  &nbsp; // do something with key, value, type<br>
+  &nbsp; pszKey = FlyTomlKeyIter(pszKey, &key);<br>
+  }<br>
+</div>
+    <h3 id="flytomltableiter" class="w3-text-blue">FlyTomlTableIter</h3>
+    <p>Find the first/next header `[table]` in the TOML file.</p>
     <p><a href="#top">Back to top</a></p>
     <p><b>Prototype</b></p>
     <div class="w3-code w3-monospace notranslate">
-      unsigned FlyTomlSectionKeys(const char *szToml, const char *szSection, unsigned nMaxKeys, tomlKey_t *pKeys)<br>
+      const char * FlyTomlTableIter(const char *szTomlFile, const char *szPrevTable)<br>
       <br>
-      @param  szToml      a toml string  <br>
-      @param  szSection   section name, e.g. "dependencies"  <br>
-      @param  nMaxKeys    max keys in pKeys array of keys  <br>
-      @param  pKeys       ptr to key/value array of size nMaxKeys  <br>
-      @return number of keys/value pairs, or 0 if not a valid section  <br>
+      @param  szTomlFile   ptr to top of TOML file or ptr to a [table] in the TOML file  <br>
+      @param  szPrevTable  returned from previous call to FlyTomlTableIter() or NULL  <br>
+      @return ptr to next [table] or NULL if no more tables  <br>
     </div>
-    <h3 id="flytomlstrlen" class="w3-text-blue">FlyTomlStrLen</h3>
-    <p>Get the length of this key or "string". Can handle escaped quotes.</p>
+    <p><b>Notes</b></p>
+<p>This simply points to a position in the TOML file. No translation of the TOML takes place. This
+table can be used for calls that require a table, for example FlyTomlKeyIter().</p>
+<p>Note: the root (unnamed) table is special. This function, <code class="w3-codespan">FlyTomlTableIter()</code> will return an
+empty string "" for the root table. In this case, use the top of the file for the table when
+parameter in functions like FlyTomlKeyIter().</p>
+<p>The parameter szPrevTable must be NULL the 1st time FlyTomlTableIter() is called on a particular
+TOML file. Subsequent calls must pass the returned value in addition to the TOML file.</p>
+<p>THe TOML file below contains tables, the unnamed root table "", "[table1]" and "[table2]", which
+will be returned in that order.</p>
+<div class="w3-code w3-light-grey notranslate">
+  # a TOML file with unnamed root table<br>
+  root_table_key = "value"<br>
+  <br>
+  [table1]<br>
+  table1_key = true<br>
+  <br>
+  [table2]<br>
+  table2_key = 42<br>
+</div>
+    <h3 id="flytomlptr" class="w3-text-blue">FlyTomlPtr</h3>
+    <p>Returns the start of the TOML string, that is the character after the opening `"` or `'`.</p>
     <p><a href="#top">Back to top</a></p>
     <p><b>Prototype</b></p>
     <div class="w3-code w3-monospace notranslate">
-      unsigned FlyTomlStrLen(const char *szTomlStr)<br>
+      const char *  FlyTomlPtr(const char *szTomlStr)<br>
       <br>
-      @param  szTomlStr   ptr to key or "value" string  <br>
+      @param  szTomlBool   ptr to true or false  <br>
+      @return TRUE or FALSE  <br>
+    </div>
+    <h3 id="flytomlatobool" class="w3-text-blue">FlyTomlAtoBool</h3>
+    <p>Converts a TOML boolean string (true or false) to a boolean variable.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      bool_t FlyTomlAtoBool(const char *szTomlBool)<br>
+      <br>
+      @param  szTomlBool   ptr to true or false  <br>
+      @return TRUE or FALSE  <br>
+    </div>
+    <h3 id="flytomlatol" class="w3-text-blue">FlyTomlAtol</h3>
+    <p>Converts a TOML integer to a long. Stop on first illegal character.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      long FlyTomlAtol(const char *szTomlInteger)<br>
+      <br>
+      @param  szTomlInteger   ptr to key or "value" string  <br>
       @return length of key or contents of "string" or 0 if not valid key or "string"  <br>
     </div>
-    <h3 id="flytomlstrbeg" class="w3-text-blue">FlyTomlStrBeg</h3>
-    <p>If key, just return key, but if "string" return the char after quote.</p>
+    <p><b>Notes</b></p>
+<p>Examples of integers</p>
+<div class="w3-code w3-light-grey notranslate">
+  int1 = +99<br>
+  int2 = 42<br>
+  int3 = 0<br>
+  int4 = -17<br>
+  int5 = 1_000<br>
+  int6 = 5_349_221<br>
+  int7 = -9223372036854775808&nbsp; &nbsp;# LONG_MIN<br>
+  int8 = 9223372036854775807&nbsp; &nbsp; # LONG_MAX<br>
+  hex1 = 0xDEADBEEF<br>
+  hex2 = 0xdeadbeef<br>
+  hex3 = 0xdead_beef<br>
+  oct1 = 0o01234567<br>
+  oct2 = 0o755<br>
+  bin1 = 0b11010110<br>
+</div>
+    <h3 id="flytomlatodate" class="w3-text-blue">FlyTomlAtoDate</h3>
+    <p>Returns a date/time based on a TOML date/time input.</p>
     <p><a href="#top">Back to top</a></p>
     <p><b>Prototype</b></p>
     <div class="w3-code w3-monospace notranslate">
-      const char *FlyTomlStrBeg(const char *szTomlStr)<br>
+      bool_t FlyTomlAtoDate(const char *szTomlDate, struct tm *pDate)<br>
       <br>
-      @param  szTomlStr   ptr to key or "value" string  <br>
-      @return ptr to string contents  <br>
+      @param  szTomlBool   ptr to true or false  <br>
+      @return TRUE or FALSE  <br>
     </div>
+    <p><b>Notes</b></p>
+<p>See TOML specification: <a href="https://toml.io/en/v1.0.0#offset-date-time">https://toml.io/en/v1.0.0#offset-date-time</a></p>
+    <h3 id="flytomlatof" class="w3-text-blue">FlyTomlAtof</h3>
+    <p>Converts a TOML boolean string (true or false) to a boolean variable.</p>
+    <p><a href="#top">Back to top</a></p>
+    <p><b>Prototype</b></p>
+    <div class="w3-code w3-monospace notranslate">
+      double FlyTomlAtof(const char *szTomlFloat)<br>
+      <br>
+      @param  szTomlBool   ptr to true or false  <br>
+      @return TRUE or FALSE  <br>
+    </div>
+    <p><b>Notes</b></p>
+<p>See TOML specification: <a href="https://toml.io/en/v1.0.0#float">https://toml.io/en/v1.0.0#float</a></p>
   </div>
 </div>
 </body>
