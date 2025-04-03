@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hnefatafl.md</title>
+<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-black">
+    <div class="w3-container w3-cell w3-mobile">
+      <p><a href="index.html"><img src="flydoc_home.png" alt="Home" class="w3-round" style="width:150px"></a></p>
+    </div>
+    <div class="w3-container w3-cell w3-mobile">
+      <h1>Hnefatafl.md</h1>
+      <h3>Hnefatafl</h3>
+    </div>
+  </div>
+</div>
+<div class="w3-cell-row">
+  <div class="w3-container w3-cell w3-mobile w3-blue">
+    <p>
+      <a href="#Hnefatafl">Hnefatafl</a><br>
+      <a href="#Hnefatafl-Rules">Hnefatafl&nbsp;Rules</a><br>
+      <a href="#Hnefatafl-Setup">Hnefatafl&nbsp;Setup</a><br>
+      <a href="#Hnefatafl-Examples">Hnefatafl&nbsp;Examples</a><br>
+      <a href="#Hnefatafl-Advanced-Rules-With-Examples">Hnefatafl&nbsp;Advanced&nbsp;Rules&nbsp;With&nbsp;Examples</a><br>
+      <a href="#Hnefatafl-Advanced-Examples">Hnefatafl&nbsp;Advanced&nbsp;Examples</a><br>
+      <a href="#Hnefatafl-Notation">Hnefatafl&nbsp;Notation</a><br>
+    </p>
+  </div>
+  <div class="w3-container w3-cell w3-mobile">
+<h1 id="Hnefatafl" class="w3-text-blue">Hnefatafl</h1>
+<p>Hnefataflt is a game of Vikings and Kings. Similar to chess, it is a game of pure skill: no luck is
+involved from dice or cards.</p>
+<p>Hnefatafl, invented by Norsement circa 400 AD, is actually <i>older</i> than chess. Chess, by contrast,
+was invented circa 600 AD in India where it was called chaturanga. Both are derived from ancient
+Roman board games.</p>
+<h2 id="Hnefatafl-Rules" class="w3-text-blue">Hnefatafl Rules</h2>
+<ol>
+<li>The Board
+  <ul>
+  <li>The board is 11 x 11, like a chess board but bigger, squares are not alternating colors</li>
+  <li>The middle square and for corner square are specially marked as "king" squares</li>
+  <li>The may be decorated to show initial setup</li>
+  </ul>
+</li>
+<li>The Pieces
+  <ul>
+  <li>The game starts with 12 white (defending) Vikings and one white King</li>
+  <li>The game starts with 24 black (attacking) Vikings</li>
+  <li>White is defending: The king and his Vikings start in the middle of the board</li>
+  <li>Black is attacking: The raiding Vikings start at the 4 edges of the board</li>
+  <li>It is common to use the term pawn rather than Viking for the bulk of the pieces</li>
+  </ul>
+</li>
+<li>The Game
+  <ul>
+  <li>Win for white: the King to escapes to one of the 4 corners of the board</li>
+  <li>Win for black: the King does not escape
+    <ul>
+    <li>Surround the white King on all 4 sides with black pieces</li>
+    <li>Surround the white King on 3 sides with 4th side center square</li>
+    <li>Surround the white King on 3 sides at edge with NO REMAINING white Vikings</li>
+    <li>White has no moves left</li>
+    </ul>
+  </li>
+  <li>There are no ties in this game: Either Black wins or White wins.</li>
+  <li>Black (attacker) moves first</li>
+  </ul>
+</li>
+<li>Movement
+  <ul>
+  <li>All pieces move like chess rooks: that is a straight line up, down, left, right</li>
+  <li>No piece can move diagonally</li>
+  <li>No piece can occupy a square occupied by another piece</li>
+  <li>No piece can move through another piece</li>
+  <li>Only the King can land on the 4 corners or center square</li>
+  <li>Any piece can move through the center square: only the King can land there</li>
+  </ul>
+</li>
+<li>Kills
+  <ul>
+  <li>A kill removes an enemy piece from the board</li>
+  <li>Sandwich an enemy piece with two of your pieces (attacking from in front and behind) to kill it</li>
+  <li>Each corner acts as an enemy piece for purposes of a kill</li>
+  <li>It is harmless to move between two standing enemy pieces</li>
+  <li>The king cannot be killed in this manner: black must surround the king to kill him</li>
+  </ul>
+</li>
+</ol>
+<h2 id="Hnefatafl-Setup" class="w3-text-blue">Hnefatafl Setup</h2>
+<p><b>Initial 11x11 Board Layout:</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  . . . B B B B B . . .<br>
+  . . . . . B . . . . .<br>
+  . . . . . . . . . . .<br>
+  B . . . . V . . . . B<br>
+  B . . . V V V . . . B<br>
+  B B . V V K V V . B B<br>
+  B . . . V V V . . . B<br>
+  B . . . . V . . . . B<br>
+  . . . . . . . . . . .<br>
+  . . . . . B . . . . .<br>
+  . . . B B B B B . . .<br>
+</div>
+<p>The key: B=black viking, V=white viking, K=white king, .=empty square</p>
+<h2 id="Hnefatafl-Examples" class="w3-text-blue">Hnefatafl Examples</h2>
+<p>Most examples are with a partial board.</p>
+<p><b>Example First Move, Black:</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  Initial Board&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Black Interferes With Corner<br>
+  . . . B B B B B . . .&nbsp; &nbsp; . . . B B B B B . . .<br>
+  . . . . . B . . . . .&nbsp; &nbsp; . B . . . B . . . . .<br>
+  . . . . . . . . . . .&nbsp; &nbsp; . . . . . . . . . . .<br>
+  B . . . . V . . . . B&nbsp; &nbsp; B . . . . V . . . . B<br>
+  B . . . V V V . . . B&nbsp; &nbsp; B . . . V V V . . . B<br>
+  B B . V V K V V . B B&nbsp; &nbsp; B . . V V K V V . B B<br>
+  B . . . V V V . . . B&nbsp; &nbsp; B . . . V V V . . . B<br>
+  B . . . . V . . . . B&nbsp; &nbsp; B . . . . V . . . . B<br>
+  . . . . . . . . . . .&nbsp; &nbsp; . . . . . . . . . . .<br>
+  . . . . . B . . . . .&nbsp; &nbsp; . . . . . B . . . . .<br>
+  . . . B B B B B . . .&nbsp; &nbsp; . . . B B B B B . . .<br>
+</div>
+<p><b>Example of Black killing a White Viking (partial board):</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  Before&nbsp; &nbsp; &nbsp; &nbsp; Move&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; After<br>
+  . . . . .&nbsp; &nbsp; &nbsp;. . . . .&nbsp; &nbsp; &nbsp;. . . . .<br>
+  . B V . .&nbsp; &nbsp; &nbsp;. B V B .&nbsp; &nbsp; &nbsp;. B . B .<br>
+  . . . . .&nbsp; &nbsp; &nbsp;. . . . .&nbsp; &nbsp; &nbsp;. . . . .<br>
+  . . . B .&nbsp; &nbsp; &nbsp;. . . . .&nbsp; &nbsp; &nbsp;. . . . .<br>
+</div>
+<p><b>Example of Black killing a White Viking adjacent to corner:</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  Before&nbsp; &nbsp; &nbsp; &nbsp; Move&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; After<br>
+  . . . . .&nbsp; &nbsp; &nbsp;. . . . .&nbsp; &nbsp; &nbsp;. . . . .<br>
+  V . . . .&nbsp; &nbsp; &nbsp;V . . . .&nbsp; &nbsp; &nbsp;. . . . .<br>
+  . . . B .&nbsp; &nbsp; &nbsp;B . . . .&nbsp; &nbsp; &nbsp;B . . . .<br>
+  . . . . .&nbsp; &nbsp; &nbsp;. . . . .&nbsp; &nbsp; &nbsp;. . . . .<br>
+</div>
+<p><b>Example of White killing 3 black Vikings with one move:</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  Before&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Move&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; After<br>
+  . . . . V . .&nbsp; &nbsp; &nbsp;. . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  . . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  . . V B . B V&nbsp; &nbsp; &nbsp;. . V B V B V&nbsp; &nbsp; &nbsp;. . V . V . V<br>
+  . . . . B . .&nbsp; &nbsp; &nbsp;. . . . B . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  . . . . V . .&nbsp; &nbsp; &nbsp;. . . . V . .&nbsp; &nbsp; &nbsp;. . . . V . .<br>
+  . . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  . . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+</div>
+<p><b>Example of White Winning (partial board):</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  Before&nbsp; &nbsp; &nbsp; &nbsp; Move, White Wins<br>
+  . B . . .&nbsp; &nbsp; &nbsp;K B . . .<br>
+  . B V . .&nbsp; &nbsp; &nbsp;. B V . .<br>
+  K . . . B&nbsp; &nbsp; &nbsp;. . . . B<br>
+  . . V . .&nbsp; &nbsp; &nbsp;. . V . .<br>
+</div>
+<p><b>Example of Black Winning, Surrounding White King:</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  Before&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Move&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; After<br>
+  . . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  . . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  . . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  . . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  . . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  . . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  . . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  <br>
+</div>
+<p><b>Example of Black Winning, edge of board:</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  Before&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Move&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; After<br>
+  . B . . . . .&nbsp; &nbsp; &nbsp;. B . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  V B . . . . .&nbsp; &nbsp; &nbsp;V B . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  V B . . . . .&nbsp; &nbsp; &nbsp;V B . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  . B . . . . .&nbsp; &nbsp; &nbsp;B B . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  . . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  B . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  . . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+</div>
+<h2 id="Hnefatafl-Advanced-Rules-With-Examples" class="w3-text-blue">Hnefatafl Advanced Rules With Examples</h2>
+<ol>
+<li>Flanking (Shield Wall) kills
+  <ul>
+  <li>This maneuver prevents 2 or more Vikings of the same color from blocking the edge of the board</li>
+  <li>The enemy can surround the Vikings and capture all of them with a flanking move</li>
+  <li>The white King cannot be killed by flanking even if all his surrounded Vikings are taken</li>
+  </ul>
+</li>
+<li>No Escape  
+  <ul>
+  <li>If white cannot move, black wins</li>
+  </ul>
+</li>
+<li>Repetition Win
+  <ul>
+  <li>Like in chess, if the same moves are repeated by both players 3 times the game is over</li>
+  <li>Unlike in chess, there is no tie: if the King cannot escape black wins</li>
+  </ul>
+</li>
+</ol>
+<h2 id="Hnefatafl-Advanced-Examples" class="w3-text-blue">Hnefatafl Advanced Examples</h2>
+<p><b>Example of Black killing 2 white Vikings by flanking:</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  Before&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Move&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; After<br>
+  . B . . . . .&nbsp; &nbsp; &nbsp;. B . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  V B . . . . .&nbsp; &nbsp; &nbsp;V B . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  V B . . . . .&nbsp; &nbsp; &nbsp;V B . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  . B . . . . .&nbsp; &nbsp; &nbsp;B B . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  . . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  B . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+  . . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .&nbsp; &nbsp; &nbsp;. . . . . . .<br>
+</div>
+<h2 id="Hnefatafl-Notation" class="w3-text-blue">Hnefatafl Notation</h2>
+<p>Hnefatafl uses similar notation as chess, for both FEN (board layout) and algebraic (moves).</p>
+<p>To orient yourself, if you've never seen notated chess, read:</p>
+<ul>
+<li>FEN: <a href="https://www.chess.com/terms/fen-chess">https://www.chess.com/terms/fen-chess</a></li>
+<li>Algebraic: <a href="https://www.chess.com/terms/chess-notation">https://www.chess.com/terms/chess-notation</a></li>
+</ul>
+<p>Hnefetafl uses an 11x11 board layout, rather than the 8x8 used by chess, so it looks a little
+different. And the pieces are simpler, only black and white Vikings and one white King.</p>
+<p><b>Hnefetafl 11x11 Board Starting Layout With Coordinates:</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  11&nbsp; . . . B B B B B . . .<br>
+  10&nbsp; . . . . . B . . . . .<br>
+  &nbsp;9&nbsp; . . . . . . . . . . .<br>
+  &nbsp;8&nbsp; B . . . . V . . . . B<br>
+  &nbsp;7&nbsp; B . . . V V V . . . B<br>
+  &nbsp;6&nbsp; B B . V V K V V . B B<br>
+  &nbsp;5&nbsp; B . . . V V V . . . B<br>
+  &nbsp;4&nbsp; B . . . . V . . . . B<br>
+  &nbsp;3&nbsp; . . . . . . . . . . .<br>
+  &nbsp;2&nbsp; . . . . . B . . . . .<br>
+  &nbsp;1&nbsp; . . . B B B B B . . .<br>
+  &nbsp; &nbsp; a b c d e f g h i j k<br>
+</div>
+<p>HEN (Hnefatafl FEN) uses only the 1st two fields of FEN: placement and next player. The other FEN
+fields are specific to chess and are not relevant to Hnefatafl.</p>
+<p>Each rank is described starting with rank 11 down to 1 with a "/" character between each rank. The
+blank Vikings are represented by a lowercase "v", white by a capital "V" and the white king by a
+captial "K". 1 or more empty squares are represented by a number, e.g. 5 is 5 blank squares.</p>
+<p>A HEN representation of initial layout (black moves 1st) would look like:</p>
+<div class="w3-code w3-light-grey notranslate">
+  3BBBBB3/5B5/11/B4V4B/B3VVV3B/BB1VVKVV1BB/B3VVV3B/B4V4B/11/5B5/3BBBBB3 B <br>
+</div>
+<p>As a short-hand, 3 dashes represent the starting layout placement.</p>
+<div class="w3-code w3-light-grey notranslate">
+  ---<br>
+</div>
+<p>Moves are annotated in turns similar to chess but always with full disambiguation. For example, in
+Hnefatafl an opening turn might be: <code class="w3-codespan">1. Bb6b11 Vf4c4</code>.</p>
+<p>If a move resulted in 1 or more kills, and x is used, just like in chess: <code class="w3-codespan">9. Bc2xc11</code>.</p>
+<p>The hashtag is used to indicate end of game (a win by either black or white). In the following
+example, white has won because the king has escaped to a corner: <code class="w3-codespan">23. Bj10j3 Kc1k1#</code>.</p>
+<p>After the ending hashtag and optional # of games won by each side (black-white), e.g. <code class="w3-codespan">0-1</code>.</p>
+<p>Whitespace, whether spaces, tabs, or line endings are ignored.</p>
+<p>A <code class="w3-codespan">.hen</code> file contains up to 2 sections: position and moves. An example <code class="w3-codespan">.hen</code> file is below.</p>
+<p><b>Example full game: hnefatafl.hen</b></p>
+<div class="w3-code w3-light-grey notranslate">
+  3BBBBB3/5B5/11/B4V4B/B3VVV3B/BB1VVKVV1BB/B3VVV3B/B4V4B/11/5B5/3BBBBB3 B<br>
+  <br>
+  1.Bf2j2 Vd6d10 2.Ba8a10 Ve7e10 3.Bj6j10 Vg7xg10 4.Bb6b2 Ve6b6 5.Bh11h7 Kf6c6 6.Bh1xh5 Kc6c11<br>
+  7.Bd1xd9 Kc11a11# 1-0<br>
+  <br>
+</div>
+  </div>
+</div>
+</body>
+</html>
